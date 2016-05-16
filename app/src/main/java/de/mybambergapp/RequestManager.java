@@ -102,6 +102,7 @@ public class RequestManager extends Activity {
                                 ObjectMapper mapper = new ObjectMapper();
 
 
+
                           //  TagDTO  tagDTO = mapper.readValue(lasttag,TagDTO.class);
                                //String test = lastlocation.get("locationname").toString();
                               //  dbmanager.insertTags();
