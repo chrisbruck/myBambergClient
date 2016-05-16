@@ -106,7 +106,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
         values.put(COLUMN_ID_TAGS,count);
 
-        values.put(COLUMN_NAME_TAGS, tagDTO.getTagname());
+        values.put(COLUMN_NAME_TAGS, tagDTO.getTagName());
 
 
         db.insert(TAGS_TABLE_NAME, null, values);

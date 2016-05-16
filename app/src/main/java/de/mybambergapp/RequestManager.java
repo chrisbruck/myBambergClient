@@ -98,12 +98,17 @@ public class RequestManager extends Activity {
                             // mTextView.setText("Response is: " + response.toString());
                             //Log.d("Response", response.toString());
                             try {
-                                    JSONObject lasttag = response.getJSONObject("TagDTO");
-                                ObjectMapper mapper = new ObjectMapper();
+
+                                TagDTO tag = new TagDTO();
+
+                                tag.setTagName(response.get("tagName").toString());
+                               // tag.setID(("id"));
+
+                               // ObjectMapper mapper = new ObjectMapper();
 
 
 
-                          //  TagDTO  tagDTO = mapper.readValue(lasttag,TagDTO.class);
+                          // TagDTO  tagDTO = mapper.readValue(response,TagDTO.class);
                                //String test = lastlocation.get("locationname").toString();
                               //  dbmanager.insertTags();
 

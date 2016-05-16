@@ -5,31 +5,35 @@ package de.mybambergapp;
  */
 public class TagDTO {
 
-    public int id;
-    private  String tagname;
 
-    public int getId() {
-        return id;
+
+
+        private Long ID;
+        private String tagName;
+
+
+        public TagDTO(){
+
+        }
+
+        public Long getID() {
+            return ID;
+        }
+
+        public void setID(Long ID) {
+            this.ID = ID;
+        }
+
+        public String getTagName() {
+            return tagName;
+        }
+
+        public void setTagName(String tagName) {
+            this.tagName = tagName;
+        }
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTagname() {
-        return tagname;
-    }
-
-    public void setTagname(String tagname) {
-        this.tagname = tagname;
-    }
-
-    public TagDTO(){
-
-    }
 
 
 
 
-
-}
