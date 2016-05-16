@@ -16,10 +16,13 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-
+import com.fasterxml.jackson.databind.type.SimpleType;
+import com.spothero.volley.JacksonNetwork;
+import com.spothero.volley.JacksonRequest;
+import com.spothero.volley.JacksonRequestListener;
 
 
 import org.json.JSONException;
@@ -80,70 +83,38 @@ public class RequestManager extends Activity {
         }
     }
 
-
     public void updateLocations(View v) {
         if (v.getId() == R.id.BupdateLocations) {
 
-           // String url = "http://192.168.2.106:8080/alllocations";
+            // Instantiate the RequestQueue.
             String url = "http://192.168.2.106:8080/onetag";
-          //String url=  "http://jsonplaceholder.typicode.com/posts/1";
-            RequestQueue queue = Volley.newRequestQueue(this);
+            // String url = "http://www.google.com";
+            //String url = "http://192.168.2.106:8080/onelocation";
+            RequestQueue queue = JacksonNetwork.newRequestQueue(this);
             mTextView = (TextView) findViewById(R.id.TVqueueanswer1);
+            queue.add(new JacksonRequest<TagDTO>(Request.Method.GET,
+                            url,
+                            new JacksonRequestListener<TagDTO>() {
+                                @Override
+                                public void onResponse(TagDTO response, int statusCode, VolleyError error) {
+                                    if (response != null) {
+                                        Log.d("TAG", "Response " + response.getTagName() + response.getID());
+                                    } else {
+                                        Log.e("TAG", "An error occurred while parsing the data! Stack trace follows:");
+                                        error.printStackTrace();
+                                    }
+                                }
 
-            JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            // display response
-                            // mTextView.setText("Response is: " + response.toString());
-                            //Log.d("Response", response.toString());
-                            try {
-
-                                TagDTO tag = new TagDTO();
-
-                                tag.setTagName(response.get("tagName").toString());
-                               // tag.setID(("id"));
-
-                               // ObjectMapper mapper = new ObjectMapper();
-
-
-
-                          // TagDTO  tagDTO = mapper.readValue(response,TagDTO.class);
-                               //String test = lastlocation.get("locationname").toString();
-                              //  dbmanager.insertTags();
-
-
-                            }catch(JSONException e){
-                                e.printStackTrace();
-
-                            } /*catch (JsonMappingException e) {
-                                e.printStackTrace();
-                            } catch (JsonParseException e) {
-                                e.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }*/
-
-
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            mTextView.setText("Tut nicht worken leider!");
-                            // Log.d("Error.Response", response);
-                        }
-                    }
+                                @Override
+                                public JavaType getReturnType() {
+                                    return SimpleType.construct(TagDTO.class);
+                                }
+                            })
             );
 
-
-            /*int socketTimeout = 30000;//30 seconds - change to what you want
-            RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-            getRequest.setRetryPolicy(policy);*/
-
-
-            queue.add(getRequest);
         }
+
+
     }
 
 
