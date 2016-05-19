@@ -1,4 +1,4 @@
-package de.mybambergapp;
+package de.mybambergapp.dto;
 
 /**
  * Created by christian on 10.05.16.

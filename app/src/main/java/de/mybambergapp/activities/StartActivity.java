@@ -1,4 +1,4 @@
-package de.mybambergapp;
+package de.mybambergapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,8 @@ import android.view.MenuItem;
 
 
 import org.json.JSONObject;
+
+import de.mybambergapp.R;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -40,7 +42,7 @@ public class StartActivity extends AppCompatActivity {
 
     public void changingActivity(View view){
 
-        Intent i = new Intent(StartActivity.this, RequestManager.class);
+        Intent i = new Intent(StartActivity.this, SearchActivity.class);
 
         startActivity(i);
 

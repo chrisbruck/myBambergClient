@@ -3,27 +3,48 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="searchQueue"
-        android:id="@+id/Bsearchqueue"
-        android:onClick="onSearchQueue" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="searchEvents"
-        android:id="@+id/BsearchEvents"
-        android:onClick="startSearching" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/TVresults" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Suche aus den unteren Kategorien die aus die zu dir passen. Anschliessend kannst dir die Tage und die Uhrzeit deiner Aktivitaeten aussuchen! dann gehts schon los!"
+        android:id="@+id/TVintroText"
+        android:layout_gravity="center_horizontal"
+        android:background="#ffffff"
+        android:backgroundTint="#ffffff" />
 
-    <TextView
+    <CheckBox android:id="@+id/checkbox_culture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/TVqueueanswer" />
+        android:checked="false"
+        android:text="@string/txt_culture" />
+    <CheckBox android:id="@+id/checkbox_art"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_art"
+        android:checked="false" />
+
+    <CheckBox android:id="@+id/checkbox_history"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="@string/txt_history" />
+
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Erstelle Route"
+        android:id="@+id/BerstelleRoute"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lese in der DB"
+        android:id="@+id/BreadPrefFromDB"
+        android:layout_gravity="center_horizontal"
+        android:onClick="onClickReadDB" />
+
 </LinearLayout>
