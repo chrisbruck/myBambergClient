@@ -31,14 +31,9 @@ public class RequestManager extends Activity {
     private TextView mTextView;
 
 
-
-
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manager_request);
-
-
 
 
     }
@@ -75,9 +70,9 @@ public class RequestManager extends Activity {
                     mTextView.setText("That didn't work!");
                 }
             });
-                        // Add the request to the RequestQueue. Calling add(Request) will enqueue the given Request for dispatch,
-                        // resolving from either cache or network on a worker thread, and then delivering a parsed response on the main thread.
-           // queue.add(stringRequest);
+            // Add the request to the RequestQueue. Calling add(Request) will enqueue the given Request for dispatch,
+            // resolving from either cache or network on a worker thread, and then delivering a parsed response on the main thread.
+            // queue.add(stringRequest);
             // Add a request (in this example, called stringRequest) to your RequestQueue.
             SingletonRequestQueue.getInstance(this).addToRequestQueue(stringRequest);
         }
@@ -86,19 +81,28 @@ public class RequestManager extends Activity {
     public void updateLocations(View v) {
         if (v.getId() == R.id.BupdateLocations) {
 
-            // Instantiate the RequestQueue.
+            // Instantiate (bzw gibt sie zurueck) the JacksonNework RequestQueue.
+            RequestQueue queue = SingletonRequestQueue.getInstance(this.getApplicationContext()).getRequestQueue();
+
+
             String url = "http://192.168.2.108:8080/onetag";
             // String url = "http://www.google.com";
             //String url = "http://192.168.2.106:8080/onelocation";
-            RequestQueue queue = JacksonNetwork.newRequestQueue(this);
+            //RequestQueue queue = JacksonNetwork.newRequestQueue(this);
             mTextView = (TextView) findViewById(R.id.TVqueueanswer1);
-            queue.add(new JacksonRequest<TagDTO>(Request.Method.GET,
+
+
+            //  jacksonRequestObject incl callbackfunction erzeugen
+
+            JacksonRequest<TagDTO> MyJacksonRequestObject =
+                    new JacksonRequest<>(Request.Method.GET,
                             url,
                             new JacksonRequestListener<TagDTO>() {
                                 @Override
                                 public void onResponse(TagDTO response, int statusCode, VolleyError error) {
                                     if (response != null) {
                                         Log.d("TAG", "Response " + response.getTagName() + response.getID());
+
                                     } else {
                                         Log.e("TAG", "An error occurred while parsing the data! Stack trace follows:");
                                         error.printStackTrace();
@@ -109,8 +113,11 @@ public class RequestManager extends Activity {
                                 public JavaType getReturnType() {
                                     return SimpleType.construct(TagDTO.class);
                                 }
-                            })
-            );
+                            });
+
+            // jacksonRequestObject der Singelton-RequestQueue uebergeben
+            SingletonRequestQueue.getInstance(this.getApplication()).addToRequestQueue(MyJacksonRequestObject);
+
 
         }
 

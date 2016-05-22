@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import org.json.JSONObject;
 
 import de.mybambergapp.R;
+import de.mybambergapp.manager.RequestManager;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -35,7 +36,15 @@ public class StartActivity extends AppCompatActivity {
             }
         });
 
-        JSONObject jsonObject = new JSONObject();
+
+    }
+
+    public void onClickCalendar(View view){
+
+        Intent i = new Intent(StartActivity.this, SearchActivityCalendar.class);
+
+        startActivity(i);
+
     }
 
 
@@ -43,6 +52,13 @@ public class StartActivity extends AppCompatActivity {
     public void changingActivity(View view){
 
         Intent i = new Intent(StartActivity.this, SearchActivity.class);
+
+        startActivity(i);
+
+    }
+    public void onClickStartRequestActivity(View view){
+
+        Intent i = new Intent(StartActivity.this, RequestManager.class);
 
         startActivity(i);
 
