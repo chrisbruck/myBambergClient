@@ -39,13 +39,6 @@ public class StartActivity extends AppCompatActivity {
 
     }
 
-    public void onClickCalendar(View view){
-
-        Intent i = new Intent(StartActivity.this, SearchActivityCalendar.class);
-
-        startActivity(i);
-
-    }
 
 
 

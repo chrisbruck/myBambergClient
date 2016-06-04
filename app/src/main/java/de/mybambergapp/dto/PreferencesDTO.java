@@ -4,14 +4,47 @@ package de.mybambergapp.dto;
  * Created by christian on 19.05.16.
  */
 public class PreferencesDTO {
+
+
     public boolean culture;
     public boolean art;
     public boolean sport;
     public boolean history;
-    public boolean music;
+    public boolean concert;
+    public boolean party;
+    public int starthour;
+    public int startminute;
+    public int endhour;
+    public int endminute;
+    public int day;
+    public int month;
+    public int year;
+
+
 
     public PreferencesDTO(){
 
+    }
+
+
+
+
+
+
+    public boolean isConcert() {
+        return concert;
+    }
+
+    public void setConcert(boolean concert) {
+        this.concert = concert;
+    }
+
+    public boolean isParty() {
+        return party;
+    }
+
+    public void setParty(boolean party) {
+        this.party = party;
     }
 
     public boolean isCulture() {
@@ -46,11 +79,59 @@ public class PreferencesDTO {
         this.history = history;
     }
 
-    public boolean isMusic() {
-        return music;
+    public int getStarthour() {
+        return starthour;
     }
 
-    public void setMusic(boolean music) {
-        this.music = music;
+    public void setStarthour(int starthour) {
+        this.starthour = starthour;
+    }
+
+    public int getStartminute() {
+        return startminute;
+    }
+
+    public void setStartminute(int startminute) {
+        this.startminute = startminute;
+    }
+
+    public int getEndhour() {
+        return endhour;
+    }
+
+    public void setEndhour(int endhour) {
+        this.endhour = endhour;
+    }
+
+    public int getEndminute() {
+        return endminute;
+    }
+
+    public void setEndminute(int endminute) {
+        this.endminute = endminute;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 }

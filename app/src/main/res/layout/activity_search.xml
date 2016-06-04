@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:fillViewport="false">
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -7,17 +14,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Suche aus den unteren Kategorien die aus die zu dir passen. Anschliessend kannst dir die Tage und die Uhrzeit deiner Aktivitaeten aussuchen! dann gehts schon los!"
+        android:text="Suche aus den unteren Kategorien die aus die zu dir passen. Anschliessend  kannst dir die Tage und die Uhrzeit deiner Aktivitaeten aussuchen! dann gehts schon los!"
         android:id="@+id/TVintroText"
         android:layout_gravity="center_horizontal"
         android:background="#ffffff"
         android:backgroundTint="#ffffff" />
+
 
     <CheckBox android:id="@+id/checkbox_culture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checked="false"
         android:text="@string/txt_culture" />
+
     <CheckBox android:id="@+id/checkbox_art"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,6 +40,123 @@
         android:text="@string/txt_history" />
 
 
+    <CheckBox android:id="@+id/checkbox_sport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="@string/txt_sport" />
+
+    <CheckBox android:id="@+id/checkbox_concert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_concert"
+        android:checked="false" />
+
+    <CheckBox android:id="@+id/checkbox_party"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="@string/txt_party" />
+
+
+
+<!--
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="pick_start_time"
+        android:onClick="showStartTimePickerDialog"
+        android:textColor="#ffffff"
+        android:id="@+id/id_pickStarttime" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" pick_end_time "
+        android:onClick="showEndTimePickerDialog"
+        android:id="@+id/id_pickEndtime" />
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="pick_date"
+        android:onClick="showDatePickerDialog" />-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Gib die Startzeit die Endzeit und den Tag an dem du durch Bamberg gelotst werden willst.!"
+        android:id="@+id/TVpickerText"
+        android:layout_gravity="center_horizontal"
+        android:background="#ffffff"
+        android:backgroundTint="#ffffff" />
+
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textSize="20dp"
+        android:textColor="#d35b3a"
+        />
+    <!--This example works only timePickerMode=spinner only, not in clock mode-->
+    <TimePicker
+        android:id="@+id/tp1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv1"
+        android:timePickerMode="spinner"
+        />
+
+
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textSize="20dp"
+        android:textColor="#3A69D3"
+        />
+    <!--This example works only timePickerMode=spinner only, not in clock mode-->
+    <TimePicker
+        android:id="@+id/tp2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv2"
+        android:timePickerMode="spinner"
+
+        />
+
+
+    <TextView
+        android:id="@+id/tvdatepicker"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textSize="20dp"
+        android:textColor="#CF446F"
+        />
+    <DatePicker
+        android:id="@+id/dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:datePickerMode="spinner"
+        android:calendarViewShown="false"
+        android:layout_below="@id/tvdatepicker"/>
+    <Button
+        android:id="@+id/btn_update_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Update Date"
+        android:layout_below="@id/dp"
+        />
+    <Button
+        android:id="@+id/btn_get_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get Date"
+        android:layout_below="@id/dp"
+        android:layout_toRightOf="@id/btn_update_date"
+        />
+
 
     <Button
         android:layout_width="wrap_content"
@@ -38,13 +164,14 @@
         android:text="Erstelle Route"
         android:id="@+id/BerstelleRoute"
         android:layout_gravity="center_horizontal" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Lese in der DB"
+        android:text="Pruefe Eintraege in  DB"
         android:id="@+id/BreadPrefFromDB"
         android:layout_gravity="center_horizontal"
         android:onClick="onClickReadDB" />
 
+
 </LinearLayout>
+</ScrollView>

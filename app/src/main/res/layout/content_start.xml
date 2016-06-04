@@ -42,12 +42,6 @@
             android:id="@+id/btotherequestmanager"
             android:onClick="onClickStartRequestActivity" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ZUM CALENDAR"
-            android:id="@+id/bCalendarButton"
-            android:onClick="onClickCalendar" />
     </LinearLayout>
 
 </RelativeLayout>
