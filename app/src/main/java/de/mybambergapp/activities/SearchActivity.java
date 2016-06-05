@@ -34,11 +34,17 @@ public class SearchActivity extends FragmentActivity {
 
     DatabaseManager db = new DatabaseManager(this);
 
+
     private CheckBox checkbox_culture, checkbox_art, checkbox_history, checkbox_sport, checkbox_concert, checkbox_party;
     private Button BerstelleRoute;
     private Button BreadPrefFromDB;
     // PreferencesDTO preferencesDTO = new PreferencesDTO();
     PreferencesDTO prefferncesDTO = new PreferencesDTO();
+    TextView tvdatepicker;
+     int lastday;
+    int lastmonth;
+    int lastyear;
+
 
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -66,7 +72,7 @@ public class SearchActivity extends FragmentActivity {
         tvStart.setText("Gebe die Startzeit an ");
         tvEnde.setText("Gebe die Endzeit an ");
 
-        //Set a TimeChangedListener for TimePicker widget
+        //Set a TimeChangedListener for TimePicker widget:: ist ein IF und muss implementiert werden
         tpStart.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
@@ -93,45 +99,62 @@ public class SearchActivity extends FragmentActivity {
             }
         });
 
+         tvdatepicker = (TextView) findViewById(R.id.tvdatepicker);
+
+        // jetzt noch den datepicker1*************************************      ********************
 
 
-        // jetzt noch den datepicker
-
+        // ersma aus dem kalender aktuelles jahr tag monat auslesen
         int year = c.get(c.YEAR);
         int month = c.get(c.MONTH);
         int dayOfMonth = c.get(c.DAY_OF_MONTH);
 
         // widgets zuweisen
-        final TextView tvdatepicker = (TextView) findViewById(R.id.tvdatepicker);
-        Button btnUpdateDate = (Button) findViewById(R.id.btn_update_date);
-        Button btnGetDate = (Button) findViewById(R.id.btn_get_date);
+        // text
+
+        // datepicker verknüpfung zwischen funktionalität und design
         final DatePicker dp = (DatePicker) findViewById(R.id.dp);
 
-        tvdatepicker.setText("Initial Date [mm/dd/yyyy]:\n" + month + "/" + dayOfMonth + "/" + year);
+        tvdatepicker.setText("Geb den Tag an ");
 
-        btnUpdateDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        //was macht init ?--> setzt die neuen werte in den datepicker/calendar
+        dp.init(year,month,dayOfMonth,dateSetListener);
 
-                //updateDate(int year, int month, int dayOfMonth) Update the current date.
-                //Here we added 1 year 2 month and 10 days with current system date
-                dp.updateDate(c.get(c.YEAR) + 1, c.get(c.MONTH) + 2, c.get(c.DAY_OF_MONTH) + 10);
-                tvdatepicker.setText("");
-            }
-        });
+        // gib mir die werte des calenders raus
 
-        btnGetDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Get the DatePicker Selected Date
-                tvdatepicker.setText("Selected Date: [mm/dd/yyyy]\n");
-                tvdatepicker.setText(tvdatepicker.getText() + "" + dp.getMonth() + "/" + dp.getDayOfMonth() + "/"+dp.getYear());
-                dp.updateDate(c.get(c.YEAR) + 1, c.get(c.MONTH) + 2, c.get(c.DAY_OF_MONTH) + 10);
-            }
-        });
+
+       // tvdatepicker.setText("day is :"+day1);
+
+
+
+        //*****************************************************************     ********************
+
+
+
+
+
+
     }
+        // listener fuer den datepicker erstellen--> der die neuen werte des kalender ausliest und dann TEST ausgibt
+    private DatePicker.OnDateChangedListener dateSetListener = new DatePicker.OnDateChangedListener() {
+
+        public void onDateChanged(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+            Calendar c = Calendar.getInstance();
+            c.set(year, monthOfYear, dayOfMonth);
+            int newmonth = monthOfYear+1;
+            System.out.println ("TEST"+year+"--"+newmonth+"--"+dayOfMonth+"");
+
+            lastday= dayOfMonth;
+            lastmonth=newmonth;
+            lastyear= year;
+
+            tvdatepicker.setText(" Dein  Datum ist: "+lastyear+"/ "+lastmonth+"/ "+lastday);
 
 
+        }
+
+    };
 
 
     public void addListenerOnButton() {
@@ -180,6 +203,29 @@ public class SearchActivity extends FragmentActivity {
 
 
         });
+    }
+
+    public void onDateSet(DatePicker view, int year, int month, int day) {
+
+    }
+
+
+    public void onClickSavePreferences(View v){
+        if(v.getId()==R.id.BsavePreferences){
+            /*Calendar c = Calendar.getInstance();
+            int year = c.get(c.YEAR);
+            int month = c.get(c.MONTH);
+            int dayOfMonth = c.get(c.DAY_OF_MONTH);*/
+
+            System.out.println("year is: "+lastyear+"month is : "+lastmonth+" day is : "+lastday);
+
+
+            // int day1= dp.getDayOfMonth();
+            //int month1 = dp.getMonth();
+           // int year1= dp.getYear();
+
+        }
+
     }
 
 

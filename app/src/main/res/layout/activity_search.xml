@@ -133,6 +133,7 @@
         android:layout_width="wrap_content"
         android:textSize="20dp"
         android:textColor="#CF446F"
+
         />
     <DatePicker
         android:id="@+id/dp"
@@ -141,6 +142,7 @@
         android:datePickerMode="spinner"
         android:calendarViewShown="false"
         android:layout_below="@id/tvdatepicker"/>
+
     <Button
         android:id="@+id/btn_update_date"
         android:layout_width="wrap_content"
@@ -156,7 +158,13 @@
         android:layout_below="@id/dp"
         android:layout_toRightOf="@id/btn_update_date"
         />
-
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Speichere Einstellungen"
+        android:id="@+id/BsavePreferences"
+        android:layout_gravity="center_horizontal"
+        android:onClick="onClickSavePreferences" />
 
     <Button
         android:layout_width="wrap_content"
