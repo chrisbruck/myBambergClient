@@ -81,7 +81,7 @@ public class RequestManager extends Activity {
     public void updateLocations(View v) {
         if (v.getId() == R.id.BupdateLocations) {
 
-            // Instantiate (bzw gibt sie zurueck) the JacksonNework RequestQueue.
+            // Instantiate (bzw gibt sie zurueck) the JacksonNetwork  Singleton-RequestQueue.
             RequestQueue queue = SingletonRequestQueue.getInstance(this.getApplicationContext()).getRequestQueue();
 
 
@@ -92,7 +92,7 @@ public class RequestManager extends Activity {
             mTextView = (TextView) findViewById(R.id.TVqueueanswer1);
 
 
-            //  jacksonRequestObject incl callbackfunction erzeugen
+            //  jacksonRequestObject incl dazugehoeriger callbackfunction erzeugen
 
             JacksonRequest<TagDTO> MyJacksonRequestObject =
                     new JacksonRequest<>(Request.Method.GET,

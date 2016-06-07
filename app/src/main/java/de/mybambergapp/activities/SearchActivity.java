@@ -3,12 +3,15 @@ package de.mybambergapp.activities;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -20,12 +23,28 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import android.provider.Settings.Secure;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.type.SimpleType;
+import com.spothero.volley.JacksonRequest;
+import com.spothero.volley.JacksonRequestListener;
+
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.mybambergapp.R;
 import de.mybambergapp.dto.PreferencesDTO;
 
+import de.mybambergapp.dto.TagDTO;
 import de.mybambergapp.manager.DatabaseManager;
+import de.mybambergapp.manager.SingletonRequestQueue;
 
 /**
  * Created by christian on 01.05.16.
@@ -41,7 +60,7 @@ public class SearchActivity extends FragmentActivity {
 
     private CheckBox checkbox_culture, checkbox_art, checkbox_history, checkbox_sport, checkbox_concert, checkbox_party;
     private Button BerstelleRoute;
-
+private Button BsubmittPrefs;
 
 
 
@@ -267,6 +286,114 @@ public class SearchActivity extends FragmentActivity {
         }
 
     }
+    public static void postPreferences(Context context, final PreferencesDTO prefDTO){
+
+      //  mPostCommentResponse.requestStarted();
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest sr = new StringRequest(Request.Method.POST,"http://192.168.1.8:8080/post/pref", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+               // mPostCommentResponse.requestCompleted();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+               // mPostCommentResponse.requestEndedWithError(error);
+            }
+        }){
+
+
+            // hier das prefDTO zerlegen und mittels Params uebergeben---muss n string sein ?
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<String, String>();
+
+
+                params.put("userID",String.valueOf(prefDTO.getAndroidID()));
+
+                params.put("culture",String.valueOf(prefDTO.isCulture()));
+                params.put("art",String.valueOf(prefDTO.isArt()));
+                params.put("history",String.valueOf(prefDTO.isHistory()));
+                params.put("party",String.valueOf(prefDTO.isParty()));
+                params.put("concert",String.valueOf(prefDTO.isConcert()));
+                params.put("sport",String.valueOf(prefDTO.isSport()));
+
+                params.put("stathour",String.valueOf(prefDTO.getStarthour()));
+
+
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                return params;
+            }
+        };
+        queue.add(sr);
+    }
+
+    public interface PostPreferencesResponseListener {
+        public void requestStarted();
+        public void requestCompleted();
+        public void requestEndedWithError(VolleyError error);
+    }
+
+
+
+
+
+
+    public void onClicksubmitPreferences(View v) {
+
+
+        if (v.getId() == R.id.BsubmittPrefs) {
+
+            // Instantiate (bzw gibt sie zurueck) the JacksonNetwork  Singleton-RequestQueue.
+            RequestQueue queue = SingletonRequestQueue.getInstance(this.getApplicationContext()).getRequestQueue();
+
+
+            String url = "http://192.168.1.8:8080/onetag";
+            // String url = "http://www.google.com";
+            //String url = "http://192.168.2.106:8080/onelocation";
+            //RequestQueue queue = JacksonNetwork.newRequestQueue(this);
+           // mTextView = (TextView) findViewById(R.id.TVqueueanswer1);
+
+
+            //  jacksonRequestObject incl dazugehoeriger callbackfunction erzeugen
+
+            JacksonRequest<TagDTO> MyJacksonRequestObject =
+                    new JacksonRequest<>(Request.Method.GET,
+                            url,
+                            new JacksonRequestListener<TagDTO>() {
+                                @Override
+                                public void onResponse(TagDTO response, int statusCode, VolleyError error) {
+                                    if (response != null) {
+                                        Log.d("TAG", "Response is : " + response.getTagName() + response.getID());
+
+                                    } else {
+                                        Log.e("TAG", "An error occurred while parsing the data! Stack trace follows:");
+                                        error.printStackTrace();
+                                    }
+                                }
+
+                                @Override
+                                public JavaType getReturnType() {
+                                    return SimpleType.construct(TagDTO.class);
+                                }
+                            });
+
+            // jacksonRequestObject der Singelton-RequestQueue uebergeben
+            SingletonRequestQueue.getInstance(this.getApplication()).addToRequestQueue(MyJacksonRequestObject);
+
+
+        }
+
+
+    }
+
 
 
     public void onClickReadDB(View v) {
