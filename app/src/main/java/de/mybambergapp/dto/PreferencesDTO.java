@@ -21,6 +21,9 @@ public class PreferencesDTO {
     public int year;
 
 
+    public String androidID;
+
+
 
     public PreferencesDTO(){
 
@@ -28,7 +31,7 @@ public class PreferencesDTO {
 
 
 
-
+//tags
 
 
     public boolean isConcert() {
@@ -86,7 +89,7 @@ public class PreferencesDTO {
     public void setStarthour(int starthour) {
         this.starthour = starthour;
     }
-
+//Stunden
     public int getStartminute() {
         return startminute;
     }
@@ -111,6 +114,8 @@ public class PreferencesDTO {
         this.endminute = endminute;
     }
 
+  // Tag-Monat-Jahr
+
     public int getDay() {
         return day;
     }
@@ -134,4 +139,37 @@ public class PreferencesDTO {
     public void setYear(int year) {
         this.year = year;
     }
+
+
+
+
+
+    public String getAndroidID() {
+        return androidID;
+    }
+
+    public void setAndroidID(String androidID) {
+        this.androidID = androidID;
+    }
+
+    @Override
+    public String toString() {
+        return "PreferencesDTO{" +
+                "culture=" + culture +
+                ", art=" + art +
+                ", sport=" + sport +
+                ", history=" + history +
+                ", concert=" + concert +
+                ", party=" + party +
+                ", starthour=" + starthour +
+                ", startminute=" + startminute +
+                ", endhour=" + endhour +
+                ", endminute=" + endminute +
+                ", day=" + day +
+                ", month=" + month +
+                ", year=" + year +
+                ", androidID='" + androidID + '\'' +
+                '}';
+    }
 }
+
