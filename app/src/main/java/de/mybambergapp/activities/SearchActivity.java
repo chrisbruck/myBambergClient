@@ -61,6 +61,8 @@ public class SearchActivity extends FragmentActivity {
     private CheckBox checkbox_culture, checkbox_art, checkbox_history, checkbox_sport, checkbox_concert, checkbox_party;
     private Button BerstelleRoute;
 private Button BsubmittPrefs;
+    private TextView answerText;
+
 
 
 
@@ -101,6 +103,7 @@ private Button BsubmittPrefs;
         //Get the widgets reference from XML layout
         final TextView tvStart = (TextView) findViewById(R.id.tv1);
         final TextView tvEnde = (TextView) findViewById(R.id.tv2);
+
 
         TimePicker tpStart = (TimePicker) findViewById(R.id.tp1);
         TimePicker tpEnde = (TimePicker) findViewById(R.id.tp2);
@@ -282,18 +285,30 @@ private Button BsubmittPrefs;
 
 
             System.out.println( prefferncesDTO.toString());
+            postPreferences(this,prefferncesDTO);
 
         }
 
     }
-    public static void postPreferences(Context context, final PreferencesDTO prefDTO){
+    public  void postPreferences(Context context, final PreferencesDTO prefDTO){
 
       //  mPostCommentResponse.requestStarted();
         RequestQueue queue = Volley.newRequestQueue(context);
-        StringRequest sr = new StringRequest(Request.Method.POST,"http://192.168.1.8:8080/post/pref", new Response.Listener<String>() {
+        StringRequest sr = new StringRequest(Request.Method.POST,"http://192.168.1.8:8080/routen", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                // mPostCommentResponse.requestCompleted();
+                if (response != null) {
+                    Log.d("TAG", "Response geht ja!! ");
+                            //+ response.getTagName() + response.getID());
+                   answerText = (TextView)findViewById(R.id.tvdisplayAnswer);
+                    answerText.setText(response);
+
+                } else {
+                    Log.e("TAG", "An error occurred while parsing the data! Stack trace follows:");
+                   // error.printStackTrace();
+                }
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -318,7 +333,17 @@ private Button BsubmittPrefs;
                 params.put("concert",String.valueOf(prefDTO.isConcert()));
                 params.put("sport",String.valueOf(prefDTO.isSport()));
 
-                params.put("stathour",String.valueOf(prefDTO.getStarthour()));
+                params.put("starthour",String.valueOf(prefDTO.getStarthour()));
+                params.put("startminute",String.valueOf(prefDTO.getStartminute()));
+
+                params.put("endhour",String.valueOf(prefDTO.getEndhour()));
+                params.put("endminute",String.valueOf(prefDTO.getEndminute()));
+
+                params.put("day",String.valueOf(prefDTO.getDay()));
+                params.put("month",String.valueOf(prefDTO.getMonth()));
+                params.put("year",String.valueOf(prefDTO.getYear()));
+
+
 
 
 
@@ -335,12 +360,12 @@ private Button BsubmittPrefs;
         queue.add(sr);
     }
 
-    public interface PostPreferencesResponseListener {
+   /* public interface PostPreferencesResponseListener {
         public void requestStarted();
         public void requestCompleted();
         public void requestEndedWithError(VolleyError error);
     }
-
+*/
 
 
 
