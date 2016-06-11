@@ -146,17 +146,11 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Speichere Einstellungen"
-        android:id="@+id/BsavePreferences"
+        android:text="Save And Post"
+        android:id="@+id/BsaveAndPostPreferences"
         android:layout_gravity="center_horizontal"
-        android:onClick="onClickSavePreferences" />
+        android:onClick="onClickSaveAndPostPreferences" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Erstelle Route"
-        android:id="@+id/BerstelleRoute"
-        android:layout_gravity="center_horizontal" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -164,22 +158,13 @@
         android:id="@+id/BreadPrefFromDB"
         android:layout_gravity="center_horizontal"
         android:onClick="onClickReadDB" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Submit Prefs"
-        android:id="@+id/BsubmittPrefs"
-        android:layout_gravity="center_horizontal"
-        android:onClick="onClicksubmitPreferences" />
 
     <TextView
-        android:id="@+id/tvdisplayAnswer"
+        android:id="@+id/tvDisplayAnswer"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:textSize="20dp"
+        android:textSize="10dp"
         android:textColor="#CF446F"/>
-
-
 
 
 </LinearLayout>
