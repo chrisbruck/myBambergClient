@@ -8,8 +8,8 @@ public class TagDTO {
 
 
 
-        private Long ID;
-        private String tagName;
+        private Long id;
+        private String tagname;
 
 
         public TagDTO(){
@@ -17,19 +17,19 @@ public class TagDTO {
         }
 
         public Long getID() {
-            return ID;
+            return id;
         }
 
         public void setID(Long ID) {
-            this.ID = ID;
+            this.id = ID;
         }
 
         public String getTagName() {
-            return tagName;
+            return tagname;
         }
 
         public void setTagName(String tagName) {
-            this.tagName = tagName;
+            this.tagname = tagName;
         }
     }
 

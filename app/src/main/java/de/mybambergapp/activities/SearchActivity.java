@@ -33,17 +33,20 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.SimpleType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.spothero.volley.JacksonRequest;
 import com.spothero.volley.JacksonRequestListener;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.mybambergapp.R;
 import de.mybambergapp.dto.EventDTO;
 import de.mybambergapp.dto.PreferencesDTO;
 
+import de.mybambergapp.dto.RouteDTO;
 import de.mybambergapp.dto.TagDTO;
 import de.mybambergapp.manager.DatabaseManager;
 import de.mybambergapp.manager.SingletonRequestQueue;
@@ -178,8 +181,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             System.out.println(prefferncesDTO.toString());
 
 
-            postPreferences(this, prefferncesDTO);
-            // postPreferencesWithJackson(prefferncesDTO);
+          //  postPreferences(this, prefferncesDTO);
+             postPreferencesWithJackson(prefferncesDTO);
 
         }
 
@@ -235,20 +238,41 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         queue.add(sr);
     }
 
+    public Map<String, String> getParams (PreferencesDTO prefDTO) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("userID", String.valueOf(prefDTO.getAndroidID()));
+        params.put("culture", String.valueOf(prefDTO.isCulture()));
+        params.put("art", String.valueOf(prefDTO.isArt()));
+        params.put("history", String.valueOf(prefDTO.isHistory()));
+        params.put("party", String.valueOf(prefDTO.isParty()));
+        params.put("concert", String.valueOf(prefDTO.isConcert()));
+        params.put("sport", String.valueOf(prefDTO.isSport()));
+        params.put("starthour", String.valueOf(prefDTO.getStarthour()));
+        params.put("startminute", String.valueOf(prefDTO.getStartminute()));
+        params.put("endhour", String.valueOf(prefDTO.getEndhour()));
+        params.put("endminute", String.valueOf(prefDTO.getEndminute()));
+        params.put("day", String.valueOf(prefDTO.getDay()));
+        params.put("month", String.valueOf(prefDTO.getMonth()));
+        params.put("year", String.valueOf(prefDTO.getYear()));
+        return params;
+    }
 
-    /*public void postPreferencesWithJackson(final PreferencesDTO prefDTO) {
+
+    public void postPreferencesWithJackson(final PreferencesDTO prefDTO) {
+         final int DEFAULT_TIMEOUT = 30000; //
+        Map<String, String> params = getParams(prefDTO);
 
         RequestQueue queue = SingletonRequestQueue.getInstance(this.getApplicationContext()).getRequestQueue();
-       // String url1 = "http://192.168.2.108:8080/onetag";
+       //String url1 = "http://192.168.1.8:8080/onetag";
         String url = "http://192.168.1.8:8080/routen";
-        JacksonRequest<EventDTO> MyJacksonRequestObject =
-                new JacksonRequest<>(Request.Method.POST,
-                        url,
-                        new JacksonRequestListener<EventDTO>() {
+        JacksonRequest<RouteDTO> MyJacksonRequestObject =
+                new JacksonRequest<>(DEFAULT_TIMEOUT,Request.Method.POST,
+                        url,params,
+                        new JacksonRequestListener<RouteDTO>() {
                             @Override
-                            public void onResponse(EventDTO response, int statusCode, VolleyError error) {
+                            public void onResponse(RouteDTO response, int statusCode, VolleyError error) {
                                 if (response != null) {
-                                    Log.d("TAG", "Response is : " + response.getEventname() + response.getTag().getTagName());
+                                    Log.d("TAG", "Response is : " + response.toString());
 
                                 } else {
                                     Log.e("TAG", "An error occurred while parsing the data! Stack trace follows:");
@@ -257,43 +281,28 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                             }
                             @Override
                             public JavaType getReturnType() {
-                                return SimpleType.construct(EventDTO.class);
+
+                                return SimpleType.construct(RouteDTO.class);
+
                             }
                         });
-       {
 
-            protected Map<String, String> getParams () {
-            Map<String, String> params = new HashMap<String, String>();
-            params.put("userID", String.valueOf(prefDTO.getAndroidID()));
-            params.put("culture", String.valueOf(prefDTO.isCulture()));
-            params.put("art", String.valueOf(prefDTO.isArt()));
-            params.put("history", String.valueOf(prefDTO.isHistory()));
-            params.put("party", String.valueOf(prefDTO.isParty()));
-            params.put("concert", String.valueOf(prefDTO.isConcert()));
-            params.put("sport", String.valueOf(prefDTO.isSport()));
-            params.put("starthour", String.valueOf(prefDTO.getStarthour()));
-            params.put("startminute", String.valueOf(prefDTO.getStartminute()));
-            params.put("endhour", String.valueOf(prefDTO.getEndhour()));
-            params.put("endminute", String.valueOf(prefDTO.getEndminute()));
-            params.put("day", String.valueOf(prefDTO.getDay()));
-            params.put("month", String.valueOf(prefDTO.getMonth()));
-            params.put("year", String.valueOf(prefDTO.getYear()));
-            return params;
-        }
 
-            public Map<String, String> getHeaders ()throws AuthFailureError {
+
+
+           /* public Map<String, String> getHeaders ()throws AuthFailureError {
             Map<String, String> params = new HashMap<String, String>();
             params.put("Content-Type", "application/x-www-form-urlencoded");
             return params;
-        }
+        }*/
 
-        } ;
+
 
         // jacksonRequestObject der Singelton-RequestQueue uebergeben
         SingletonRequestQueue.getInstance(this.getApplication()).addToRequestQueue(MyJacksonRequestObject);
 
 
-    }*/
+    }
 
 
     public void onClickReadDB(View v) {

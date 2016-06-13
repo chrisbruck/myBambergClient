@@ -1,23 +1,22 @@
-package de.mybambergapp.dto;
+package de.mybambergapp.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Date;
 
-import de.mybambergapp.entities.Tag;
-import de.mybambergapp.entities.Weather;
-
 /**
- * Created by christian on 10.06.16.
+ * Created by christian on 13.06.16.
  */
-public class EventDTO {
+public class Event {
+
     private Long id;
+
 
     private String eventname;
 
-    private Long locationId;
 
-    //The @JsonIgnore annotation is used to mark a property to be ignored at the field level-->to ignore the property from serialisation
+
+    private Location location;
 
     @JsonIgnore
     private Tag tag;
@@ -27,7 +26,7 @@ public class EventDTO {
     private Date date;
 
 
-    public EventDTO() {
+    public Event() {
     }
 
 
@@ -47,12 +46,12 @@ public class EventDTO {
         this.eventname = eventname;
     }
 
-    public Long getLocationId() {
-        return locationId;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setLocationId(Long locationId) {
-        this.locationId = locationId;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public Tag getTag() {
