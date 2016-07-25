@@ -274,7 +274,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         return params;
     }
 
-
+// POST Methode mit der erstmal die User Settings und ID dem Server uebermittelt werden
     public void postPreferencesWithJackson(final SettingsDTO settingsDTO) {
          final int DEFAULT_TIMEOUT = 30000; //
         Map<String, String> params = getParams(settingsDTO);
@@ -321,7 +321,12 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
+public void getEventsWithJackson(){
 
+
+
+
+}
     public void onClickReadDB(View v) {
 
         if (v.getId() == R.id.BreadPrefFromDB) {
