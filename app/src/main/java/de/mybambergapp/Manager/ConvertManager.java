@@ -9,6 +9,9 @@ import de.mybambergapp.dto.TagDTO;
  */
 public class ConvertManager {
 
+    /* todo: delete if not needed
+
+     */
     public TagDTO convertTags(JSONObject jsontag){
 
        // result TagDTO = new TagDTO();

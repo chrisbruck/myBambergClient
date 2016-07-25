@@ -2,12 +2,21 @@
     <string name="app_name">MyBambergApp</string>
     <string name="action_settings">Settings</string>
 
-    <string name="txt_concert">CONCERT</string>
+
+
+    <string name="txt_kirche_kloster">KIRCHE / KLOSTER</string>
+    <string name="txt_museum">MUSEUM</string>
+
+    <string name="txt_straßenfest">STRAßENFEST</string>
+    <string name="txt_musikfest">MUSIKFEST</string>
+    <string name="txt_nachtleben">NACHTLEBEN</string>
+
+    <string name="txt_theater">TEATER</string>
+    <string name="txt_kunst">KUNST</string>
+
+    <string name="txt_univeranstaltung">UNIVERANSTALTUNG</string>
+    <string name="txt_informationsveranstaltung">INFOVERANSTALTUNG</string>
     <string name="txt_sport">SPORT</string>
-    <string name="txt_art">ART</string>
-    <string name="txt_history">HISTORY</string>
-    <string name="txt_culture">CULTURE</string>
-    <string name="txt_party">PARTY</string>
 
 
 </resources>

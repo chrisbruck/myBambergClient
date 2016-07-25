@@ -6,12 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import de.mybambergapp.dto.PreferencesDTO;
-import de.mybambergapp.dto.TagDTO;
+import de.mybambergapp.dto.SettingsDTO;
 
 /**
  * Created by christian on 10.05.16.
  */
+@Deprecated
 public class DatabaseManager extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
@@ -128,7 +128,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         db.close();
 
     }*/
-    public void insertPrefrences(PreferencesDTO preferencesDTO) {
+    public void insertPrefrences(SettingsDTO preferencesDTO) {
         // da reingeschrieben wird---getWritable
         db = this.getWritableDatabase();
         ContentValues values = new ContentValues();

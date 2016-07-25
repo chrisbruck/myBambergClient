@@ -13,13 +13,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.SimpleType;
-import com.spothero.volley.JacksonNetwork;
 import com.spothero.volley.JacksonRequest;
 import com.spothero.volley.JacksonRequestListener;
 
 
 import de.mybambergapp.R;
-import de.mybambergapp.dto.PreferencesDTO;
 import de.mybambergapp.dto.TagDTO;
 
 /**

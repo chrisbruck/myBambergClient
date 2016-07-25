@@ -8,7 +8,8 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:weightSum="1">
 
     <TextView
         android:layout_width="wrap_content"
@@ -17,46 +18,220 @@
         android:text="Suche aus den unteren Kategorien die aus die zu dir passen. Anschliessend  kannst dir die Tage und die Uhrzeit deiner Aktivitaeten aussuchen! dann gehts schon los!"
         android:id="@+id/TVintroText"
         android:layout_gravity="center_horizontal"
-        android:background="#ffffff"
+        android:background="#e24949"
         android:backgroundTint="#ffffff" />
 
 
-    <CheckBox android:id="@+id/checkbox_culture"
+
+    <TableRow
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal">
+
+        <CheckBox android:id="@+id/checkbox_kirche_kloster"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/txt_kirche_kloster"
+            android:layout_weight="1"
+            android:background="#f20bbc"
+            android:textColor="#080808"
+            android:padding="18dip"
+
+            android:gravity="center"/>
+
+
+        <CheckBox android:id="@+id/checkbox_museum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_museum"
+            android:checked="false"
+            android:layout_weight="1"
+            android:background="#38d7d7"
+            android:textColor="#000000"
+            android:padding="18dip"
+            android:gravity="center"/>
+    </TableRow>
+
+    <TableRow
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal">
+
+        <CheckBox android:id="@+id/checkbox_musikfest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/txt_musikfest"
+            android:layout_weight="1"
+            android:background="#6877e9"
+            android:textColor="#060606"
+            android:padding="18dip"
+
+            android:gravity="center"/>
+
+
+        <CheckBox android:id="@+id/checkbox_straßenfest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/txt_straßenfest"
+            android:layout_weight="1"
+            android:background="#d7c438"
+            android:textColor="#000000"
+            android:padding="18dip"
+            android:gravity="center"/>
+    </TableRow>
+    <TableRow
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal">
+
+        <CheckBox android:id="@+id/checkbox_nachtleben"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_nachtleben"
+            android:checked="false"
+            android:layout_weight="1"
+            android:background="#ca7610"
+            android:textColor="#080808"
+            android:padding="18dip"
+
+            android:gravity="center"/>
+
+
+        <CheckBox android:id="@+id/checkbox_theater"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/txt_theater"
+            android:layout_weight="1"
+            android:background="#c113dc"
+            android:textColor="#000000"
+            android:padding="18dip"
+            android:gravity="center"/>
+    </TableRow>
+    <TableRow
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal">
+
+        <CheckBox android:id="@+id/checkbox_kunst"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/txt_kunst"
+
+            android:layout_weight="1"
+            android:background="#cc1d11"
+            android:textColor="#050505"
+            android:padding="18dip"
+
+            android:gravity="center"/>
+
+
+        <CheckBox android:id="@+id/checkbox_univeranstaltung"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/txt_univeranstaltung"
+            android:layout_weight="1"
+            android:background="#507128"
+            android:textColor="#000000"
+            android:padding="18dip"
+            android:gravity="center"/>
+    </TableRow>
+    <TableRow
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal">
+
+        <CheckBox android:id="@+id/checkbox_informationsvernastaltung"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/txt_informationsveranstaltung"
+
+            android:layout_weight="1"
+            android:background="#11cc1e"
+            android:textColor="#080808"
+            android:padding="18dip"
+
+            android:gravity="center"/>
+
+
+        <CheckBox android:id="@+id/checkbox_sport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/txt_sport"
+            android:layout_weight="1"
+            android:background="#e7e012"
+            android:textColor="#000000"
+            android:padding="18dip"
+            android:gravity="center"/>
+    </TableRow>
+
+   <!-- <CheckBox android:id="@+id/checkbox_kirche_kloster"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checked="false"
-        android:text="@string/txt_culture" />
+        android:text="@string/txt_kirche_kloster" />
 
-    <CheckBox android:id="@+id/checkbox_art"
+    <CheckBox android:id="@+id/checkbox_museum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/txt_art"
-        android:checked="false" />
-
-    <CheckBox android:id="@+id/checkbox_history"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="false"
-        android:text="@string/txt_history" />
-
-
-    <CheckBox android:id="@+id/checkbox_sport"
+        android:text="@string/txt_museum"
+        android:checked="false" />-->
+<!--
+    <CheckBox android:id="@+id/checkbox_straßenfest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checked="false"
-        android:text="@string/txt_sport" />
+        android:text="@string/txt_straßenfest" />-->
 
-    <CheckBox android:id="@+id/checkbox_concert"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/txt_concert"
-        android:checked="false" />
 
-    <CheckBox android:id="@+id/checkbox_party"
+<!--    <CheckBox android:id="@+id/checkbox_musikfest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checked="false"
-        android:text="@string/txt_party" />
+        android:text="@string/txt_musikfest" />-->
+
+<!--    <CheckBox android:id="@+id/checkbox_nachtleben"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_nachtleben"
+        android:checked="false" />-->
+
+<!--    <CheckBox android:id="@+id/checkbox_theater"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="@string/txt_theater" />-->
+<!--
+    <CheckBox android:id="@+id/checkbox_kunst"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="@string/txt_kunst" />-->
+<!--
+    <CheckBox android:id="@+id/checkbox_univeranstaltung"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="@string/txt_univeranstaltung" />-->
+
+<!--    <CheckBox android:id="@+id/checkbox_informationsvernastaltung"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="@string/txt_informationsveranstaltung" />-->
+
+  <!--  <CheckBox android:id="@+id/checkbox_sport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="@string/txt_sport" />-->
 
 
 
