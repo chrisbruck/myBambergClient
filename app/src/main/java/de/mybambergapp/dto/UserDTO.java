@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import de.mybambergapp.entities.Category;
-import de.mybambergapp.entities.Event;
+
 
 /**
  * todo: = PrefDTO nur das es von Server kommt
@@ -23,9 +23,6 @@ public class UserDTO {
     private Date startdate;
 
     private Date enddate;
-
-    private List<Event>eventList;
-
 
     private List<Category> categoryList;
 

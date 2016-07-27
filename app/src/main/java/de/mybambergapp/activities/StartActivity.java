@@ -11,12 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
-
-
-import org.json.JSONObject;
-
 import de.mybambergapp.R;
-import de.mybambergapp.manager.RequestManager;
+import de.mybambergapp.manager.OldRequestManager;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -51,7 +47,7 @@ public class StartActivity extends AppCompatActivity {
     }
     public void onClickStartRequestActivity(View view){
 
-        Intent i = new Intent(StartActivity.this, RequestManager.class);
+        Intent i = new Intent(StartActivity.this, OldRequestManager.class);
 
         startActivity(i);
 

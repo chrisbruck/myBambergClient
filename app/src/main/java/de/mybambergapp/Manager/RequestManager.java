@@ -1,126 +1,111 @@
 package de.mybambergapp.manager;
 
-import android.app.Activity;
-import android.os.Bundle;
+import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.type.SimpleType;
-import com.spothero.volley.JacksonRequest;
-import com.spothero.volley.JacksonRequestListener;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import de.mybambergapp.R;
-import de.mybambergapp.dto.TagDTO;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import de.mybambergapp.dto.RouteDTO;
+import de.mybambergapp.dto.UserDTO;
+import de.mybambergapp.exceptions.MyWrongJsonException;
 
 /**
- * Created by christian on 01.05.16.
+ * Created by christian on 27.07.16.
  */
-public class RequestManager extends Activity {
-
-    DatabaseManager dbmanager = new DatabaseManager(this);
-    private TextView mTextView;
+public class RequestManager {
 
 
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.manager_request);
+    private static final String BASE_URL = "http://192.168.2.102:8080";
+
+    private static final String USER_URL = BASE_URL+"/v1/user";
+
+    private static final String ROUTE_URL = BASE_URL+"/v1/route?androidId=";
+
+    public static void getRoute(Context context, final String androidId){
+
+        String url = ROUTE_URL+androidId;
 
 
-    }
-
-
-    public void doStuff(View v) {
-        if (v.getId() == R.id.BstarteEndlich) {
-            // Instantiate the RequestQueue.
-            String url = "http://www.bild.de";
-            // String url = "http://www.google.com";
-            //String url = "http://192.168.2.106:8080/onelocation";
-
-            // Get a RequestQueue
-            RequestQueue queue = SingletonRequestQueue.getInstance(this.getApplicationContext()).
-                    getRequestQueue();
-
-            //RequestQueue queue = Volley.newRequestQueue(this);
-            mTextView = (TextView) findViewById(R.id.TVqueueanswer1);
-
-
-            // Request a string response from the provided URL.= Anfrage besteht aus: GET,  url,callbackmetheode
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                    //ResponseListener= Callback interface for delivering parsed responses.
-                    new Response.Listener<String>() {
-                        @Override
-                        //Called when a response is received= callbackmethode fuer wenns geklappt hat
-                        public void onResponse(String response) {
-                            // Display the first 500 characters of the response string.
-                            mTextView.setText("Response is: " + response.substring(0, 100));
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    mTextView.setText("That didn't work!");
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                ObjectMapper mapper = new ObjectMapper();
+                try {
+                    RouteDTO route = mapper.readValue(response, RouteDTO.class);
+                    Log.d("TAG",route.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            });
-            // Add the request to the RequestQueue. Calling add(Request) will enqueue the given Request for dispatch,
-            // resolving from either cache or network on a worker thread, and then delivering a parsed response on the main thread.
-            // queue.add(stringRequest);
-            // Add a request (in this example, called stringRequest) to your RequestQueue.
-            SingletonRequestQueue.getInstance(this).addToRequestQueue(stringRequest);
-        }
+
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("TAG","Error:" + error.toString());
+            }
+        }) ;
+
+        SingletonRequestQueue.getInstance(context).addToRequestQueue(request);
     }
 
-    public void updateLocations(View v) {
-        if (v.getId() == R.id.BupdateLocations) {
 
-            // Instantiate (bzw gibt sie zurueck) the JacksonNetwork  Singleton-RequestQueue.
-            RequestQueue queue = SingletonRequestQueue.getInstance(this.getApplicationContext()).getRequestQueue();
+    public static void postUser(Context context, UserDTO userDTO) throws MyWrongJsonException {
 
 
-            String url = "http://192.168.2.108:8080/onetag";
-            // String url = "http://www.google.com";
-            //String url = "http://192.168.2.106:8080/onelocation";
-            //RequestQueue queue = JacksonNetwork.newRequestQueue(this);
-            mTextView = (TextView) findViewById(R.id.TVqueueanswer1);
 
-
-            //  jacksonRequestObject incl dazugehoeriger callbackfunction erzeugen
-
-            JacksonRequest<TagDTO> MyJacksonRequestObject =
-                    new JacksonRequest<>(Request.Method.GET,
-                            url,
-                            new JacksonRequestListener<TagDTO>() {
-                                @Override
-                                public void onResponse(TagDTO response, int statusCode, VolleyError error) {
-                                    if (response != null) {
-                                        Log.d("TAG", "Response " + response.getTagName() + response.getID());
-
-                                    } else {
-                                        Log.e("TAG", "An error occurred while parsing the data! Stack trace follows:");
-                                        error.printStackTrace();
-                                    }
-                                }
-
-                                @Override
-                                public JavaType getReturnType() {
-                                    return SimpleType.construct(TagDTO.class);
-                                }
-                            });
-
-            // jacksonRequestObject der Singelton-RequestQueue uebergeben
-            SingletonRequestQueue.getInstance(this.getApplication()).addToRequestQueue(MyJacksonRequestObject);
-
-
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = getJsonObject(userDTO);
+        } catch (JsonProcessingException e) {
+            throw new MyWrongJsonException(e.getMessage());
+        } catch (JSONException e) {
+            throw new MyWrongJsonException(e.getMessage());
         }
+
+        JsonRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.POST, USER_URL, jsonObject, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("TAG","Response: " + response.toString());
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("TAG","Error:" +  error.toString());
+
+                    }
+                });
+
+
+        SingletonRequestQueue.getInstance(context).addToRequestQueue(jsObjRequest);
 
 
     }
 
-
+    @NonNull
+    private static JSONObject getJsonObject(UserDTO userDTO) throws JsonProcessingException, JSONException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestBody = objectMapper.writeValueAsString(userDTO);
+        return new JSONObject(requestBody);
+    }
 }

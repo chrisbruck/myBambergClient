@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.spothero.volley.JacksonNetwork;
 
 /**
@@ -39,7 +40,8 @@ public class SingletonRequestQueue {
             // Activity or BroadcastReceiver if someone passes one in.
             //getApplicationContext= Return the context of the single, global Application object of the current process.
             // This generally should only be used if you need a Context whose lifecycle is separate from the current context
-             mRequestQueue = JacksonNetwork.newRequestQueue(mCtx.getApplicationContext());
+             //mRequestQueue = JacksonNetwork.newRequestQueue(mCtx.getApplicationContext());
+            mRequestQueue = Volley.newRequestQueue(mCtx.getApplicationContext());
 
         }
         return mRequestQueue;

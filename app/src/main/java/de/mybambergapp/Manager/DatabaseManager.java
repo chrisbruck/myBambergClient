@@ -142,9 +142,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
         values.put(COLUMN_ID_PREFERENCES, count);
 
-        values.put(COLUMN_CULTURE, preferencesDTO.isCulture());
-        values.put(COLUMN_ART, preferencesDTO.isArt());
-        values.put(COLUMN_HISTORY, preferencesDTO.isHistory());
+       // values.put(COLUMN_CULTURE, preferencesDTO.isCulture());
+       // values.put(COLUMN_ART, preferencesDTO.isArt());
+       // values.put(COLUMN_HISTORY, preferencesDTO.isHistory());
 
 
         db.insert(PREFERENCES_TABLE_NAME, null, values);

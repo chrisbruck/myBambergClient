@@ -1,5 +1,6 @@
 package de.mybambergapp.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
@@ -11,13 +12,27 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.SimpleType;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.spothero.volley.JacksonRequest;
 import com.spothero.volley.JacksonRequestListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -27,9 +42,12 @@ import de.mybambergapp.R;
 import de.mybambergapp.dto.SettingsDTO;
 
 import de.mybambergapp.dto.RouteDTO;
+import de.mybambergapp.dto.UserDTO;
+import de.mybambergapp.exceptions.MyWrongJsonException;
 import de.mybambergapp.manager.DatabaseManager;
 import de.mybambergapp.manager.Repository;
 import de.mybambergapp.manager.RepositoryImpl;
+import de.mybambergapp.manager.RequestManager;
 import de.mybambergapp.manager.SingletonRequestQueue;
 
 /**
@@ -38,16 +56,18 @@ import de.mybambergapp.manager.SingletonRequestQueue;
 public class SearchActivity extends AppCompatActivity implements View.OnClickListener {
 
 
+
+
     private CheckBox checkbox_kirche_kloster, checkbox_museum, checkbox_straßenfest, checkbox_musikfest, checkbox_nachtleben;
-    private CheckBox checkbox_theater,checkbox_kunst,checkbox_univeranstaltung, checkbox_informationsveranstaltung,checkbox_sport;
-    boolean kirche_kloster, museum, straßenfest, musikfest, nachtleben, theater,kunst,univeranstaltung,informationsveranstaltung,sport;
+    private CheckBox checkbox_theater, checkbox_kunst, checkbox_univeranstaltung, checkbox_informationsveranstaltung, checkbox_sport;
+    private boolean kirche_kloster, museum, straßenfest, musikfest, nachtleben, theater, kunst, univeranstaltung, informationsveranstaltung, sport;
 
 
     TextView tvdatepicker, answerText;
     int lastday, lastmonth, lastyear;
     int starthour, startminute, endhour, endminute;
 
-    SettingsDTO settingsDTO = new SettingsDTO();
+
     DatabaseManager db = new DatabaseManager(this);
     Repository repository = new RepositoryImpl();
 
@@ -146,7 +166,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         if (v.getId() == R.id.BsaveAndPostPreferences) {
 
 
-
             kirche_kloster = checkbox_kirche_kloster.isChecked();
             museum = checkbox_museum.isChecked();
             straßenfest = checkbox_straßenfest.isChecked();
@@ -159,180 +178,34 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             sport = checkbox_sport.isChecked();
 
 
-            settingsDTO.setKirche_kloster(kirche_kloster);
-            settingsDTO.setMuseum(museum);
-            settingsDTO.setStraßenfest(straßenfest);
-            settingsDTO.setMusikfest(musikfest);
-            settingsDTO.setNachtleben(nachtleben);
-            settingsDTO.setTheater(theater);
-            settingsDTO.setKunst(kunst);
-            settingsDTO.setUniveranstaltung(univeranstaltung);
-            settingsDTO.setInformationsvernastaltung(informationsveranstaltung);
-            settingsDTO.setSport(sport);
+            UserDTO userDTO = new UserDTO();
+            userDTO.setAndroidID(Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
 
-            final String android_id = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+            try {
+                RequestManager.postUser(this,userDTO);
+            } catch (MyWrongJsonException e) {
+                Log.e("ERROR",e.getMessage());
+            }
 
-
-
-            settingsDTO.setStarthour(starthour);
-            settingsDTO.setStartminute(startminute);
-            settingsDTO.setEndminute(endminute);
-            settingsDTO.setStarthour(endhour);
-            settingsDTO.setDay(lastday);
-            settingsDTO.setMonth(lastmonth);
-            settingsDTO.setYear(lastyear);
-            settingsDTO.setAndroidID(android_id);
-
-
-            System.out.println(settingsDTO.toString());
-
-
-          //  postPreferences(this, settingsDTO);
-             postPreferencesWithJackson(settingsDTO);
 
         }
 
     }
 
-    /*public void postPreferences(Context context, final SettingsDTO prefDTO) {
-
-        RequestQueue queue = Volley.newRequestQueue(context);
-        StringRequest sr = new StringRequest(Request.Method.POST, "http://192.168.1.8:8080/routen", new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                if (response != null) {
-                    Log.d("TAG", "Response geht ja!! ");
-                    answerText = (TextView) findViewById(R.id.tvDisplayAnswer);
-                    answerText.setText(response);
-                } else {
-                    Log.e("TAG", "An error occurred while parsing the data! Stack trace follows:");
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("userID", String.valueOf(prefDTO.getAndroidID()));
-                params.put("culture", String.valueOf(prefDTO.isCulture()));
-                params.put("art", String.valueOf(prefDTO.isArt()));
-                params.put("history", String.valueOf(prefDTO.isHistory()));
-                params.put("party", String.valueOf(prefDTO.isParty()));
-                params.put("concert", String.valueOf(prefDTO.isConcert()));
-                params.put("sport", String.valueOf(prefDTO.isSport()));
-                params.put("starthour", String.valueOf(prefDTO.getStarthour()));
-                params.put("startminute", String.valueOf(prefDTO.getStartminute()));
-                params.put("endhour", String.valueOf(prefDTO.getEndhour()));
-                params.put("endminute", String.valueOf(prefDTO.getEndminute()));
-                params.put("day", String.valueOf(prefDTO.getDay()));
-                params.put("month", String.valueOf(prefDTO.getMonth()));
-                params.put("year", String.valueOf(prefDTO.getYear()));
-                return params;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Content-Type", "application/x-www-form-urlencoded");
-                return params;
-            }
-        };
-        queue.add(sr);
-    }*/
-
-    public Map<String, String> getParams (SettingsDTO settingsDTO) {
-        Map<String, String> params = new HashMap<String, String>();
-
-        params.put("userID", String.valueOf(settingsDTO.getAndroidID()));
-
-        params.put("kirche_kloster", String.valueOf(settingsDTO.isKirche_kloster()));
-        params.put("museum", String.valueOf(settingsDTO.isMuseum()));
-        params.put("straßenfest", String.valueOf(settingsDTO.isStraßenfest()));
-        params.put("musikfest", String.valueOf(settingsDTO.isMusikfest()));
-        params.put("nachtleben", String.valueOf(settingsDTO.isNachtleben()));
-        params.put("theater", String.valueOf(settingsDTO.isTheater()));
-        params.put("kunst", String.valueOf(settingsDTO.isKunst()));
-        params.put("univeranataltung", String.valueOf(settingsDTO.isUniveranstaltung()));
-        params.put("infovernastaltung", String.valueOf(settingsDTO.isInformationsvernastaltung()));
-        params.put("sport", String.valueOf(settingsDTO.isSport()));
 
 
 
 
 
-        params.put("starthour", String.valueOf(settingsDTO.getStarthour()));
-        params.put("startminute", String.valueOf(settingsDTO.getStartminute()));
-        params.put("endhour", String.valueOf(settingsDTO.getEndhour()));
-        params.put("endminute", String.valueOf(settingsDTO.getEndminute()));
-        params.put("day", String.valueOf(settingsDTO.getDay()));
-        params.put("month", String.valueOf(settingsDTO.getMonth()));
-        params.put("year", String.valueOf(settingsDTO.getYear()));
-        return params;
-    }
-
-// POST Methode mit der erstmal die User Settings und ID dem Server uebermittelt werden
-    public void postPreferencesWithJackson(final SettingsDTO settingsDTO) {
-         final int DEFAULT_TIMEOUT = 30000; //
-        Map<String, String> params = getParams(settingsDTO);
-
-        RequestQueue queue = SingletonRequestQueue.getInstance(this.getApplicationContext()).getRequestQueue();
-       //String url1 = "http://192.168.1.8:8080/onetag";
-        String url = "http://192.168.2.104:8080/routen";
-        JacksonRequest<RouteDTO> MyJacksonRequestObject =
-                new JacksonRequest<>(DEFAULT_TIMEOUT,Request.Method.POST,
-                        url,params,
-                        new JacksonRequestListener<RouteDTO>() {
-                            @Override
-                            public void onResponse(RouteDTO response, int statusCode, VolleyError error) {
-                                if (response != null) {
-                                    Log.d("TAG", "Response is : " + response.toString());
-
-                                } else {
-                                    Log.e("TAG", "An error occurred while parsing the data! Stack trace follows:");
-                                    error.printStackTrace();
-                                }
-                            }
-                            @Override
-                            public JavaType getReturnType() {
-
-                                return SimpleType.construct(RouteDTO.class);
-
-                            }
-                        });
 
 
 
 
-           /* public Map<String, String> getHeaders ()throws AuthFailureError {
-            Map<String, String> params = new HashMap<String, String>();
-            params.put("Content-Type", "application/x-www-form-urlencoded");
-            return params;
-        }*/
-
-
-
-        // jacksonRequestObject der Singelton-RequestQueue uebergeben
-        SingletonRequestQueue.getInstance(this.getApplication()).addToRequestQueue(MyJacksonRequestObject);
-
-
-    }
-
-public void getEventsWithJackson(){
-
-
-
-
-}
     public void onClickReadDB(View v) {
 
         if (v.getId() == R.id.BreadPrefFromDB) {
-            int result = db.givePrefrences();
-            Toast temp = Toast.makeText(SearchActivity.this, "Das Ergebniss ist :" + result + "!!", Toast.LENGTH_SHORT);
-            temp.show();
+          String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+            RequestManager.getRoute(this,androidId);
 
         }
 
