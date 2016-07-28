@@ -18,7 +18,7 @@ public class UserDTO {
 
     private Long id;
 
-    private String androidID;
+    private String androidId;
 
     private Date startdate;
 
@@ -34,12 +34,12 @@ public class UserDTO {
         this.id = id;
     }
 
-    public String getAndroidID() {
-        return androidID;
+    public String getAndroidId() {
+        return androidId;
     }
 
-    public void setAndroidID(String androidID) {
-        this.androidID = androidID;
+    public void setAndroidId(String androidId) {
+        this.androidId = androidId;
     }
 
     public Date getStartdate() {

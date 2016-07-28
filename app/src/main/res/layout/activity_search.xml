@@ -321,18 +321,18 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save And Post"
-        android:id="@+id/BsaveAndPostPreferences"
+        android:text="Post and Save Settings"
+        android:id="@+id/BpostAndSaveUserSettings"
         android:layout_gravity="center_horizontal"
-        android:onClick="onClickSaveAndPostPreferences" />
+        android:onClick="onClickPostAndSaveUserSettings" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Pruefe Eintraege in  DB"
-        android:id="@+id/BreadPrefFromDB"
+        android:text="GET MY ROUTE"
+        android:id="@+id/BgetRoute"
         android:layout_gravity="center_horizontal"
-        android:onClick="onClickReadDB" />
+        android:onClick="onClickGetRoute" />
 
     <TextView
         android:id="@+id/tvDisplayAnswer"

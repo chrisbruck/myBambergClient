@@ -37,11 +37,10 @@ public class RequestManager {
 
     private static final String ROUTE_URL = BASE_URL+"/v1/route?androidId=";
 
+
+
     public static void getRoute(Context context, final String androidId){
-
         String url = ROUTE_URL+androidId;
-
-
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -52,9 +51,6 @@ public class RequestManager {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -62,15 +58,12 @@ public class RequestManager {
                 Log.d("TAG","Error:" + error.toString());
             }
         }) ;
-
         SingletonRequestQueue.getInstance(context).addToRequestQueue(request);
     }
 
 
+
     public static void postUser(Context context, UserDTO userDTO) throws MyWrongJsonException {
-
-
-
         JSONObject jsonObject = null;
         try {
             jsonObject = getJsonObject(userDTO);
@@ -79,28 +72,26 @@ public class RequestManager {
         } catch (JSONException e) {
             throw new MyWrongJsonException(e.getMessage());
         }
-
         JsonRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.POST, USER_URL, jsonObject, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d("TAG","Response: " + response.toString());
+
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.d("TAG","Error:" +  error.toString());
-
                     }
                 });
-
-
         SingletonRequestQueue.getInstance(context).addToRequestQueue(jsObjRequest);
-
-
     }
+
+
+
 
     @NonNull
     private static JSONObject getJsonObject(UserDTO userDTO) throws JsonProcessingException, JSONException {

@@ -1,6 +1,5 @@
 package de.mybambergapp.activities;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
@@ -10,50 +9,27 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.SimpleType;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.spothero.volley.JacksonRequest;
-import com.spothero.volley.JacksonRequestListener;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.mybambergapp.R;
-import de.mybambergapp.dto.SettingsDTO;
 
-import de.mybambergapp.dto.RouteDTO;
 import de.mybambergapp.dto.UserDTO;
+import de.mybambergapp.entities.Category;
 import de.mybambergapp.exceptions.MyWrongJsonException;
 import de.mybambergapp.manager.DatabaseManager;
 import de.mybambergapp.manager.Repository;
 import de.mybambergapp.manager.RepositoryImpl;
 import de.mybambergapp.manager.RequestManager;
-import de.mybambergapp.manager.SingletonRequestQueue;
 
 /**
  * Created by christian on 01.05.16.
  */
-public class SearchActivity extends AppCompatActivity implements View.OnClickListener {
+public class SearchActivity extends AppCompatActivity  {
 
 
 
@@ -161,25 +137,121 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         }
     };
 
+    private UserDTO fillUserDTO(UserDTO userDTO){
+      userDTO.setCategoryList(saveCategorysInList());
+        setStartAndEndDate(userDTO);
+      return userDTO;
 
-    public void onClickSaveAndPostPreferences(View v) {
-        if (v.getId() == R.id.BsaveAndPostPreferences) {
+    }
+    private UserDTO setStartAndEndDate(UserDTO userDTO){
+        Date startdate = new Date();
+        startdate.setYear(lastyear);
+        startdate.setMonth(lastmonth);
+        startdate.setDate(lastday);
+        startdate.setHours(starthour);
+        startdate.setMinutes(startminute);
+
+        Date enddate = new Date();
+        enddate.setYear(lastyear);
+        enddate.setMonth(lastmonth);
+        enddate.setDate(lastday);
+        enddate.setHours(endhour);
+        enddate.setMinutes(endminute);
+        userDTO.setStartdate(startdate);
+        userDTO.setEnddate(enddate);
 
 
-            kirche_kloster = checkbox_kirche_kloster.isChecked();
-            museum = checkbox_museum.isChecked();
-            straßenfest = checkbox_straßenfest.isChecked();
-            musikfest = checkbox_musikfest.isChecked();
-            nachtleben = checkbox_nachtleben.isChecked();
-            theater = checkbox_theater.isChecked();
-            kunst = checkbox_kunst.isChecked();
-            univeranstaltung = checkbox_univeranstaltung.isChecked();
-            informationsveranstaltung = checkbox_informationsveranstaltung.isChecked();
-            sport = checkbox_sport.isChecked();
+        return userDTO;
+    }
+    private List<Category> saveCategorysInList(){
 
+        List<Category> categoryList = new ArrayList<>();
+
+        kirche_kloster = checkbox_kirche_kloster.isChecked();
+        museum = checkbox_museum.isChecked();
+        straßenfest = checkbox_straßenfest.isChecked();
+        musikfest = checkbox_musikfest.isChecked();
+        nachtleben = checkbox_nachtleben.isChecked();
+        theater = checkbox_theater.isChecked();
+        kunst = checkbox_kunst.isChecked();
+        univeranstaltung = checkbox_univeranstaltung.isChecked();
+        informationsveranstaltung = checkbox_informationsveranstaltung.isChecked();
+        sport = checkbox_sport.isChecked();
+
+        if(kirche_kloster){
+           Category category = new Category();
+            category.setCategoryname("kirche_kloster");
+            categoryList.add(category);
+        }
+        if(museum){
+            Category category = new Category();
+            category.setCategoryname("museum");
+            categoryList.add(category);
+        }
+
+        if(straßenfest){
+            Category category = new Category();
+            category.setCategoryname("straßenfest");
+            categoryList.add(category);
+        }
+
+        if(musikfest){
+            Category category = new Category();
+            category.setCategoryname("musikfest");
+            categoryList.add(category);
+        }
+
+        if(nachtleben){
+            Category category = new Category();
+            category.setCategoryname("nachtlebenr");
+            categoryList.add(category);
+        }
+
+        if(theater){
+            Category category = new Category();
+            category.setCategoryname("theater");
+            categoryList.add(category);
+        }
+
+        if(kunst){
+            Category category = new Category();
+            category.setCategoryname("kunst");
+            categoryList.add(category);
+        }
+
+        if(univeranstaltung){
+            Category category = new Category();
+            category.setCategoryname("univeranstaltung");
+            categoryList.add(category);
+        }
+
+        if(informationsveranstaltung){
+            Category category = new Category();
+            category.setCategoryname("informationsveranstaltung");
+            categoryList.add(category);
+        }
+
+        if(sport){
+            Category category = new Category();
+            category.setCategoryname("sport");
+            categoryList.add(category);
+        }
+
+
+
+
+
+        return categoryList;
+    }
+
+    public void onClickPostAndSaveUserSettings(View v) {
+        if (v.getId() == R.id.BpostAndSaveUserSettings) {
 
             UserDTO userDTO = new UserDTO();
-            userDTO.setAndroidID(Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
+            fillUserDTO(userDTO);
+
+
+            userDTO.setAndroidId(Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
 
             try {
                 RequestManager.postUser(this,userDTO);
@@ -187,35 +259,21 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 Log.e("ERROR",e.getMessage());
             }
 
-
         }
 
     }
 
 
 
+    public void onClickgetRoute(View v) {
 
-
-
-
-
-
-
-    public void onClickReadDB(View v) {
-
-        if (v.getId() == R.id.BreadPrefFromDB) {
+        if (v.getId() == R.id.BgetRoute) {
           String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
             RequestManager.getRoute(this,androidId);
-
         }
-
     }
 
 
-    public void onClick(View v) {
-
-    }
-    //Toast.makeText(SearchActivity.this, result.toString() , Toast.LENGTH_LONG).show();
 
 }
 
