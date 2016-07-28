@@ -255,6 +255,8 @@ public class SearchActivity extends AppCompatActivity  {
 
             try {
                 RequestManager.postUser(this,userDTO);
+                DatabaseManager databaseManager = new DatabaseManager(this);
+                databaseManager.insertUserAndCategories(userDTO);
             } catch (MyWrongJsonException e) {
                 Log.e("ERROR",e.getMessage());
             }
