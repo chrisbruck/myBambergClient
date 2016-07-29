@@ -38,6 +38,7 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-core:2.2.3'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.2.3'
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.2.3'
+    compile 'joda-time:joda-time:2.9.4'
 
     // compile project(':jackson-core-2.5.2')
 }

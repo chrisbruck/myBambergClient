@@ -6,18 +6,68 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import de.mybambergapp.dto.SettingsDTO;
+import de.mybambergapp.dto.UserDTO;
+import de.mybambergapp.entities.Category;
 
 /**
  * Created by christian on 10.05.16.
  */
-@Deprecated
+//@Deprecated
 public class DatabaseManager extends SQLiteOpenHelper {
 
+    SQLiteDatabase db;
     public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "bambergevents.db";
+    public static final String DATABASE_NAME = "usersettings.db";
 
-    /*public static final String EVENTS_TABLE_NAME="evenets";
+
+    public static final String CATEGORY_TABLE_NAME="category";
+    //public static final String COLUMN_ID_CATEGORY="id_category";
+    public static final String COLUMN_CATEGORY_NAME="category_name";
+    public  static final String TABLE_CATEGORY_CREATE="create table category(" +
+     //       "id_category integer primary key not null," +
+            "category_name text not null)";
+
+    public static final String DROP_TABLE_CATEGORY= "DROP TABLE IF EXISTS "+CATEGORY_TABLE_NAME;
+
+
+    public static final String USER_TABLE_NAME="user";
+    public static final String COLUMN_ANDROID_ID="android_id";
+    public static final String COLUMN_STARTDATE="startdate";
+    public static final String COLUMN_ENDDATE="enddate";
+    public  static final String TABLE_USER_CREATE="create table user(" +
+            "android_id string not null," +
+            "startdate date not null," +
+            "enddate date not null)";
+    public static final String DROP_TABLE_USER= "DROP TABLE IF EXISTS "+USER_TABLE_NAME;
+
+    // Constructor
+    public DatabaseManager(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL(TABLE_CATEGORY_CREATE);
+        db.execSQL(TABLE_USER_CREATE);
+        this.db = db;
+    }
+
+
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+       // String query4 = "DROP TABLE IF EXISTS"+ CATEGORY_TABLE_NAME;
+       // String query5 = "DROP TABLE IF EXISTS" + USER_TABLE_NAME;
+       // db.execSQL(query4);
+       // db.execSQL(query5);
+    }
+
+/*    public static final String EVENTS_TABLE_NAME="evenets";
     public static final String COLUMN_ID_EVENT="id_event";
     public static final String COLUMN_DATE_EVENT = "date_event";
     public static final String COLUMN_NAME_EVENT="name_event";
@@ -43,68 +93,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
             "id_location integer primary key not null," +
             "name_location text not null," +
             "lat_location double not null," +
-            "lon_location double not null)";
+            "lon_location double not null)";*/
 
-
-
-    public static final String TAGS_TABLE_NAME="tags";
-    public static final String COLUMN_ID_TAGS="id_tag";
-    public static final String COLUMN_NAME_TAGS="name_tag";
-    public  static final String TABLE_TAGS_CREATE="create table tags(" +
-            "id_tag integer primary key not null," +
-            "name_tag text not null)";
-
-
-    public static final String WEATHER_TABLE_NAME="weather";
-    public static final String COLUMN_ID_WEATHER="id_weather";
-    public static final String COLUMN_NAME_WEATHER="name_weather";
-    public  static final String TABLE_WEATHER_CREATE="create table weather(" +
-            "id_weather integer primary key not null," +
-            "name_weather text not null)";
-*/
-
-    public static final String PREFERENCES_TABLE_NAME = "preferences";
-    public static final String COLUMN_ID_PREFERENCES = "id_preferences";
-
-    public static final String COLUMN_CULTURE = "culture";
-    public static final String COLUMN_ART = "art";
-    public static final String COLUMN_HISTORY = "history";
-
-    public static final String TABLE_PREFERENCES_CREATE = "create table preferences(" +
-            "id_preferences integer primary key not null," +
-            "culture text not null," +
-            "art text not null," +
-            "history text not null)";
-
-
-    SQLiteDatabase db;
-
-
-    // Constructor
-    public DatabaseManager(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        // db.execSQL(TABLE_LOCATIONS_CREATE);
-        // db.execSQL(TABLE_TAGS_CREATE);
-        // db.execSQL(TABLE_WEATHER_CREATE);
-        //db.execSQL(TABLE_EVENTS_CREATE);
-        db.execSQL(TABLE_PREFERENCES_CREATE);
-        this.db = db;
-
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // String query1 = "DROP TABLE IF EXISTS"+ EVENTS_TABLE_NAME;
-        // String query2 = "DROP TABLE IF EXISTS"+ LOCATIONS_TABLE_NAME;
-        // String query3 = "DROP TABLE IF EXISTS"+ TAGS_TABLE_NAME;
-        // String query4 = "DROP TABLE IF EXISTS"+ WEATHER_TABLE_NAME;
-        String query5 = "DROP TABLE IF EXISTS" + PREFERENCES_TABLE_NAME;
-
-    }
 
     /*public void insertTags(TagDTO tagDTO){
         // da reingeschrieben wird---getWritable
@@ -113,55 +103,88 @@ public class DatabaseManager extends SQLiteOpenHelper {
         // gib mir die Anzahl schon existierenden tags
         String query= "SElECT * FROM tags";
         Cursor cursor= db.rawQuery(query,null);
-
-
         // wieviele sinds?
         int count= cursor.getCount();
-
         values.put(COLUMN_ID_TAGS,count);
-
         values.put(COLUMN_NAME_TAGS, tagDTO.getTagName());
-
-
         db.insert(TAGS_TABLE_NAME, null, values);
-
         db.close();
 
     }*/
-    public void insertPrefrences(SettingsDTO preferencesDTO) {
+    public void insertUserAndCategories(UserDTO userDTO) {
         // da reingeschrieben wird---getWritable
         db = this.getWritableDatabase();
+        db.execSQL(DROP_TABLE_CATEGORY);
+        db.execSQL(DROP_TABLE_USER);
+        db.execSQL(TABLE_CATEGORY_CREATE);
+        db.execSQL(TABLE_USER_CREATE);
         ContentValues values = new ContentValues();
+
         // gib mir die Anzahl schon existierenden tags
-        String query = "SElECT * FROM preferences";
-        Cursor cursor = db.rawQuery(query, null);
-
-
+        //String query = "SElECT * FROM category";
+        //ursor cursor = db.rawQuery(query, null);
         // wieviele sinds?
-        int count = cursor.getCount();
-
-        values.put(COLUMN_ID_PREFERENCES, count);
-
-       // values.put(COLUMN_CULTURE, preferencesDTO.isCulture());
-       // values.put(COLUMN_ART, preferencesDTO.isArt());
-       // values.put(COLUMN_HISTORY, preferencesDTO.isHistory());
-
-
-        db.insert(PREFERENCES_TABLE_NAME, null, values);
-
+       // int count = cursor.getCount();
+        int count= userDTO.getCategoryList().size();
+        List<Category> categoryList =userDTO.getCategoryList();
+        for (int i=0; i<count; i++){
+            values.put(COLUMN_CATEGORY_NAME,categoryList.get(i).getCategoryname());
+            db.insert(CATEGORY_TABLE_NAME, null, values);
+        }
+        values.clear();
+        values.put(COLUMN_ANDROID_ID,userDTO.getAndroidId());
+        values.put(COLUMN_STARTDATE,persistDate(userDTO.getStartdate()));
+        values.put(COLUMN_ENDDATE,persistDate(userDTO.getEnddate()));
+        db.insert(USER_TABLE_NAME,null,values);
         db.close();
-
+        giveUserSettingsBack();
     }
 
-    public int givePrefrences() {
+    private static Long persistDate(Date date) {
+        if (date != null) {
+            return date.getTime();
+        }
+        return null;
+    }
+
+    public void giveUserSettingsBack() {
+        UserDTO userDTO = new UserDTO();
+        List<String> categoryStrings= new ArrayList<>();
         db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + PREFERENCES_TABLE_NAME;
+        String query = "SELECT * FROM " + CATEGORY_TABLE_NAME;
+        String query2 = "SELECT * FROM "+ USER_TABLE_NAME;
         Cursor cursor = db.rawQuery(query, null);
+        while(cursor.moveToNext()){
+            String category =cursor.getString(0);
+            categoryStrings.add(category);
+
+        }
+
+        Cursor cursor2 =db.rawQuery(query2,null);
+       // int anzahl = cursor2.getCount();
+       String dieter=  cursor2.toString();
+
+        String androidId;
+        Long startdateLong = null;
+        Long  enddateLong= null;
+
+        while(cursor2.moveToNext()){
+
+           androidId = cursor2.getString(0);
+           startdateLong=    cursor2.getLong(1);
+           enddateLong=     cursor2.getLong(2);
+
+        }
 
 
-        int result=cursor.getCount();
-        return  result;
+        Date startdate = new Date(startdateLong);
+        Date enddate= new Date(enddateLong);
 
+      //userDTO.setStartdate(((Date ) startdateLong));
+
+
+        System.out.println(" EINTRAG IST:"+ dieter );
+        db.close();
 
     }
 }

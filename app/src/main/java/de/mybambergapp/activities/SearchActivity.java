@@ -10,6 +10,8 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -40,7 +42,7 @@ public class SearchActivity extends AppCompatActivity  {
 
 
     TextView tvdatepicker, answerText;
-    int lastday, lastmonth, lastyear;
+   // int lastday, lastmonth, lastyear;
     int starthour, startminute, endhour, endminute;
 
 
@@ -56,7 +58,32 @@ public class SearchActivity extends AppCompatActivity  {
         setDatePicker();
         setStartTimePicker();
         setEndTimePicker();
+        Log.d("lifecycle", "on start ----- also");
     }
+
+    protected void onPause() {
+        super.onPause();
+        Log.d("lifecycle","onPause -----invoked");
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("lifecycle","onStop -----invoked");
+    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("lifecycle","onRestart ---invoked");
+    }
+
+    private void displaySettings(){
+        UserDTO userDTO = new UserDTO();
+        DatabaseManager databaseManager = new DatabaseManager(this);
+        databaseManager.giveUserSettingsBack();
+
+
+    }
+
 
     /**
      * todo: richtige kategorien definitiv festlegen
@@ -83,14 +110,19 @@ public class SearchActivity extends AppCompatActivity  {
     public void setDatePicker() {
         tvdatepicker = (TextView) findViewById(R.id.tvdatepicker);
         final Calendar c = Calendar.getInstance();
-        int hourOfDay = c.get(c.HOUR_OF_DAY); //Current Hour
-        int minute = c.get(c.MINUTE); //Current Minute
-        int year = c.get(c.YEAR);
-        int month = c.get(c.MONTH);
-        int dayOfMonth = c.get(c.DAY_OF_MONTH);
+        Date now = new Date();
+
+        DateTime dateTime = new DateTime(now);
+
+
+        int year = dateTime.getYear();
+        int month = dateTime.getMonthOfYear();
+        int dayOfMonth = dateTime.getDayOfMonth();
+
         final DatePicker dp = (DatePicker) findViewById(R.id.dp);
+
         tvdatepicker.setText("Geb den Tag an ");
-        dp.init(year, month, dayOfMonth, dateSetListener);
+        dp.init(year, month, dayOfMonth, null);
     }
 
 
@@ -123,6 +155,7 @@ public class SearchActivity extends AppCompatActivity  {
         });
     }
 
+    /*
     private DatePicker.OnDateChangedListener dateSetListener = new DatePicker.OnDateChangedListener() {
 
         public void onDateChanged(DatePicker view, int year, int monthOfYear,
@@ -136,33 +169,56 @@ public class SearchActivity extends AppCompatActivity  {
             tvdatepicker.setText(" Dein  Datum ist: " + lastyear + "/ " + lastmonth + "/ " + lastday);
         }
     };
+    */
 
+    /**
     private UserDTO fillUserDTO(UserDTO userDTO){
       userDTO.setCategoryList(saveCategorysInList());
         setStartAndEndDate(userDTO);
       return userDTO;
 
+    }*/
+
+    /**
+     * private helper for date creation
+     * @param year
+     * @param month
+     * @param day
+     * @param hour
+     * @param minute
+     * @return
+     */
+    private Date createDateFrom(int year, int month, int day, int hour, int minute){
+        DateTime dateTime = new DateTime();
+        dateTime =  dateTime.withDate(year,month,day).withHourOfDay(hour).withMinuteOfHour(minute);
+        return dateTime.toDate();
     }
+
+    /**
     private UserDTO setStartAndEndDate(UserDTO userDTO){
+
         Date startdate = new Date();
-        startdate.setYear(lastyear);
+int i=1900;
+        startdate.setYear(lastyear-i);
         startdate.setMonth(lastmonth);
         startdate.setDate(lastday);
         startdate.setHours(starthour);
         startdate.setMinutes(startminute);
 
         Date enddate = new Date();
-        enddate.setYear(lastyear);
+
+        enddate.setYear(lastyear-i);
         enddate.setMonth(lastmonth);
         enddate.setDate(lastday);
         enddate.setHours(endhour);
         enddate.setMinutes(endminute);
+
         userDTO.setStartdate(startdate);
         userDTO.setEnddate(enddate);
 
-
         return userDTO;
     }
+     **/
     private List<Category> saveCategorysInList(){
 
         List<Category> categoryList = new ArrayList<>();
@@ -248,13 +304,32 @@ public class SearchActivity extends AppCompatActivity  {
         if (v.getId() == R.id.BpostAndSaveUserSettings) {
 
             UserDTO userDTO = new UserDTO();
-            fillUserDTO(userDTO);
+
+            DatePicker datePicker = (DatePicker) findViewById(R.id.dp);
+            int year = datePicker.getYear();
+            int month = datePicker.getMonth()+1;
+            int day = datePicker.getDayOfMonth();
+
+            TimePicker timePickerStart = (TimePicker) findViewById(R.id.tp1);
+            int starHour = timePickerStart.getCurrentHour();
+            int startMinute = timePickerStart.getCurrentMinute();
+            Date startDate = createDateFrom(year,month,day,starHour,startMinute);
+            userDTO.setStartdate(startDate);
+
+            TimePicker timePickerEnd = (TimePicker) findViewById(R.id.tp2);
+            int endHour = timePickerEnd.getCurrentHour();
+            int endMinute = timePickerEnd.getCurrentMinute();
+            Date endDate = createDateFrom(year,month,day,endHour,endMinute);
+            userDTO.setEnddate(endDate);
+
+            //fillUserDTO(userDTO);
 
 
             userDTO.setAndroidId(Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
 
             try {
                 RequestManager.postUser(this,userDTO);
+
                 DatabaseManager databaseManager = new DatabaseManager(this);
                 databaseManager.insertUserAndCategories(userDTO);
             } catch (MyWrongJsonException e) {
