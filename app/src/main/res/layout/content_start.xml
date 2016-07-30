@@ -35,6 +35,8 @@
             android:onClick="changingActivity"
             android:layout_centerHorizontal="true" />
 
+
+
     </LinearLayout>
 
 </RelativeLayout>

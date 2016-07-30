@@ -12,6 +12,8 @@ import android.view.MenuItem;
 
 
 import de.mybambergapp.R;
+import de.mybambergapp.dto.UserDTO;
+import de.mybambergapp.manager.DatabaseManager;
 import de.mybambergapp.manager.OldRequestManager;
 
 public class StartActivity extends AppCompatActivity {

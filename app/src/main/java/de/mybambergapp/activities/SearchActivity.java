@@ -53,12 +53,12 @@ public class SearchActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-
         setAttributes();
         setDatePicker();
         setStartTimePicker();
         setEndTimePicker();
         Log.d("lifecycle", "on start ----- also");
+
     }
 
     protected void onPause() {
@@ -73,13 +73,41 @@ public class SearchActivity extends AppCompatActivity  {
     @Override
     protected void onRestart() {
         super.onRestart();
+        displaySettings();
         Log.d("lifecycle","onRestart ---invoked");
     }
 
     private void displaySettings(){
         UserDTO userDTO = new UserDTO();
         DatabaseManager databaseManager = new DatabaseManager(this);
-        databaseManager.giveUserSettingsBack();
+        userDTO =  databaseManager.giveUserSettingsBack();
+        // datepicker
+        DatePicker datePicker = (DatePicker) findViewById(R.id.dp);
+        DateTime dateTime = new DateTime(userDTO.getEnddate());
+        DateTime dateTimeStart = new DateTime(userDTO.getStartdate());
+        int year = dateTime.getYear();
+        int month = dateTime.getMonthOfYear();
+        int day = dateTime.getDayOfMonth();
+        datePicker.init(year,month,day,null);
+        //endtime
+        TimePicker tpEnde = (TimePicker) findViewById(R.id.tp2);
+        final TextView tvEnde = (TextView) findViewById(R.id.tv2);
+        tvEnde.setText("Deine gespeicherte Endzeit:");
+        tpEnde.setCurrentHour(dateTime.getHourOfDay());
+        tpEnde.setCurrentMinute(dateTime.getMinuteOfHour());
+        //starttime
+        TimePicker tpStart = (TimePicker)findViewById(R.id.tp1);
+        final TextView tvStart = (TextView)findViewById(R.id.tv1);
+        tvStart.setText("Deine gespeicherte Startzeit");
+        tpStart.setCurrentHour(dateTimeStart.getHourOfDay());
+        tpStart.setCurrentMinute(dateTimeStart.getMinuteOfHour());
+        //categorysSetzen
+        List<Category> categoryList= userDTO.getCategoryList();
+        updateCategorys(categoryList);
+
+
+
+
 
 
     }
@@ -101,7 +129,6 @@ public class SearchActivity extends AppCompatActivity  {
 
         checkbox_univeranstaltung = (CheckBox) findViewById(R.id.checkbox_univeranstaltung);
         checkbox_informationsveranstaltung = (CheckBox) findViewById(R.id.checkbox_informationsvernastaltung);
-
 
         checkbox_sport = (CheckBox) findViewById(R.id.checkbox_sport);
     }
@@ -126,6 +153,7 @@ public class SearchActivity extends AppCompatActivity  {
     }
 
 
+
     public void setEndTimePicker() {
         TimePicker tpEnde = (TimePicker) findViewById(R.id.tp2);
         final TextView tvEnde = (TextView) findViewById(R.id.tv2);
@@ -133,7 +161,7 @@ public class SearchActivity extends AppCompatActivity  {
         tpEnde.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                tvEnde.setText("Endzeit ist : " + hourOfDay + " : " + minute);
+              //  tvEnde.setText("Endzeit ist : " + hourOfDay + " : " + minute);
                 endhour = hourOfDay;
                 endminute = minute;
             }
@@ -148,7 +176,7 @@ public class SearchActivity extends AppCompatActivity  {
         tpStart.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                tvStart.setText("Startzeit ist : " + hourOfDay + " : " + minute);
+              //  tvStart.setText("Startzeit ist : " + hourOfDay + " : " + minute);
                 starthour = hourOfDay;
                 startminute = minute;
             }
@@ -190,6 +218,7 @@ public class SearchActivity extends AppCompatActivity  {
      */
     private Date createDateFrom(int year, int month, int day, int hour, int minute){
         DateTime dateTime = new DateTime();
+
         dateTime =  dateTime.withDate(year,month,day).withHourOfDay(hour).withMinuteOfHour(minute);
         return dateTime.toDate();
     }
@@ -218,7 +247,71 @@ int i=1900;
 
         return userDTO;
     }
+
+
      **/
+
+    private void updateCategorys(List<Category> categoryList){
+        for(int i=0; i< categoryList.size(); i++){
+            String catName= categoryList.get(i).getCategoryname();
+
+            if(catName.equalsIgnoreCase("museum")){
+                checkbox_museum.setChecked(true);
+            }else{
+                checkbox_museum.setChecked(false);
+            }
+            if(catName.equalsIgnoreCase("kirche_kloster")){
+                checkbox_kirche_kloster.setChecked(true);
+            }else{
+                checkbox_kirche_kloster.setChecked(false);
+            }
+            if(catName.equalsIgnoreCase("musikfest")){
+                checkbox_musikfest.setChecked(true);
+            }else{
+                checkbox_musikfest.setChecked(false);
+            }
+            if(catName.equalsIgnoreCase("straßenfest")){
+                checkbox_museum.setChecked(true);
+            }else{
+                checkbox_museum.setChecked(false);
+            }
+            if(catName.equalsIgnoreCase("nachtleben")){
+                checkbox_nachtleben.setChecked(true);
+            }else{
+                checkbox_nachtleben.setChecked(false);
+            }
+            if(catName.equalsIgnoreCase("theater")){
+                checkbox_theater.setChecked(true);
+            }else{
+                checkbox_theater.setChecked(false);
+            }
+            if(catName.equalsIgnoreCase("kunst")){
+                checkbox_kunst.setChecked(true);
+            }else{
+                checkbox_kunst.setChecked(false);
+            }
+            if(catName.equalsIgnoreCase("univeranstaltung")){
+                checkbox_univeranstaltung.setChecked(true);
+            }else{
+                checkbox_univeranstaltung.setChecked(false);
+            }
+            if(catName.equalsIgnoreCase("informationsveranstaltung")){
+                checkbox_informationsveranstaltung.setChecked(true);
+            }else{
+                checkbox_informationsveranstaltung.setChecked(false);
+            }
+            if(catName.equalsIgnoreCase("sport")){
+                checkbox_sport.setChecked(true);
+            }else{
+                checkbox_sport.setChecked(false);
+            }
+
+        }
+
+
+    }
+
+
     private List<Category> saveCategorysInList(){
 
         List<Category> categoryList = new ArrayList<>();
@@ -309,18 +402,20 @@ int i=1900;
             int year = datePicker.getYear();
             int month = datePicker.getMonth()+1;
             int day = datePicker.getDayOfMonth();
-
+//startzeit picker auslesen
             TimePicker timePickerStart = (TimePicker) findViewById(R.id.tp1);
             int starHour = timePickerStart.getCurrentHour();
             int startMinute = timePickerStart.getCurrentMinute();
             Date startDate = createDateFrom(year,month,day,starHour,startMinute);
             userDTO.setStartdate(startDate);
-
+// endzeitpicker auslesen
             TimePicker timePickerEnd = (TimePicker) findViewById(R.id.tp2);
             int endHour = timePickerEnd.getCurrentHour();
             int endMinute = timePickerEnd.getCurrentMinute();
             Date endDate = createDateFrom(year,month,day,endHour,endMinute);
             userDTO.setEnddate(endDate);
+
+            userDTO.setCategoryList(saveCategorysInList());
 
             //fillUserDTO(userDTO);
 
@@ -342,14 +437,12 @@ int i=1900;
 
 
 
-    public void onClickgetRoute(View v) {
-
+    public void onClickGetRoute(View v) {
         if (v.getId() == R.id.BgetRoute) {
           String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
             RequestManager.getRoute(this,androidId);
         }
     }
-
 
 
 }
