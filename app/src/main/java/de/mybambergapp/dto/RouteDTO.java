@@ -1,5 +1,6 @@
 package de.mybambergapp.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class RouteDTO {
     public void setEventList(List<Event> eventList) {
         this.eventList = eventList;
     }
+
 
     @Override
     public String toString() {

@@ -20,6 +20,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.mybambergapp.R;
 
+import de.mybambergapp.dto.RouteDTO;
 import de.mybambergapp.dto.UserDTO;
 import de.mybambergapp.entities.Category;
 import de.mybambergapp.exceptions.MyWrongJsonException;
@@ -223,87 +224,55 @@ public class SearchActivity extends AppCompatActivity  {
         return dateTime.toDate();
     }
 
-    /**
-    private UserDTO setStartAndEndDate(UserDTO userDTO){
 
-        Date startdate = new Date();
-int i=1900;
-        startdate.setYear(lastyear-i);
-        startdate.setMonth(lastmonth);
-        startdate.setDate(lastday);
-        startdate.setHours(starthour);
-        startdate.setMinutes(startminute);
-
-        Date enddate = new Date();
-
-        enddate.setYear(lastyear-i);
-        enddate.setMonth(lastmonth);
-        enddate.setDate(lastday);
-        enddate.setHours(endhour);
-        enddate.setMinutes(endminute);
-
-        userDTO.setStartdate(startdate);
-        userDTO.setEnddate(enddate);
-
-        return userDTO;
-    }
-
-
-     **/
 
     private void updateCategorys(List<Category> categoryList){
+
+        checkbox_museum.setChecked(false);
+        checkbox_kirche_kloster.setChecked(false);
+        checkbox_musikfest.setChecked(false);
+        checkbox_straßenfest.setChecked(false);
+        checkbox_nachtleben.setChecked(false);
+        checkbox_theater.setChecked(false);
+        checkbox_kunst.setChecked(false);
+        checkbox_univeranstaltung.setChecked(false);
+        checkbox_informationsveranstaltung.setChecked(false);
+        checkbox_sport.setChecked(false);
+
         for(int i=0; i< categoryList.size(); i++){
             String catName= categoryList.get(i).getCategoryname();
 
+
             if(catName.equalsIgnoreCase("museum")){
                 checkbox_museum.setChecked(true);
-            }else{
-                checkbox_museum.setChecked(false);
             }
             if(catName.equalsIgnoreCase("kirche_kloster")){
                 checkbox_kirche_kloster.setChecked(true);
-            }else{
-                checkbox_kirche_kloster.setChecked(false);
             }
             if(catName.equalsIgnoreCase("musikfest")){
                 checkbox_musikfest.setChecked(true);
-            }else{
-                checkbox_musikfest.setChecked(false);
             }
             if(catName.equalsIgnoreCase("straßenfest")){
-                checkbox_museum.setChecked(true);
-            }else{
-                checkbox_museum.setChecked(false);
+                checkbox_straßenfest.setChecked(true);
             }
             if(catName.equalsIgnoreCase("nachtleben")){
                 checkbox_nachtleben.setChecked(true);
-            }else{
-                checkbox_nachtleben.setChecked(false);
             }
             if(catName.equalsIgnoreCase("theater")){
                 checkbox_theater.setChecked(true);
-            }else{
-                checkbox_theater.setChecked(false);
             }
             if(catName.equalsIgnoreCase("kunst")){
                 checkbox_kunst.setChecked(true);
-            }else{
-                checkbox_kunst.setChecked(false);
             }
             if(catName.equalsIgnoreCase("univeranstaltung")){
                 checkbox_univeranstaltung.setChecked(true);
-            }else{
-                checkbox_univeranstaltung.setChecked(false);
             }
             if(catName.equalsIgnoreCase("informationsveranstaltung")){
                 checkbox_informationsveranstaltung.setChecked(true);
-            }else{
-                checkbox_informationsveranstaltung.setChecked(false);
             }
             if(catName.equalsIgnoreCase("sport")){
                 checkbox_sport.setChecked(true);
-            }else{
-                checkbox_sport.setChecked(false);
+
             }
 
         }
@@ -352,7 +321,7 @@ int i=1900;
 
         if(nachtleben){
             Category category = new Category();
-            category.setCategoryname("nachtlebenr");
+            category.setCategoryname("nachtleben");
             categoryList.add(category);
         }
 
@@ -441,6 +410,14 @@ int i=1900;
         if (v.getId() == R.id.BgetRoute) {
           String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
             RequestManager.getRoute(this,androidId);
+        }
+    }
+
+    public void onClickGetSharedPrefs(View v){
+        if(v.getId()== R.id.BgetSharedPrefs){
+            RouteDTO routeDTO= new RouteDTO();
+            RepositoryImpl repository= new RepositoryImpl();
+            routeDTO= repository.getRouteDTO(this);
         }
     }
 

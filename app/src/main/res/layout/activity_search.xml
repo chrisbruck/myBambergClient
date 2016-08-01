@@ -334,6 +334,14 @@
         android:layout_gravity="center_horizontal"
         android:onClick="onClickGetRoute" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SharedPref"
+        android:id="@+id/BgetSharedPrefs"
+        android:layout_gravity="right"
+        android:onClick="onClickGetSharedPrefs" />
+
     <TextView
         android:id="@+id/tvDisplayAnswer"
         android:layout_height="wrap_content"

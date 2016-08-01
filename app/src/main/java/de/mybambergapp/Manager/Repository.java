@@ -1,5 +1,7 @@
 package de.mybambergapp.manager;
 
+import android.content.Context;
+
 import de.mybambergapp.dto.RouteDTO;
 import de.mybambergapp.dto.UserDTO;
 
@@ -8,10 +10,9 @@ import de.mybambergapp.dto.UserDTO;
  */
 public interface Repository {
 
-     void saveUser(UserDTO userDTO);
-     UserDTO getUser();
-     void  saveRouteDTO(RouteDTO routeDTO);
-     RouteDTO  getRouteDTO();
+
+     void  saveRouteDTO(RouteDTO routeDTO, Context context);
+     RouteDTO  getRouteDTO(Context context);
      void addEventToRoute(RouteDTO routeDTO);
      void  removeEventFromRoute(RouteDTO routeDTO);
 
