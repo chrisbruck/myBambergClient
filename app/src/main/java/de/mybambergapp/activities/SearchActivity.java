@@ -1,5 +1,6 @@
 package de.mybambergapp.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.mybambergapp.R;
 
@@ -410,14 +410,15 @@ public class SearchActivity extends AppCompatActivity  {
         if (v.getId() == R.id.BgetRoute) {
           String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
             RequestManager.getRoute(this,androidId);
+
         }
     }
 
     public void onClickGetSharedPrefs(View v){
         if(v.getId()== R.id.BgetSharedPrefs){
-            RouteDTO routeDTO= new RouteDTO();
-            RepositoryImpl repository= new RepositoryImpl();
-            routeDTO= repository.getRouteDTO(this);
+            Intent i = new Intent(SearchActivity.this, ResultListActivity.class);
+            startActivity(i);
+
         }
     }
 
