@@ -21,6 +21,7 @@ import java.util.List;
 import de.mybambergapp.R;
 import de.mybambergapp.dto.Event;
 import de.mybambergapp.dto.RouteDTO;
+import de.mybambergapp.entities.Location;
 import de.mybambergapp.manager.RepositoryImpl;
 
 /**
@@ -85,16 +86,42 @@ private TableLayout tableLayout;
 
 
     public void startMapView(View v){
-        int id=v.getId();
-       // Event toDisplay=  events.get(id);
-        Log.d("raw-intent-fun", "id ist: "+id+ " !"+ "Adresse ist :"+ events.get(id).getLocation().getLocationaddress());
+     int id=v.getId();
+        String lastaddress = "Bamberg Luitpoldstraße 21";
+        String taglist= " gratis, familienfreundlich, supergeil";
 
-        Intent i= new Intent(this, MapsActivity.class);
-        String address=events.get(id).getLocation().getLocationaddress();
 
-        i.putExtra("address",address);
+for (int i=0; i< events.size(); i++ ){
+    Event e = events.get(i);
+    if (e.getId()==id){
+        Location l = e.getLocation();
 
-        startActivity(i);
+         String eventname= e.getEventname();
+         String description= e.getDescription();
+         String startdate = e.getStartdate().toString();
+
+        String address = l.getLocationaddress();
+        // String address =  events.get(id).getLocation().getLocationaddress();
+        // Log.d("raw-intent-fun", "id ist: "+id+ " !"+ "Adresse ist :"+ events.get(id).getLocation().getLocationaddress());
+
+        Intent j= new Intent(this, MapsActivity.class);
+
+
+
+        j.putExtra("address",address);
+        j.putExtra("eventname",eventname);
+        j.putExtra("description", description);
+        j.putExtra("startdate",startdate);
+        j.putExtra("lastaddress",lastaddress);
+       // j.putExtra("taglist", taglist);
+
+        startActivity(j);
+
+    }
+}
+
+
+
 
      // System.out.println(  toDisplay.getEventname().toString());
     }

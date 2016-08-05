@@ -1,19 +1,28 @@
 package de.mybambergapp.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.mybambergapp.R;
@@ -21,7 +30,19 @@ import de.mybambergapp.R;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    String location= null;
+
+
+    String location = null;
+    String eventname= null;
+    String eventdescription= null;
+    String startDate= null;
+    String lastaddress= null;
+
+
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,38 +50,86 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
 
         Intent i = getIntent();
-         location = i.getStringExtra("address");
+
+        location = i.getStringExtra("address");
+        eventname= i.getStringExtra("eventname");
+        eventdescription= i.getStringExtra("description");
+        startDate= i.getStringExtra("startdate");
+        lastaddress= i.getStringExtra("lastaddress");
 
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.   ++++  1   +++++
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        //A GoogleMap must be acquired using getMapAsync(OnMapReadyCallback). This class automatically initializes the maps system and the view.  ++++  2   ++++++
         mapFragment.getMapAsync(this);
+        displayDetails();
     }
 
-     private LatLng transformStuff(String location) {
-         LatLng latLng = null;
-         List<Address> addressList = null;
 
-         if (location != null || !location.equals("")) {
-             // Geocoding is the process of transforming a street address or other description of a location into a (latitude, longitude) coordinate & umgekehrt
-             Geocoder geocoder = new Geocoder(this);
-             try {
-                 addressList = geocoder.getFromLocationName(location, 1);
-             } catch (IOException e) {
-                 e.printStackTrace();
-             }
-             // den letzten Eintrag rausholen und die Koordinaten rausholen
-             Address address = addressList.get(0);
+
+
+private void displayDetails(){
+
+    TextView textViewName = (TextView) findViewById(R.id.eventname);
+    textViewName.setText(eventname);
+
+   // TextView textViewDescription = (TextView) findViewById(R.id.eventdescription);
+   // textViewDescription.setText(eventdescription);
+
+    TextView textViewAddress = (TextView) findViewById(R.id.eventaddress);
+    textViewAddress.setText(location);
+
+    TextView textViewDate = (TextView) findViewById(R.id.eventstartdate);
+    textViewDate.setText(startDate);
+
+
+
+
+}
+/*    private void drawPrimaryLinePath(ArrayList<LatLng> listLocsToDraw, GoogleMap map )
+    {
+        if ( map == null )
+        {
+            return;
+        }
+        if ( listLocsToDraw.size() < 2 )
+        {
+            return;
+        }
+        PolylineOptions options = new PolylineOptions();
+        options.color( Color.parseColor( "#CC0000FF" ) );
+        options.width( 5 );
+        options.visible( true );
+        for ( LatLng locRecorded : listLocsToDraw )
+        {
+            options.add( locRecorded );
+        }
+        map.addPolyline( options );
+    }*/
+
+
+    private LatLng transformStuff(String location) {
+        LatLng latLng = null;
+        List<Address> addressList = null;
+        if (location != null || !location.equals("")) {
+            // Geocoding is the process of transforming a street address or other description of a location into a (latitude, longitude) coordinate & umgekehrt
+            Geocoder geocoder = new Geocoder(this);
+            try {
+                addressList = geocoder.getFromLocationName(location, 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            // den letzten Eintrag rausholen und die Koordinaten rausholen
+            Address address = addressList.get(0);
             latLng = new LatLng(address.getLatitude(), address.getLongitude());
-
-         }
-         return latLng;
-     }
+        }
+        return latLng;
+    }
 
     /**
      * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
+     * This callback is triggered when the map is ready to be used.   ++++++  3  +++++++
      * This is where we can add markers or lines, add listeners or move the camera. In this case,
      * we just add a marker near Sydney, Australia.
      * If Google Play services is not installed on the device, the user will be prompted to install
@@ -70,12 +139,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        float floatVar = 3.14E5F;
+        float floatVar = 16;
         LatLng currentLoc = transformStuff(location);
+        LatLng lastLoc = transformStuff(lastaddress);
         // Add a marker in Sydney and move the camera
-      //  LatLng sydney = new LatLng(-34, 151);
+        //  LatLng sydney = new LatLng(-34, 151);
+
+/*        ArrayList<LatLng> latLngArrayList = new ArrayList<>();
+        latLngArrayList.add(0,currentLoc);
+        latLngArrayList.add(1,lastLoc);
+        drawPrimaryLinePath(latLngArrayList,mMap);*/
+
         mMap.addMarker(new MarkerOptions().position(currentLoc).title("Marker of Location"));
-       mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLoc,floatVar));
-       // mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLoc));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, floatVar));
+        // mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLoc));
+
+
     }
 }

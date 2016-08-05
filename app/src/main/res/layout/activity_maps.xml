@@ -1,8 +1,130 @@
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="de.mybambergapp.activities.MapsActivity" />
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#d7c438">
+
+            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp">
+
+                <TextView
+                    android:id="@+id/header"
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
+                    android:gravity="center_horizontal"
+                    android:text="DETAILS ZUR VERANSTALTUNG"
+                    android:textSize="14dp" />
+            </TableRow>
+
+            <View
+                android:id="@+id/line_2"
+                android:layout_height="2dip"
+                android:background="#FF909090" />
+
+
+            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp">
+
+                <TextView
+                    android:id="@+id/eventname"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:gravity="center_horizontal"
+                    android:text=""
+                    android:textSize="12dp" />
+            </TableRow>
+
+            <View
+                android:id="@+id/line_3"
+                android:layout_height="2dip"
+                android:background="#FF909090" />
+
+            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp">
+
+                <TextView
+                    android:id="@+id/eventstartdate"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:gravity="center_horizontal"
+                    android:text=""
+                    android:textSize="12dp" />
+            </TableRow>
+
+            <View
+                android:id="@+id/line_4"
+                android:layout_height="2dip"
+                android:background="#FF909090" />
+
+            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp">
+
+                <TextView
+                    android:id="@+id/eventaddress"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:gravity="center_horizontal"
+                    android:text=""
+                    android:textSize="12dp" />
+            </TableRow>
+
+            <View
+                android:id="@+id/line_5"
+                android:layout_height="2dip"
+                android:background="#FF909090" />
+
+            <TableRow>
+
+                <Button
+                    android:id="@+id/BtoList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="In meine Liste" />
+
+                <Button
+                    android:id="@+id/Breject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:text="Verwerfen" />
+
+            </TableRow>
+
+
+            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:map="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="de.mybambergapp.activities.MapsActivity" />
+
+        </TableLayout>
+    </LinearLayout>
+</RelativeLayout>

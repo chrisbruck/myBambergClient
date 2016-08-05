@@ -33,7 +33,8 @@ import de.mybambergapp.exceptions.MyWrongJsonException;
 public class RequestManager {
 
 
-    private static final String BASE_URL = "http://192.168.2.102:8080";
+    //private static final String BASE_URL = "http://192.168.2.102:8080";
+    private static final String BASE_URL = "http://192.168.43.12:8080";
 
     private static final String USER_URL = BASE_URL+"/v1/user";
 
