@@ -12,9 +12,6 @@ import android.view.MenuItem;
 
 
 import de.mybambergapp.R;
-import de.mybambergapp.dto.UserDTO;
-import de.mybambergapp.manager.DatabaseManager;
-import de.mybambergapp.manager.OldRequestManager;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -34,26 +31,16 @@ public class StartActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
 
 
 
     public void changingActivity(View view){
-
         Intent i = new Intent(StartActivity.this, SearchActivity.class);
-
         startActivity(i);
-
     }
-    public void onClickStartRequestActivity(View view){
 
-        Intent i = new Intent(StartActivity.this, OldRequestManager.class);
-
-        startActivity(i);
-
-    }
 
 
 

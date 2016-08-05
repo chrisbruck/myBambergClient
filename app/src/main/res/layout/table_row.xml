@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
     android:paddingTop="5dp"
-    android:paddingBottom="5dp">
+    android:paddingBottom="5dp"
+    android:onClick="startMapView">
     <TextView
         android:text="VERANSTALTUNG"
         android:id="@+id/text_veranstaltung"
         android:layout_width="0dp"
         android:layout_weight="3"
         android:gravity="center_horizontal"
-        android:textSize="18dp" />
+        android:textSize="18dp"
+
+        />
 
     <TextView
 
@@ -19,7 +22,9 @@
         android:layout_width="0dp"
         android:layout_weight="3"
         android:gravity="center_horizontal"
-        android:textSize="18dp" />
+        android:textSize="18dp"
+
+        />
 
 
 </TableRow>

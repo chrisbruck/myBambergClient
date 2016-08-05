@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
         applicationId "de.mybambergapp"
@@ -18,27 +18,34 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     packagingOptions {
         exclude 'META-INF/NOTICE' // It is not include NOTICE file
-        exclude 'META-INF/LICENSE' // It is not include LICENSE file
+       exclude 'META-INF/LICENSE' // It is not include LICENSE file
+    }
+
+    dexOptions {
+        incremental true
+        javaMaxHeapSize "4g"
     }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.1.0'
-    compile 'com.android.support:design:23.1.0'
 
     // http://mvnrepository.com/artifact/org.codehaus.jackson/jackson-core-asl
     //compile group: 'org.codehaus.jackson', name: 'jackson-core-asl', version: '1.9.13'
     // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
     //compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.0.1'
+
+    // compile project(':jackson-core-2.5.2')
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:design:23.4.0'
     compile 'com.spothero.volley:volley-jackson-extension:1.0.1'
     compile 'com.fasterxml.jackson.core:jackson-core:2.2.3'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.2.3'
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.2.3'
     compile 'joda-time:joda-time:2.9.4'
-
-    // compile project(':jackson-core-2.5.2')
+    compile 'com.google.android.gms:play-services:9.2.1'
 }

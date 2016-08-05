@@ -11,10 +11,12 @@ public class Location {
 
     private String locationname;
 
+    private String locationaddress;
 
 
-    private double latitude;
-    private double longitude;
+
+/*    private double latitude;
+    private double longitude;*/
 
 
 
@@ -37,7 +39,15 @@ public class Location {
         this.locationname = locationname;
     }
 
-    public double getLatitude() {
+    public String getLocationaddress() {
+        return locationaddress;
+    }
+
+    public void setLocationaddress(String locationaddress) {
+        this.locationaddress = locationaddress;
+    }
+
+    /*    public double getLatitude() {
         return latitude;
     }
 
@@ -51,7 +61,7 @@ public class Location {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
-    }
+    }*/
 
 
 }
