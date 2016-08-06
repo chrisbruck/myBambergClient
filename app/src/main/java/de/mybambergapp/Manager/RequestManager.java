@@ -2,26 +2,45 @@ package de.mybambergapp.manager;
 
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.vision.barcode.Barcode;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import de.mybambergapp.dto.RouteDTO;
 import de.mybambergapp.dto.UserDTO;
@@ -36,16 +55,85 @@ public class RequestManager {
     //private static final String BASE_URL = "http://192.168.2.102:8080";
     private static final String BASE_URL = "http://192.168.43.12:8080";
 
-    private static final String USER_URL = BASE_URL+"/v1/user";
+    private static final String USER_URL = BASE_URL + "/v1/user";
 
-    private static final String ROUTE_URL = BASE_URL+"/v1/route?androidId=";
+    private static final String ROUTE_URL = BASE_URL + "/v1/route?androidId=";
+
+    private static String responseString;
+  private  static   List<LatLng> latLngs= new ArrayList<>();
 
 
+    public static List<LatLng> getPath(final Context context, LatLng origin, LatLng dest) {
+
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+        String sensor = "sensor=false";
+        String parameters = str_origin + "&" + str_dest + "&" + sensor;
+        String output = "json";
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
 
 
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                url, null, new Response.Listener<JSONObject>() {
 
-    public static void getRoute(final Context context, final String androidId){
-        String url = ROUTE_URL+androidId;
+            @Override
+            public void onResponse(JSONObject response) {
+                responseString = response.toString();
+
+                Log.d("TAG", "responsestring :" + responseString.toString());
+                Log.d("TAG", "response :" + response.toString());
+
+              List<LatLng>   latLngs1=   parseResponse(responseString);
+                latLngs=latLngs1;
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("APP", "Error: " + error.getMessage());
+                Toast.makeText(context,
+                        error.getMessage(), Toast.LENGTH_SHORT).show();
+                // hide the progress dialog
+                // hideDialog();
+            }
+        });
+        // Adding request to request queue
+        SingletonRequestQueue.getInstance(context).addToRequestQueue(jsonObjReq);
+        return  latLngs;
+    }
+
+    @Nullable
+    public static List<LatLng> parseResponse(String responseString) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<LatLng> resultList = new ArrayList<>();
+        try {
+            JsonNode rootNode = objectMapper.readTree(responseString);
+            JsonNode routesNode = rootNode.get("routes");
+            JsonNode legsNode = routesNode.get(0);
+            JsonNode legsDeepNode = legsNode.get("legs");
+            JsonNode somethingNode = legsDeepNode.get(0);
+            JsonNode stepsArray = somethingNode.get("steps");
+            Iterator iteratorListArray = stepsArray.iterator();
+
+            while (iteratorListArray.hasNext()) {
+                JsonNode nextNode = (JsonNode) iteratorListArray.next();
+                JsonNode endLocation = nextNode.path("end_location");
+                Double lat = endLocation.path("lat").asDouble();
+                Double lng = endLocation.path("lng").asDouble();
+                LatLng latLng = new LatLng(lat, lng);
+                resultList.add(latLng);
+            }
+            Log.d("TAG", "ResultList :" + resultList.size());
+            return resultList;
+        } catch (IOException e) {
+            e.getMessage();
+        }
+        return resultList;
+    }
+
+    public static void getRoute(final Context context, final String androidId) {
+        String url = ROUTE_URL + androidId;
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -53,9 +141,9 @@ public class RequestManager {
 
                 try {
                     RouteDTO route = mapper.readValue(response, RouteDTO.class);
-                    Log.d("TAG",route.getEventList().toString());
+                    Log.d("TAG", route.getEventList().toString());
                     RepositoryImpl myRepo = new RepositoryImpl();
-                    myRepo.saveRouteDTO(route,context);
+                    myRepo.saveRouteDTO(route, context);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -63,12 +151,11 @@ public class RequestManager {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("TAG","Error:" + error.toString());
+                Log.d("TAG", "Error:" + error.toString());
             }
-        }) ;
+        });
         SingletonRequestQueue.getInstance(context).addToRequestQueue(request);
     }
-
 
 
     public static void postUser(Context context, UserDTO userDTO) throws MyWrongJsonException {
@@ -85,20 +172,18 @@ public class RequestManager {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("TAG","Response: " + response.toString());
+                        Log.d("TAG", "Response: " + response.toString());
 
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("TAG","Error:" +  error.toString());
+                        Log.d("TAG", "Error:" + error.toString());
                     }
                 });
         SingletonRequestQueue.getInstance(context).addToRequestQueue(jsObjRequest);
     }
-
-
 
 
     @NonNull

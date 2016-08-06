@@ -2,6 +2,7 @@ package de.mybambergapp.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.location.Address;
 import android.location.Geocoder;
 import android.support.v4.app.FragmentActivity;
@@ -18,6 +19,8 @@ import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -26,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.mybambergapp.R;
+import de.mybambergapp.manager.RequestManager;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -64,7 +68,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //A GoogleMap must be acquired using getMapAsync(OnMapReadyCallback). This class automatically initializes the maps system and the view.  ++++  2   ++++++
         mapFragment.getMapAsync(this);
         displayDetails();
+
+
+
+
+
+
     }
+
 
 
 
@@ -78,6 +89,7 @@ private void displayDetails(){
    // textViewDescription.setText(eventdescription);
 
     TextView textViewAddress = (TextView) findViewById(R.id.eventaddress);
+
     textViewAddress.setText(location);
 
     TextView textViewDate = (TextView) findViewById(R.id.eventstartdate);
@@ -87,7 +99,7 @@ private void displayDetails(){
 
 
 }
-/*    private void drawPrimaryLinePath(ArrayList<LatLng> listLocsToDraw, GoogleMap map )
+    private void drawPrimaryLinePath(ArrayList<LatLng> listLocsToDraw, GoogleMap map )
     {
         if ( map == null )
         {
@@ -106,7 +118,7 @@ private void displayDetails(){
             options.add( locRecorded );
         }
         map.addPolyline( options );
-    }*/
+    }
 
 
     private LatLng transformStuff(String location) {
@@ -142,17 +154,41 @@ private void displayDetails(){
         float floatVar = 16;
         LatLng currentLoc = transformStuff(location);
         LatLng lastLoc = transformStuff(lastaddress);
-        // Add a marker in Sydney and move the camera
-        //  LatLng sydney = new LatLng(-34, 151);
+       List <LatLng> latLngs= RequestManager.getPath(this,currentLoc,lastLoc);
 
-/*        ArrayList<LatLng> latLngArrayList = new ArrayList<>();
-        latLngArrayList.add(0,currentLoc);
-        latLngArrayList.add(1,lastLoc);
-        drawPrimaryLinePath(latLngArrayList,mMap);*/
+      // ArrayList <LatLng> latLngArrayList = new ArrayList<>();
 
-        mMap.addMarker(new MarkerOptions().position(currentLoc).title("Marker of Location"));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, floatVar));
+        ArrayList<LatLng> latLngArrayList = new ArrayList<>(latLngs);
+        //latLngArrayList.add(0,currentLoc);
+        //latLngArrayList.add(1,lastLoc);
+
+        drawPrimaryLinePath(latLngArrayList,mMap);
+
+
+
+      Marker lastPlace= mMap.addMarker(new MarkerOptions().position(lastLoc).title("Letzter Ort").snippet("Letzter Ort"));
+        lastPlace.showInfoWindow();
+        Marker nextPlace= mMap.addMarker(new MarkerOptions().position(currentLoc).title("Nächster Ort").snippet("Nächster Ort"));
+        nextPlace.showInfoWindow();
+
+        // setzt den Zoom so das beide Marker sichtbar sind
+
+        LatLngBounds bounds = new LatLngBounds.Builder()
+                .include(currentLoc)
+                .include(lastLoc).build();
+
+        Point displaySize = new Point();
+        getWindowManager().getDefaultDisplay().getSize(displaySize);
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, displaySize.x, 250, 30));
+
+        //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, floatVar));
         // mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLoc));
+
+
+
+
+
 
 
     }
