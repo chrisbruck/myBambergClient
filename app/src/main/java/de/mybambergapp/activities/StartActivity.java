@@ -9,18 +9,23 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 
 import de.mybambergapp.R;
 
 public class StartActivity extends AppCompatActivity {
 
+    ImageView startpicture;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        startpicture= (ImageView)findViewById(R.id.imageView1);
         setSupportActionBar(toolbar);
+       // setPicture();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -37,9 +42,21 @@ public class StartActivity extends AppCompatActivity {
 
 
     public void changingActivity(View view){
-        Intent i = new Intent(StartActivity.this, SearchActivity.class);
+       // Toast.makeText(this,getResources().getDisplayMetrics().toString(),Toast.LENGTH_LONG).show();
+
+       Intent i = new Intent(StartActivity.this, SearchActivity.class);
         startActivity(i);
+
+
+
     }
+
+/*
+    private void setPicture(){
+        startpicture.setImageResource(R.drawable.bamberg_night);
+
+    }
+*/
 
 
 

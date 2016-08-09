@@ -35,6 +35,15 @@
             android:onClick="changingActivity"
             android:layout_centerHorizontal="true" />
 
+        <ImageView
+            android:layout_width="400dp"
+            android:layout_height="400dp"
+            android:id="@+id/imageView1"
+            android:layout_marginTop="25dp"
+            android:src="@drawable/bamberg_klein"
+            android:layout_gravity="center_horizontal" />
+
+
 
 
     </LinearLayout>
