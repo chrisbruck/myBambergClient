@@ -97,6 +97,27 @@
                 android:layout_height="2dip"
                 android:background="#FF909090" />
 
+
+            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp">
+
+                <TextView
+                    android:id="@+id/pathdetails"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:gravity="center_horizontal"
+                    android:text=""
+                    android:textSize="12dp" />
+            </TableRow>
+
+            <View
+                android:id="@+id/line_6"
+                android:layout_height="2dip"
+                android:background="#FF909090" />
+
             <TableRow>
 
                 <Button

@@ -33,34 +33,27 @@ import de.mybambergapp.manager.RequestManager;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
+    public GoogleMap mMap;
 
 
     String location = null;
-    String eventname= null;
-    String eventdescription= null;
-    String startDate= null;
-    String lastaddress= null;
-
-
-
-
-
+    String eventname = null;
+    String eventdescription = null;
+    String startDate = null;
+    String lastaddress = null;
+   // List<LatLng> path= null;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-
         Intent i = getIntent();
-
         location = i.getStringExtra("address");
-        eventname= i.getStringExtra("eventname");
-        eventdescription= i.getStringExtra("description");
-        startDate= i.getStringExtra("startdate");
-        lastaddress= i.getStringExtra("lastaddress");
-
+        eventname = i.getStringExtra("eventname");
+        eventdescription = i.getStringExtra("description");
+        startDate = i.getStringExtra("startdate");
+        lastaddress = i.getStringExtra("lastaddress");
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.   ++++  1   +++++
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -69,55 +62,45 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
         displayDetails();
 
+    }
 
 
+    private void displayDetails() {
 
+        TextView textViewName = (TextView) findViewById(R.id.eventname);
+        textViewName.setText(eventname);
+
+        // TextView textViewDescription = (TextView) findViewById(R.id.eventdescription);
+        // textViewDescription.setText(eventdescription);
+
+        TextView textViewAddress = (TextView) findViewById(R.id.eventaddress);
+
+        textViewAddress.setText(location);
+
+        TextView textViewDate = (TextView) findViewById(R.id.eventstartdate);
+        textViewDate.setText(startDate);
+
+        TextView textViewPathDetails = (TextView)findViewById(R.id.pathdetails);
+        textViewPathDetails.setText(RequestManager.distance);
 
 
     }
 
-
-
-
-
-private void displayDetails(){
-
-    TextView textViewName = (TextView) findViewById(R.id.eventname);
-    textViewName.setText(eventname);
-
-   // TextView textViewDescription = (TextView) findViewById(R.id.eventdescription);
-   // textViewDescription.setText(eventdescription);
-
-    TextView textViewAddress = (TextView) findViewById(R.id.eventaddress);
-
-    textViewAddress.setText(location);
-
-    TextView textViewDate = (TextView) findViewById(R.id.eventstartdate);
-    textViewDate.setText(startDate);
-
-
-
-
-}
-    private void drawPrimaryLinePath(ArrayList<LatLng> listLocsToDraw, GoogleMap map )
-    {
-        if ( map == null )
-        {
+    private void drawPrimaryLinePath(ArrayList<LatLng> listLocsToDraw, GoogleMap map) {
+        if (map == null) {
             return;
         }
-        if ( listLocsToDraw.size() < 2 )
-        {
+        if (listLocsToDraw.size() < 2) {
             return;
         }
         PolylineOptions options = new PolylineOptions();
-        options.color( Color.parseColor( "#CC0000FF" ) );
-        options.width( 5 );
-        options.visible( true );
-        for ( LatLng locRecorded : listLocsToDraw )
-        {
-            options.add( locRecorded );
+        options.color(Color.parseColor("#CC0000FF"));
+        options.width(5);
+        options.visible(true);
+        for (LatLng locRecorded : listLocsToDraw) {
+            options.add(locRecorded);
         }
-        map.addPolyline( options );
+        map.addPolyline(options);
     }
 
 
@@ -151,28 +134,23 @@ private void displayDetails(){
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        float floatVar = 16;
         LatLng currentLoc = transformStuff(location);
         LatLng lastLoc = transformStuff(lastaddress);
-       List <LatLng> latLngs= RequestManager.getPath(this,currentLoc,lastLoc);
+        TextView tv = (TextView)findViewById(R.id.pathdetails);
 
-      // ArrayList <LatLng> latLngArrayList = new ArrayList<>();
+        RequestManager.getPath(this, lastLoc, currentLoc,mMap,tv);
 
-        ArrayList<LatLng> latLngArrayList = new ArrayList<>(latLngs);
+      //  List<LatLng>path= RequestManager.latLngs;
+        // ArrayList <LatLng> latLngArrayList = new ArrayList<>();
+
         //latLngArrayList.add(0,currentLoc);
         //latLngArrayList.add(1,lastLoc);
 
-        drawPrimaryLinePath(latLngArrayList,mMap);
-
-
-
-      Marker lastPlace= mMap.addMarker(new MarkerOptions().position(lastLoc).title("Letzter Ort").snippet("Letzter Ort"));
+        Marker lastPlace = mMap.addMarker(new MarkerOptions().position(lastLoc).title("Letzter Ort").snippet(lastaddress));
         lastPlace.showInfoWindow();
-        Marker nextPlace= mMap.addMarker(new MarkerOptions().position(currentLoc).title("Nächster Ort").snippet("Nächster Ort"));
+        Marker nextPlace = mMap.addMarker(new MarkerOptions().position(currentLoc).title("Nächster Ort").snippet(eventname));
         nextPlace.showInfoWindow();
-
         // setzt den Zoom so das beide Marker sichtbar sind
-
         LatLngBounds bounds = new LatLngBounds.Builder()
                 .include(currentLoc)
                 .include(lastLoc).build();
@@ -180,15 +158,13 @@ private void displayDetails(){
         Point displaySize = new Point();
         getWindowManager().getDefaultDisplay().getSize(displaySize);
 
+
+        //ArrayList<LatLng> latLngArrayList = new ArrayList<>(path);
+       // drawPrimaryLinePath(latLngArrayList, mMap);
+
+
+
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, displaySize.x, 250, 30));
-
-        //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, floatVar));
-        // mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLoc));
-
-
-
-
-
 
 
     }

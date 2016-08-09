@@ -56,7 +56,13 @@ private TableLayout tableLayout;
             TableRow row = (TableRow) View.inflate(this, R.layout.table_row, null);
             ((TextView) row.findViewById(R.id.text_veranstaltung)).setText("" + eventList.get(i).getEventname());
             ((TextView) row.findViewById(R.id.text_zeit)).setText("" + eventList.get(i).getStartdate().toString());
+
+
             row.setId(eventList.get(i).getId().intValue());
+
+
+            TableRow row1 = (TableRow) View.inflate(this, R.layout.table_row_line, null);
+
 
           //  ((TextView) row.findViewById(R.id.text_tags)).setText("" + eventList.get(i).getTaglist().toString());
        // TextView tv = new TextView(this);
@@ -64,7 +70,9 @@ private TableLayout tableLayout;
        // tv.setText(eventList.get(i).getEventname()+"| |fängt an:"+eventList.get(i).getStartdate().toString());
        // tv.setText(eventList.get(i).getStartdate());
       //  row.addView(tv);
+
         tableLayout.addView(row);
+            tableLayout.addView(row1);
         }
     }
 

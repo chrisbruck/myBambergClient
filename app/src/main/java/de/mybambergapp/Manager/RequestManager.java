@@ -1,11 +1,14 @@
 package de.mybambergapp.manager;
 
 import android.app.Application;
+import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
@@ -20,6 +23,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -42,6 +49,8 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import de.mybambergapp.R;
+import de.mybambergapp.activities.MapsActivity;
 import de.mybambergapp.dto.RouteDTO;
 import de.mybambergapp.dto.UserDTO;
 import de.mybambergapp.exceptions.MyWrongJsonException;
@@ -59,18 +68,25 @@ public class RequestManager {
 
     private static final String ROUTE_URL = BASE_URL + "/v1/route?androidId=";
 
-    private static String responseString;
-  private  static   List<LatLng> latLngs= new ArrayList<>();
+    public static String distance;
+    public static String duration;
 
 
-    public static List<LatLng> getPath(final Context context, LatLng origin, LatLng dest) {
+
+
+
+    public static void getPath(Context context, final LatLng origin, final LatLng dest, final GoogleMap googleMap, final TextView textview) {
 
         String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
         String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
         String sensor = "sensor=false";
         String parameters = str_origin + "&" + str_dest + "&" + sensor;
         String output = "json";
-        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
+        String walking= "&mode=walking";
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters+walking;
+        //String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
+
+
 
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
@@ -78,33 +94,46 @@ public class RequestManager {
 
             @Override
             public void onResponse(JSONObject response) {
-                responseString = response.toString();
 
-                Log.d("TAG", "responsestring :" + responseString.toString());
                 Log.d("TAG", "response :" + response.toString());
-
-              List<LatLng>   latLngs1=   parseResponse(responseString);
-                latLngs=latLngs1;
-
-
+                List<LatLng>   latLngs=   parseResponse(response.toString(),textview);
+                latLngs.add(0,origin);
+                ArrayList<LatLng> latLngArrayList = new ArrayList<>(latLngs);
+                drawPrimaryLinePath(latLngArrayList,googleMap);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d("APP", "Error: " + error.getMessage());
-                Toast.makeText(context,
-                        error.getMessage(), Toast.LENGTH_SHORT).show();
+         /*       Toast.makeText(this,
+                        error.getMessage(), Toast.LENGTH_SHORT).show();*/
                 // hide the progress dialog
                 // hideDialog();
             }
         });
         // Adding request to request queue
         SingletonRequestQueue.getInstance(context).addToRequestQueue(jsonObjReq);
-        return  latLngs;
+
+    }
+    private static void drawPrimaryLinePath(ArrayList<LatLng> listLocsToDraw, GoogleMap map) {
+        if (map == null) {
+            return;
+        }
+        if (listLocsToDraw.size() < 2) {
+            return;
+        }
+        PolylineOptions options = new PolylineOptions();
+        options.color(Color.parseColor("#CC0000FF"));
+        options.width(5);
+        options.visible(true);
+        for (LatLng locRecorded : listLocsToDraw) {
+            options.add(locRecorded);
+        }
+        map.addPolyline(options);
     }
 
     @Nullable
-    public static List<LatLng> parseResponse(String responseString) {
+    public static List<LatLng> parseResponse(String responseString,TextView textView) {
         ObjectMapper objectMapper = new ObjectMapper();
         List<LatLng> resultList = new ArrayList<>();
         try {
@@ -113,6 +142,13 @@ public class RequestManager {
             JsonNode legsNode = routesNode.get(0);
             JsonNode legsDeepNode = legsNode.get("legs");
             JsonNode somethingNode = legsDeepNode.get(0);
+
+         distance= String.valueOf(somethingNode.get("distance").get("text"));
+         duration=    String.valueOf(somethingNode.get("duration").get("text"));
+
+            textView.setText("Entfernung :"+distance+"     Dauer :"+duration);
+
+
             JsonNode stepsArray = somethingNode.get("steps");
             Iterator iteratorListArray = stepsArray.iterator();
 
