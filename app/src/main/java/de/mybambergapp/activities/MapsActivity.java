@@ -42,8 +42,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String eventdescription = null;
     String startDate = null;
     String lastaddress = null;
-     String  id= null;
-   // List<LatLng> path= null;
+    String id = null;
+    // List<LatLng> path= null;
 
 
     @Override
@@ -74,7 +74,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         textViewAddress.setText(location);
         TextView textViewDate = (TextView) findViewById(R.id.eventstartdate);
         textViewDate.setText(startDate);
-        TextView textViewPathDetails = (TextView)findViewById(R.id.pathdetails);
+        TextView textViewPathDetails = (TextView) findViewById(R.id.pathdetails);
         textViewPathDetails.setText(RequestManager.distance);
     }
 
@@ -128,8 +128,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         LatLng currentLoc = transformStuff(location);
         LatLng lastLoc = transformStuff(lastaddress);
-        TextView tv = (TextView)findViewById(R.id.pathdetails);
-        RequestManager.getPath(this, lastLoc, currentLoc,mMap,tv);
+        TextView tv = (TextView) findViewById(R.id.pathdetails);
+        RequestManager.getPath(this, lastLoc, currentLoc, mMap, tv);
         Marker lastPlace = mMap.addMarker(new MarkerOptions().position(lastLoc).title("Letzter Ort").snippet(lastaddress));
         lastPlace.showInfoWindow();
         Marker nextPlace = mMap.addMarker(new MarkerOptions().position(currentLoc).title("Nächster Ort").snippet(eventname));
@@ -142,15 +142,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         getWindowManager().getDefaultDisplay().getSize(displaySize);
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, displaySize.x, 250, 30));
     }
-    public void onClickToMyList(View v){
-Intent i = new Intent(this, FinalListActivity.class);
 
-        i.putExtra("id",id);
+    public void onClickToMyList(View v) {
+        Intent i = new Intent(this, FinalListActivity.class);
+        lastaddress= location;
+        i.putExtra("id", id);
         startActivity(i);
 
 
     }
-    public void onClickReject(View v){
+
+    public void onClickReject(View v) {
         Intent i = new Intent(this, ResultListActivity.class);
         startActivity(i);
 

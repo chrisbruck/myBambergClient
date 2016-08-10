@@ -52,7 +52,7 @@
 
 
 </TableRow>
-       </>
+       </TableLayout>
 
         <ImageView
             android:layout_width="400dp"

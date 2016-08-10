@@ -57,6 +57,36 @@ public class RepositoryImpl implements Repository {
         return routeDTO;
     }
 
+    public void saveFinalRouteDTO(RouteDTO routeDTO,Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        try {
+            String events = getString(routeDTO);
+            editor.putString("finalRoute", events);
+            editor.apply();
+            editor.commit();
+        } catch (JsonProcessingException e) {
+            e.getOriginalMessage();
+        }
+
+    }
+    public RouteDTO getFinalRouteDTO(Context context) {
+        RouteDTO routeDTO = new RouteDTO();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String events = sharedPreferences.getString("finalRoute", null);
+
+        try {
+            RouteDTO routeDTO1 = getRouteDTO(events);
+
+            routeDTO = routeDTO1;
+            return routeDTO;
+        } catch (java.io.IOException e) {
+            e.getMessage();
+        }
+        return routeDTO;
+    }
+
+
     @Override
     public void addEventToRoute(RouteDTO routeDTO) {
 
