@@ -19,7 +19,7 @@
     <string name="txt_informationsveranstaltung">INFOVERANSTALTUNG</string>
     <string name="txt_sport">SPORT</string>
     <string name="title_activity_maps">Map</string>
-
+    <string name="title_activity_final_list">FinalListActivity</string>
 
 
 </resources>

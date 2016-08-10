@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -41,6 +42,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String eventdescription = null;
     String startDate = null;
     String lastaddress = null;
+     String  id= null;
    // List<LatLng> path= null;
 
 
@@ -54,6 +56,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         eventdescription = i.getStringExtra("description");
         startDate = i.getStringExtra("startdate");
         lastaddress = i.getStringExtra("lastaddress");
+        id = i.getStringExtra("id");
+
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.   ++++  1   +++++
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -61,29 +65,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //A GoogleMap must be acquired using getMapAsync(OnMapReadyCallback). This class automatically initializes the maps system and the view.  ++++  2   ++++++
         mapFragment.getMapAsync(this);
         displayDetails();
-
     }
 
-
     private void displayDetails() {
-
         TextView textViewName = (TextView) findViewById(R.id.eventname);
         textViewName.setText(eventname);
-
-        // TextView textViewDescription = (TextView) findViewById(R.id.eventdescription);
-        // textViewDescription.setText(eventdescription);
-
         TextView textViewAddress = (TextView) findViewById(R.id.eventaddress);
-
         textViewAddress.setText(location);
-
         TextView textViewDate = (TextView) findViewById(R.id.eventstartdate);
         textViewDate.setText(startDate);
-
         TextView textViewPathDetails = (TextView)findViewById(R.id.pathdetails);
         textViewPathDetails.setText(RequestManager.distance);
-
-
     }
 
     private void drawPrimaryLinePath(ArrayList<LatLng> listLocsToDraw, GoogleMap map) {
@@ -137,15 +129,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng currentLoc = transformStuff(location);
         LatLng lastLoc = transformStuff(lastaddress);
         TextView tv = (TextView)findViewById(R.id.pathdetails);
-
         RequestManager.getPath(this, lastLoc, currentLoc,mMap,tv);
-
-      //  List<LatLng>path= RequestManager.latLngs;
-        // ArrayList <LatLng> latLngArrayList = new ArrayList<>();
-
-        //latLngArrayList.add(0,currentLoc);
-        //latLngArrayList.add(1,lastLoc);
-
         Marker lastPlace = mMap.addMarker(new MarkerOptions().position(lastLoc).title("Letzter Ort").snippet(lastaddress));
         lastPlace.showInfoWindow();
         Marker nextPlace = mMap.addMarker(new MarkerOptions().position(currentLoc).title("Nächster Ort").snippet(eventname));
@@ -154,17 +138,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLngBounds bounds = new LatLngBounds.Builder()
                 .include(currentLoc)
                 .include(lastLoc).build();
-
         Point displaySize = new Point();
         getWindowManager().getDefaultDisplay().getSize(displaySize);
-
-
-        //ArrayList<LatLng> latLngArrayList = new ArrayList<>(path);
-       // drawPrimaryLinePath(latLngArrayList, mMap);
-
-
-
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, displaySize.x, 250, 30));
+    }
+    public void onClickToMyList(View v){
+Intent i = new Intent(this, FinalListActivity.class);
+
+        i.putExtra("id",id);
+        startActivity(i);
+
+
+    }
+    public void onClickReject(View v){
+        Intent i = new Intent(this, ResultListActivity.class);
+        startActivity(i);
 
 
     }

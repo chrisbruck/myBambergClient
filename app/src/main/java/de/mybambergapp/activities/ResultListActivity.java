@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -29,110 +30,94 @@ import de.mybambergapp.manager.RepositoryImpl;
  */
 public class ResultListActivity extends AppCompatActivity {
 
-private TableLayout tableLayout;
-    List<Event>events;
+    private TableLayout tableLayout;
+    List<Event> events;
+    List<Event> myEvents;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resultlist);
-        tableLayout= (TableLayout) findViewById(R.id.table);
-       // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-      //  setSupportActionBar(toolbar);
+        tableLayout = (TableLayout) findViewById(R.id.table);
+        // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //  setSupportActionBar(toolbar);
         RouteDTO routeDTO = new RouteDTO();
         RepositoryImpl repository = new RepositoryImpl();
         routeDTO = repository.getRouteDTO(this);
-        events= routeDTO.getEventList();
+        events = routeDTO.getEventList();
         setEventList(routeDTO);
-
-
 
 
     }
 
-    private void setEventList(RouteDTO routeDTO){
-      //  TableLayout table = (TableLayout)findViewById(R.id.the_table);
-        List<Event> eventList=  selectionSortByStartTime(routeDTO.getEventList());
-        for(int i=0; i<eventList.size(); i++){
+
+
+    private void setEventList(RouteDTO routeDTO) {
+        //  TableLayout table = (TableLayout)findViewById(R.id.the_table);
+        List<Event> eventList = selectionSortByStartTime(routeDTO.getEventList());
+        for (int i = 0; i < eventList.size(); i++) {
             TableRow row = (TableRow) View.inflate(this, R.layout.table_row, null);
             ((TextView) row.findViewById(R.id.text_veranstaltung)).setText("" + eventList.get(i).getEventname());
             ((TextView) row.findViewById(R.id.text_zeit)).setText("" + eventList.get(i).getStartdate().toString());
-
-
             row.setId(eventList.get(i).getId().intValue());
-
-
             TableRow row1 = (TableRow) View.inflate(this, R.layout.table_row_line, null);
-
-
-          //  ((TextView) row.findViewById(R.id.text_tags)).setText("" + eventList.get(i).getTaglist().toString());
-       // TextView tv = new TextView(this);
-      //  tv.setGravity(Gravity.LEFT);
-       // tv.setText(eventList.get(i).getEventname()+"| |fängt an:"+eventList.get(i).getStartdate().toString());
-       // tv.setText(eventList.get(i).getStartdate());
-      //  row.addView(tv);
-
-        tableLayout.addView(row);
+            tableLayout.addView(row);
             tableLayout.addView(row1);
         }
     }
 
-    private List<Event> selectionSortByStartTime(List<Event> events){
-        Event[]eventarray= new Event[events.size()];
+    private List<Event> selectionSortByStartTime(List<Event> events) {
+        Event[] eventarray = new Event[events.size()];
         events.toArray(eventarray);
-            for (int i = 0; i < events.size() - 1; i++) {
-                for (int j = i + 1; j < events.size(); j++) {
-                    if ((eventarray[i].getStartdate()).after( eventarray[j].getStartdate())){
-                        Event temp = eventarray[i];
-                        eventarray[i] = eventarray[j];
-                        eventarray[j] = temp;
-                    }
+        for (int i = 0; i < events.size() - 1; i++) {
+            for (int j = i + 1; j < events.size(); j++) {
+                if ((eventarray[i].getStartdate()).after(eventarray[j].getStartdate())) {
+                    Event temp = eventarray[i];
+                    eventarray[i] = eventarray[j];
+                    eventarray[j] = temp;
                 }
             }
-             events=  Arrays.asList(eventarray);
-            return events;
+        }
+        events = Arrays.asList(eventarray);
+        return events;
     }
 
 
-    public void startMapView(View v){
-     int id=v.getId();
+    public void startMapView(View v) {
+        int id = v.getId();
         String lastaddress = "Bamberg Luitpoldstraße 21";
-        String taglist= " gratis, familienfreundlich, supergeil";
+        String taglist = " gratis, familienfreundlich, supergeil";
+        for (int i = 0; i < events.size(); i++) {
+            Event e = events.get(i);
+            if (e.getId() == id) {
+                Location l = e.getLocation();
+
+                String eventname = e.getEventname();
+                String description = e.getDescription();
+                String startdate = e.getStartdate().toString();
+
+                String address = l.getLocationaddress();
+                // String address =  events.get(id).getLocation().getLocationaddress();
+                // Log.d("raw-intent-fun", "id ist: "+id+ " !"+ "Adresse ist :"+ events.get(id).getLocation().getLocationaddress());
+
+                Intent j = new Intent(this, MapsActivity.class);
 
 
-for (int i=0; i< events.size(); i++ ){
-    Event e = events.get(i);
-    if (e.getId()==id){
-        Location l = e.getLocation();
+                j.putExtra("id",String.valueOf(id));
+                j.putExtra("address", address);
+                j.putExtra("eventname", eventname);
+                j.putExtra("description", description);
+                j.putExtra("startdate", startdate);
+                j.putExtra("lastaddress", lastaddress);
+                // j.putExtra("taglist", taglist);
 
-         String eventname= e.getEventname();
-         String description= e.getDescription();
-         String startdate = e.getStartdate().toString();
+                startActivity(j);
 
-        String address = l.getLocationaddress();
-        // String address =  events.get(id).getLocation().getLocationaddress();
-        // Log.d("raw-intent-fun", "id ist: "+id+ " !"+ "Adresse ist :"+ events.get(id).getLocation().getLocationaddress());
-
-        Intent j= new Intent(this, MapsActivity.class);
+            }
+        }
 
 
-
-        j.putExtra("address",address);
-        j.putExtra("eventname",eventname);
-        j.putExtra("description", description);
-        j.putExtra("startdate",startdate);
-        j.putExtra("lastaddress",lastaddress);
-       // j.putExtra("taglist", taglist);
-
-        startActivity(j);
-
+        // System.out.println(  toDisplay.getEventname().toString());
     }
+
 }
-
-
-
-
-     // System.out.println(  toDisplay.getEventname().toString());
-    }
-
-    }
 

@@ -125,14 +125,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="In meine Liste" />
+                    android:text="In meine Liste"
+                    android:onClick="onClickToMyList" />
 
                 <Button
                     android:id="@+id/Breject"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:text="Verwerfen" />
+                    android:text="Verwerfen"
+                    android:onClick="onClickReject" />
 
             </TableRow>
 
