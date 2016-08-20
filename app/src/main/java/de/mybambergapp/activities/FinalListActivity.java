@@ -17,8 +17,10 @@ import de.mybambergapp.R;
 import de.mybambergapp.dto.Event;
 import de.mybambergapp.dto.RouteDTO;
 import de.mybambergapp.entities.Location;
+import de.mybambergapp.exceptions.MyWrongJsonException;
 import de.mybambergapp.manager.Repository;
 import de.mybambergapp.manager.RepositoryImpl;
+import de.mybambergapp.manager.RequestManager;
 
 /**
  * Created by christian on 10.08.16.
@@ -32,15 +34,13 @@ public class FinalListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finallist);
         tableLayout = (TableLayout) findViewById(R.id.table);
-        // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-          // fillPref();
-        //  setSupportActionBar(toolbar);
-
         Intent i = getIntent();
         String id = i.getStringExtra("id");
         if (i.getStringExtra("id") != null) {
             int idEvent = Integer.valueOf(id);
             setEventToFinalList(idEvent);
+            setFinalEventList();
+        }else{
             setFinalEventList();
         }
     }
@@ -75,34 +75,60 @@ public class FinalListActivity extends AppCompatActivity {
         RepositoryImpl repository = new RepositoryImpl();
         RouteDTO routeDTO = repository.getRouteDTO(this);
         RouteDTO myrouteDTO = new RouteDTO();
-
            myrouteDTO = repository.getFinalRouteDTO(this);
         if(myrouteDTO== null){
             fillPref();
-
         }
             events = routeDTO.getEventList();
             myEvents = myrouteDTO.getEventList();
-// richtiges event aud der list suchen
+            // richtiges event aud der list suchen
             for (int i = 0; i < events.size(); i++) {
                 Event e = events.get(i);
                 if (e.getId() == j) {
-
                     // event gefunden---> in die myroute reintun
                     myEvents.add(e);
                     myrouteDTO.setEventList(myEvents);
                     repository.saveFinalRouteDTO(myrouteDTO, this);
                 }
             }
+    }
 
-
-
-
+    private Long deleteLastEvent(){
+        RepositoryImpl repository = new RepositoryImpl();
+      RouteDTO  myrouteDTO = repository.getFinalRouteDTO(this);
+      int size =  myrouteDTO.getEventList().size();
+          myEvents= myrouteDTO.getEventList();
+          Long idEvent=  myEvents.get(size-1).getId();
+          myEvents.remove(size-1);
+          myrouteDTO.setEventList(myEvents);
+          repository.saveFinalRouteDTO(myrouteDTO,this);
+          return idEvent;
     }
 
 
-    private void colorEvent(int i) {
-        Toast toast = new Toast(this);
-        toast.makeText(this, "intent" + i + "angekommen", Toast.LENGTH_LONG).show();
+    public void onClickDeleteEvent(View v){
+      Long id =  deleteLastEvent();
+       // myEvents= null;
+        tableLayout.removeView(findViewById(id.intValue()));
+        //setFinalEventList();
+    }
+    public void onClickToResultList (View v){
+        Intent i = new Intent(this, ResultListActivity.class);
+        startActivity(i);
+
+    }
+
+    public void onClickPostAndSaveFinalRoute(View v) {
+        RequestManager requestManager = new RequestManager();
+        RepositoryImpl repository = new RepositoryImpl();
+        RouteDTO myrouteDTO = repository.getFinalRouteDTO(this);
+        try {
+
+
+            requestManager.postFinalRoute(this, myrouteDTO);
+        }catch (MyWrongJsonException e){
+            e.getMessage();
+        }
+
     }
 }

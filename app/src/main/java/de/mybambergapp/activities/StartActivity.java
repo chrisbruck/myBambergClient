@@ -51,6 +51,21 @@ public class StartActivity extends AppCompatActivity {
 
     }
 
+    public void onClickToFinalList(View view){
+        // Toast.makeText(this,getResources().getDisplayMetrics().toString(),Toast.LENGTH_LONG).show();
+
+        Intent i = new Intent(StartActivity.this, FinalListActivity.class);
+        startActivity(i);
+
+
+
+    }
+
+
+
+
+
+
 /*
     private void setPicture(){
         startpicture.setImageResource(R.drawable.bamberg_night);

@@ -60,20 +60,15 @@ import de.mybambergapp.exceptions.MyWrongJsonException;
  */
 public class RequestManager {
 
-
-    //private static final String BASE_URL = "http://192.168.2.102:8080";
-    private static final String BASE_URL = "http://192.168.43.12:8080";
-
+   // private  static final String BASE_URL = "http://10.1.6.223:8080";
+    private static final String BASE_URL = "http://192.168.2.102:8080";
+    //private static final String BASE_URL = "http://192.168.43.12:8080";
     private static final String USER_URL = BASE_URL + "/v1/user";
-
     private static final String ROUTE_URL = BASE_URL + "/v1/route?androidId=";
+    private static final String FINALROUTE_URL= BASE_URL+"/v1/finalroute";
 
     public static String distance;
     public static String duration;
-
-
-
-
 
     public static void getPath(Context context, final LatLng origin, final LatLng dest, final GoogleMap googleMap, final TextView textview) {
 
@@ -85,9 +80,6 @@ public class RequestManager {
         String walking= "&mode=walking";
         String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters+walking;
         //String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
-
-
-
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 url, null, new Response.Listener<JSONObject>() {
@@ -221,11 +213,46 @@ public class RequestManager {
         SingletonRequestQueue.getInstance(context).addToRequestQueue(jsObjRequest);
     }
 
+    public static void postFinalRoute(Context context, RouteDTO routeDTO) throws MyWrongJsonException{
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = getJsonObject(routeDTO);
+        } catch (JsonProcessingException e) {
+            throw new MyWrongJsonException(e.getMessage());
+        } catch (JSONException e) {
+            throw new MyWrongJsonException(e.getMessage());
+        }
+        JsonRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.POST, FINALROUTE_URL, jsonObject, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("TAG", "Response: " + response.toString());
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("TAG", "Error:" + error.toString());
+                    }
+                });
+        SingletonRequestQueue.getInstance(context).addToRequestQueue(jsObjRequest);
+
+
+    }
+
 
     @NonNull
     private static JSONObject getJsonObject(UserDTO userDTO) throws JsonProcessingException, JSONException {
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody = objectMapper.writeValueAsString(userDTO);
+        return new JSONObject(requestBody);
+    }
+    @NonNull
+    private static JSONObject getJsonObject(RouteDTO routeDTO) throws JsonProcessingException, JSONException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestBody = objectMapper.writeValueAsString(routeDTO);
         return new JSONObject(requestBody);
     }
 }

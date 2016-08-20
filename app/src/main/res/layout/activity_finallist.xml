@@ -8,11 +8,6 @@
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true">
-
-
-
-
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -55,10 +50,62 @@
                     android:layout_height="2dip"
                     android:background="#FF909090" />
 
+                <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+
+
+
+
+
+
+
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Letzten Eintrag löschen"
+                        android:id="@+id/BdeleteLastEvent"
+                        android:onClick="onClickDeleteEvent"
+                        android:layout_centerHorizontal="true" />
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Zur Auswahl zurück"
+                        android:layout_gravity="right"
+                        android:onClick="onClickToResultList"
+                        android:id="@+id/BtoResultList" />
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SAVE  MY LIST"
+                        android:layout_gravity="right"
+                        android:onClick="onClickPostAndSaveFinalRoute"
+                        android:id="@+id/BsaveList" />
+
+
+
+
+
+
+
+                </TableRow>
 
             </TableLayout>
-
         </ScrollView>
+
+
+
+
+
+
+
+
+
+
 
 
 
