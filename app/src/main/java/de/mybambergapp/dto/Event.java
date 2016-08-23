@@ -34,6 +34,8 @@ public class Event {
 
     private Date startdate;
 
+    private boolean valid;
+
 
 
     private SimpleWeather simpleWeather;
@@ -109,5 +111,13 @@ public class Event {
 
     public void setSimpleWeather(SimpleWeather simpleWeather) {
         this.simpleWeather = simpleWeather;
+    }
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
     }
 }

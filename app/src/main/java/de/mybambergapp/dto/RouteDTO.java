@@ -16,6 +16,15 @@ public class RouteDTO {
 
 
     private List<Event> eventList;
+    private String androidId;
+
+    public String getAndroidId() {
+        return androidId;
+    }
+
+    public void setAndroidId(String androidId) {
+        this.androidId = androidId;
+    }
 
     public List<Event> getEventList() {
         return eventList;

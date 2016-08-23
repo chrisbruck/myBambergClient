@@ -66,6 +66,7 @@ public class RequestManager {
     private static final String USER_URL = BASE_URL + "/v1/user";
     private static final String ROUTE_URL = BASE_URL + "/v1/route?androidId=";
     private static final String FINALROUTE_URL= BASE_URL+"/v1/finalroute";
+    private static final String UPDATE_URL=BASE_URL+"/v1/updateroute?androidId=";
 
     public static String distance;
     public static String duration;
@@ -239,6 +240,32 @@ public class RequestManager {
                 });
         SingletonRequestQueue.getInstance(context).addToRequestQueue(jsObjRequest);
 
+
+    }
+    //Annotieren mit timescheduler, diese methode soll nur checken ob die events noch machbar sind
+    public static  void updateRoute(final Context context,final String androidId){
+        String url = UPDATE_URL + androidId;
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+                try {
+                    RouteDTO route = mapper.readValue(response, RouteDTO.class);
+                    Log.d("TAG", route.getEventList().toString());
+                    RepositoryImpl myRepo = new RepositoryImpl();
+                    myRepo.saveFinalRouteDTO(route, context);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("TAG", "Error:" + error.toString());
+            }
+        });
+        SingletonRequestQueue.getInstance(context).addToRequestQueue(request);
 
     }
 

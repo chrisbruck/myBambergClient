@@ -2,6 +2,7 @@ package de.mybambergapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TableLayout;
@@ -50,6 +51,8 @@ public class FinalListActivity extends AppCompatActivity {
         List<Event> eventList = new ArrayList<>();
         RouteDTO routeDTO = new RouteDTO();
         routeDTO.setEventList(eventList);
+        routeDTO.setAndroidId(Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
+       // routeDTO.setAndroidId(Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
         RepositoryImpl repository = new RepositoryImpl();
         repository.saveFinalRouteDTO(routeDTO, this);
     }
@@ -69,6 +72,31 @@ public class FinalListActivity extends AppCompatActivity {
             tableLayout.addView(row1);
         }
     }
+    private void setFinalEventListUpdate() {
+
+
+        RepositoryImpl repository = new RepositoryImpl();
+        List<Event> eventList = (repository.getFinalRouteDTO(this).getEventList());
+        for (int i = 0; i < eventList.size(); i++) {
+            TableRow row = (TableRow) View.inflate(this, R.layout.table_row_update, null);
+            ((TextView) row.findViewById(R.id.text_veranstaltung)).setText("" + eventList.get(i).getEventname());
+            ((TextView) row.findViewById(R.id.text_zeit)).setText("" + eventList.get(i).getStartdate().toString());
+
+            if(eventList.get(i).isValid()){
+                ((TextView) row.findViewById(R.id.text_valid)).setText("gültig");
+
+            }else{
+                ((TextView) row.findViewById(R.id.text_valid)).setText(" NOT !");
+
+            }
+
+
+            row.setId(eventList.get(i).getId().intValue());
+            TableRow row1 = (TableRow) View.inflate(this, R.layout.table_row_line, null);
+            tableLayout.addView(row);
+            tableLayout.addView(row1);
+        }
+    }
 
 
     private void setEventToFinalList(int j) {
@@ -81,13 +109,14 @@ public class FinalListActivity extends AppCompatActivity {
         }
             events = routeDTO.getEventList();
             myEvents = myrouteDTO.getEventList();
-            // richtiges event aud der list suchen
+            // richtiges event aus der list suchen
             for (int i = 0; i < events.size(); i++) {
                 Event e = events.get(i);
                 if (e.getId() == j) {
                     // event gefunden---> in die myroute reintun
                     myEvents.add(e);
                     myrouteDTO.setEventList(myEvents);
+                    myrouteDTO.setAndroidId(Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
                     repository.saveFinalRouteDTO(myrouteDTO, this);
                 }
             }
@@ -131,4 +160,25 @@ public class FinalListActivity extends AppCompatActivity {
         }
 
     }
-}
+
+
+    public void onClickUpdateRouteValidity(View v){
+        RequestManager requestManager = new RequestManager();
+        RepositoryImpl repository = new RepositoryImpl();
+        RouteDTO myrouteDTO = repository.getFinalRouteDTO(this);
+
+            requestManager.updateRoute(this, myrouteDTO.getAndroidId());
+
+        for(int i =0;  i < myrouteDTO.getEventList().size(); i++){
+
+            Long id = myrouteDTO.getEventList().get(i).getId();
+            tableLayout.removeView(findViewById(id.intValue()));
+
+        }
+
+           setFinalEventListUpdate();
+
+        }
+
+    }
+
