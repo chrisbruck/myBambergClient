@@ -10,10 +10,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -56,13 +59,24 @@ public class ResultListActivity extends AppCompatActivity {
         List<Event> eventList = selectionSortByStartTime(routeDTO.getEventList());
         for (int i = 0; i < eventList.size(); i++) {
             TableRow row = (TableRow) View.inflate(this, R.layout.table_row, null);
+
             ((TextView) row.findViewById(R.id.text_veranstaltung)).setText("" + eventList.get(i).getEventname());
             ((TextView) row.findViewById(R.id.text_zeit)).setText("" + eventList.get(i).getStartdate().toString());
+             ImageView picture= (ImageView)row.findViewById(R.id.ImageView);
+
+           loadImage(eventList.get(i).getPictureURL(),picture);
+
             row.setId(eventList.get(i).getId().intValue());
             TableRow row1 = (TableRow) View.inflate(this, R.layout.table_row_line, null);
             tableLayout.addView(row);
             tableLayout.addView(row1);
         }
+    }
+
+    private void loadImage(String url,ImageView view){
+        Picasso.with(this)
+                .load(url)
+                .into(view);
     }
 
     private List<Event> selectionSortByStartTime(List<Event> events) {

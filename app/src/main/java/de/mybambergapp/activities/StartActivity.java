@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 
+import com.squareup.picasso.Picasso;
+
 import de.mybambergapp.R;
 
 public class StartActivity extends AppCompatActivity {
@@ -23,9 +25,11 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        startpicture= (ImageView)findViewById(R.id.imageView1);
+
+        startpicture= (ImageView)findViewById(R.id.startImageView);
         setSupportActionBar(toolbar);
        // setPicture();
+        loadImgae();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -38,7 +42,11 @@ public class StartActivity extends AppCompatActivity {
 
     }
 
-
+   private void loadImgae(){
+    Picasso.with(this)
+            .load("http://192.168.2.102:8080/bamberg_4.jpg")
+            .into(startpicture);
+}
 
 
     public void changingActivity(View view){

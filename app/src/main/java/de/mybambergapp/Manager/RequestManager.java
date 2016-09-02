@@ -274,7 +274,8 @@ public class RequestManager {
     private static JSONObject getJsonObject(UserDTO userDTO) throws JsonProcessingException, JSONException {
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody = objectMapper.writeValueAsString(userDTO);
-        return new JSONObject(requestBody);
+        return new JSONObject(requestBody);// Creates a new JSONObject with name/value mappings from the JSON string.
+
     }
     @NonNull
     private static JSONObject getJsonObject(RouteDTO routeDTO) throws JsonProcessingException, JSONException {

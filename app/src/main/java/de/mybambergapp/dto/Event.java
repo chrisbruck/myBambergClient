@@ -36,6 +36,8 @@ public class Event {
 
     private boolean valid;
 
+    private String pictureURL;
+
 
 
     private SimpleWeather simpleWeather;
@@ -119,5 +121,13 @@ public class Event {
 
     public void setValid(boolean valid) {
         this.valid = valid;
+    }
+
+    public String getPictureURL() {
+        return pictureURL;
+    }
+
+    public void setPictureURL(String pictureURL) {
+        this.pictureURL = pictureURL;
     }
 }

@@ -56,12 +56,12 @@
        </TableLayout>
 
         <ImageView
-            android:layout_width="400dp"
-            android:layout_height="400dp"
-            android:id="@+id/imageView1"
-            android:layout_marginTop="25dp"
-            android:src="@drawable/bamberg_klein"
-            android:layout_gravity="center_horizontal" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/startImageView"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true">
+        </ImageView>
 
 
 
