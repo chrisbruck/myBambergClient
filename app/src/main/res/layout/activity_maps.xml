@@ -12,9 +12,9 @@
 
 
         <TableLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#d7c438">
+            android:background="#ffffff">
 
             <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
@@ -23,12 +23,17 @@
                 android:paddingTop="5dp">
 
                 <TextView
-                    android:id="@+id/header"
-                    android:layout_width="0dp"
-                    android:layout_weight="4"
-                    android:gravity="center_horizontal"
-                    android:text="DETAILS ZUR VERANSTALTUNG"
-                    android:textSize="14dp" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Details zur Veranstaltung"
+                    android:id="@+id/introIntro"
+                    android:typeface="serif"
+
+                    android:textColor="@color/colorAccent"
+                    android:gravity="center_vertical"
+                    android:textSize="25dp" />
+
             </TableRow>
 
             <View
@@ -118,21 +123,28 @@
                 android:layout_height="2dip"
                 android:background="#FF909090" />
 
+
             <TableRow>
 
                 <Button
                     android:id="@+id/BtoList"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_gravity="left|center_horizontal"
+                    android:layout_weight="1"
                     android:text="In meine Liste"
+
+                    android:background="#1aff1a"
                     android:onClick="onClickToMyList" />
 
                 <Button
                     android:id="@+id/Breject"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
+                    android:layout_weight="0.5"
+
+                    android:background="#ff3300"
                     android:text="Verwerfen"
                     android:onClick="onClickReject" />
 

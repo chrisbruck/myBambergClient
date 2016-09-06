@@ -8,7 +8,7 @@
     android:id="@+id/line"
     android:layout_height="2dip"
 
-    android:background="#FF909090">
+    android:background="#050505">
 
 
 

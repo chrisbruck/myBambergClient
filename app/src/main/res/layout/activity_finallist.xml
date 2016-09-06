@@ -19,51 +19,32 @@
                 android:stretchColumns="*"
                 android:shrinkColumns="*"
                 android:id="@+id/table"
-                android:background="#d7c438"
+
                 >
-                <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp">
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Meine persönliche Liste"
+                    android:id="@+id/introIntro"
+                    android:typeface="monospace"
 
-                    <TextView
-                        android:text="VERANSTALTUNG"
-                        android:id="@+id/uuid"
-                        android:layout_width="0dp"
-                        android:layout_weight="3"
-                        android:gravity="center_horizontal"
-                        android:textSize="18dp" />
+                    android:textColor="#298929"
+                    android:gravity="center_vertical"
+                    android:textSize="25dp"
+                    android:layout_gravity="center"
+                    android:singleLine="true" />
 
-                    <TextView
-                        android:text="ZEIT"
-                        android:id="@+id/major"
-                        android:layout_width="0dp"
-                        android:layout_weight="3"
-                        android:gravity="center_horizontal"
-                        android:textSize="18dp" />
-
-
-
-
-                </TableRow>
                 <View
                     android:id="@+id/line_5"
                     android:layout_height="2dip"
                     android:background="#FF909090" />
-
                 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp">
-
-
-
-
-
-
-
+                    android:paddingTop="1dp"
+                    android:paddingBottom="1dp">
 
 
                     <Button
@@ -80,45 +61,37 @@
                         android:layout_gravity="right"
                         android:onClick="onClickToResultList"
                         android:id="@+id/BtoResultList" />
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="SAVE  MY LIST"
-                        android:layout_gravity="right"
-                        android:onClick="onClickPostAndSaveFinalRoute"
-                        android:id="@+id/BsaveList" />
+
+
+                </TableRow>
+
+                <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:paddingTop="1dp"
+                    android:paddingBottom="1dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="UPDATE MY LIST"
-                        android:layout_gravity="right"
+                        android:layout_centerHorizontal="true"
                         android:onClick="onClickUpdateRouteValidity"
                         android:id="@+id/BupdateList" />
 
-
-
-
-
-
-
-
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SAVE  MY LIST"
+                        android:layout_centerHorizontal="true"
+                        android:onClick="onClickPostAndSaveFinalRoute"
+                        android:id="@+id/BsaveList" />
                 </TableRow>
+
+
 
             </TableLayout>
         </ScrollView>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     </LinearLayout>

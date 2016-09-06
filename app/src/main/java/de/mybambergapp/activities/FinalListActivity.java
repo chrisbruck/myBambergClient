@@ -1,14 +1,18 @@
 package de.mybambergapp.activities;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,6 +34,7 @@ public class FinalListActivity extends AppCompatActivity {
     private TableLayout tableLayout;
     List<Event> events;
     List<Event> myEvents;
+    private int resultlist;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,12 +71,37 @@ public class FinalListActivity extends AppCompatActivity {
             TableRow row = (TableRow) View.inflate(this, R.layout.table_row, null);
             ((TextView) row.findViewById(R.id.text_veranstaltung)).setText("" + eventList.get(i).getEventname());
             ((TextView) row.findViewById(R.id.text_zeit)).setText("" + eventList.get(i).getStartdate().toString());
+
+          //  ImageView picture= (ImageView)row.findViewById(R.id.ImageView);
+
+           // loadImage(eventList.get(i).getPictureURL(),picture);
+
+
+            if(i%2==0 ){
+
+
+            int grey = R.color.grey;
+            row.setBackgroundColor(getResources().getColor(grey));
+            }
+
+
             row.setId(eventList.get(i).getId().intValue());
-            TableRow row1 = (TableRow) View.inflate(this, R.layout.table_row_line, null);
+
+         //   TableRow row1 = (TableRow) View.inflate(this, R.layout.table_row_line, null);
+
             tableLayout.addView(row);
-            tableLayout.addView(row1);
+          //  tableLayout.addView(row1);
         }
     }
+
+
+
+    private void loadImage(String url,ImageView view){
+        Picasso.with(this)
+                .load(url)
+                .into(view);
+    }
+
     private void setFinalEventListUpdate() {
 
 

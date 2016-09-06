@@ -16,43 +16,54 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/linearLayout">
+        android:id="@+id/linearLayout"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Eine App die dir persoenliche Empfehlungen fure deine Freizeit in Bamberg gibt. Fuelle das Formular aus und du kannst gleich loslegen!"
+            android:text="Willkommen bei der Freizeitapp für Bamberg!"
+            android:id="@+id/introIntro"
+            android:typeface="serif"
+
+            android:textColor="@color/colorAccent"
+            android:gravity="center_vertical"
+            android:textSize="25dp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Eine App die dir persönliche Empfehlungen für deine Freizeit in Bamberg gibt. Fuelle das Formular aus und du kannst gleich loslegen!"
             android:id="@+id/introText"
+            android:typeface="serif"
             android:layout_gravity="center_horizontal" />
 
 
         <TableLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#d7c438">
-        <TableRow>
+
+            >
+
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Zum Formular"
                 android:id="@+id/Btosearchactivity"
+
                 android:onClick="changingActivity"
                 android:layout_centerHorizontal="true" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Zu meiner Liste"
-            android:id="@+id/BtoFinalList"
-            android:onClick="onClickToFinalList"
-            android:layout_gravity="right" />
 
 
 
 
-</TableRow>
+
+
        </TableLayout>
 
         <ImageView
@@ -63,7 +74,14 @@
             android:layout_centerHorizontal="true">
         </ImageView>
 
-
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Zu meiner Liste"
+            android:id="@+id/BtoFinalList"
+            android:onClick="onClickToFinalList"
+            android:layout_centerHorizontal="true"
+            />
 
 
     </LinearLayout>

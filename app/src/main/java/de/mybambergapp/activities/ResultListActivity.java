@@ -62,6 +62,7 @@ public class ResultListActivity extends AppCompatActivity {
 
             ((TextView) row.findViewById(R.id.text_veranstaltung)).setText("" + eventList.get(i).getEventname());
             ((TextView) row.findViewById(R.id.text_zeit)).setText("" + eventList.get(i).getStartdate().toString());
+
              ImageView picture= (ImageView)row.findViewById(R.id.ImageView);
 
            loadImage(eventList.get(i).getPictureURL(),picture);

@@ -4,16 +4,38 @@
     android:layout_height="match_parent"
     android:paddingTop="5dp"
     android:paddingBottom="5dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
     android:onClick="startMapView">
+<LinearLayout
+    android:orientation="vertical">
     <TextView
         android:text="VERANSTALTUNG"
+        android:layout_height="wrap_content"
         android:id="@+id/text_veranstaltung"
-        android:layout_width="0dp"
-        android:layout_weight="3"
-        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:typeface="serif"
+        android:textColor="@color/colorAccent"
+        android:gravity="center_vertical"
+        android:textSize="25dp"
+
+        />
+
+
+    <TextView
+
+        android:text="ZEIT"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_zeit"
+        android:layout_width="match_parent"
+        android:typeface="serif"
+        android:textColor="@color/deepgreenblack"
+
+        android:gravity="center_vertical"
         android:textSize="18dp"
 
         />
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,21 +44,8 @@
         android:layout_centerHorizontal="true">
     </ImageView>
 
-    <TextView
 
-        android:text="ZEIT"
-        android:id="@+id/text_zeit"
-        android:layout_width="0dp"
-        android:layout_weight="3"
-        android:gravity="center_horizontal"
-        android:textSize="18dp"
-
-        />
-
-
-
-
-
+</LinearLayout>
 
 
 </TableRow>

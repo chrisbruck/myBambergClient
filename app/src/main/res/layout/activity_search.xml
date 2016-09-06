@@ -11,15 +11,21 @@
     android:layout_height="match_parent"
     android:weightSum="1">
 
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Suche aus den unteren Kategorien die aus die zu dir passen. Anschliessend  kannst dir die Tage und die Uhrzeit deiner Aktivitaeten aussuchen! dann gehts schon los!"
-        android:id="@+id/TVintroText"
-        android:layout_gravity="center_horizontal"
-        android:background="#e24949"
-        android:backgroundTint="#ffffff" />
+        android:id="@+id/introIntro"
+        android:typeface="serif"
+        android:text="Suche aus den unteren Kategorien die dich interessieren und zu denen du Freizeittipps bekommen willst. Anschliessend  kannst dir den Tag und die Uhrzeit aussuchen für die du Freizeitangebote bekommen willst."
+
+
+        android:textColor="@color/deepgreenblack"
+        android:gravity="center_vertical"
+        android:textSize="13dp"
+        android:layout_gravity="center_horizontal" />
 
 
 
@@ -34,7 +40,7 @@
             android:checked="false"
             android:text="@string/txt_kirche_kloster"
             android:layout_weight="1"
-            android:background="#f20bbc"
+            android:background="#ffffff"
             android:textColor="#080808"
             android:padding="18dip"
 
@@ -47,7 +53,7 @@
             android:text="@string/txt_museum"
             android:checked="false"
             android:layout_weight="1"
-            android:background="#38d7d7"
+            android:background="#ffffff"
             android:textColor="#000000"
             android:padding="18dip"
             android:gravity="center"/>
@@ -64,7 +70,7 @@
             android:checked="false"
             android:text="@string/txt_musikfest"
             android:layout_weight="1"
-            android:background="#6877e9"
+            android:background="#ffffff"
             android:textColor="#060606"
             android:padding="18dip"
 
@@ -77,7 +83,7 @@
             android:checked="false"
             android:text="@string/txt_straßenfest"
             android:layout_weight="1"
-            android:background="#d7c438"
+            android:background="#ffffff"
             android:textColor="#000000"
             android:padding="18dip"
             android:gravity="center"/>
@@ -93,7 +99,7 @@
             android:text="@string/txt_nachtleben"
             android:checked="false"
             android:layout_weight="1"
-            android:background="#ca7610"
+            android:background="#ffffff"
             android:textColor="#080808"
             android:padding="18dip"
 
@@ -106,7 +112,7 @@
             android:checked="false"
             android:text="@string/txt_theater"
             android:layout_weight="1"
-            android:background="#c113dc"
+            android:background="#ffffff"
             android:textColor="#000000"
             android:padding="18dip"
             android:gravity="center"/>
@@ -123,7 +129,7 @@
             android:text="@string/txt_kunst"
 
             android:layout_weight="1"
-            android:background="#cc1d11"
+            android:background="#ffffff"
             android:textColor="#050505"
             android:padding="18dip"
 
@@ -136,7 +142,7 @@
             android:checked="false"
             android:text="@string/txt_univeranstaltung"
             android:layout_weight="1"
-            android:background="#507128"
+            android:background="#fefffd"
             android:textColor="#000000"
             android:padding="18dip"
             android:gravity="center"/>
@@ -153,7 +159,7 @@
             android:text="@string/txt_informationsveranstaltung"
 
             android:layout_weight="1"
-            android:background="#11cc1e"
+            android:background="#ffffff"
             android:textColor="#080808"
             android:padding="18dip"
 
@@ -166,7 +172,7 @@
             android:checked="false"
             android:text="@string/txt_sport"
             android:layout_weight="1"
-            android:background="#e7e012"
+            android:background="#ffffff"
             android:textColor="#000000"
             android:padding="18dip"
             android:gravity="center"/>
@@ -257,28 +263,25 @@
         android:layout_height="wrap_content"
         android:text="pick_date"
         android:onClick="showDatePickerDialog" />-->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Gib die Startzeit die Endzeit und den Tag an dem du durch Bamberg gelotst werden willst.!"
-        android:id="@+id/TVpickerText"
-        android:layout_gravity="center_horizontal"
-        android:background="#ffffff"
-        android:backgroundTint="#ffffff" />
 
     <TextView
         android:id="@+id/tv1"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:textSize="20dp"
-        android:textColor="#d35b3a"
+        android:layout_width="match_parent"
+
+        android:textSize="15dp"
+        android:textColor="#080808"
+        android:typeface="serif"
+
+        android:gravity="center"
+
         />
     <!--This example works only timePickerMode=spinner only, not in clock mode-->
     <TimePicker
         android:id="@+id/tp1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#ffffff"
         android:layout_below="@id/tv1"
         android:timePickerMode="spinner"
         />
@@ -286,18 +289,24 @@
 
     <TextView
         android:id="@+id/tv2"
+
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:textSize="20dp"
-        android:textColor="#3A69D3"
+        android:layout_width="match_parent"
+        android:textSize="15dp"
+        android:textColor="#080808"
+        android:typeface="serif"
+
+        android:gravity="center"
+
         />
     <!--This example works only timePickerMode=spinner only, not in clock mode-->
     <TimePicker
         android:id="@+id/tp2"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv2"
         android:timePickerMode="spinner"
+        android:background="#ffffff"
 
         />
 
@@ -305,39 +314,45 @@
     <TextView
         android:id="@+id/tvdatepicker"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:textSize="20dp"
-        android:textColor="#CF446F"
+        android:layout_width="match_parent"
+        android:textSize="15dp"
+        android:textColor="#080808"
+        android:typeface="serif"
+
+        android:gravity="center"
+
 
         />
     <DatePicker
         android:id="@+id/dp"
-        android:layout_width="wrap_content"
+
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:datePickerMode="spinner"
         android:calendarViewShown="false"
+        android:background="#ffffff"
         android:layout_below="@id/tvdatepicker"/>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Post and Save Settings"
+        android:text="Speichere Einstellungen"
         android:id="@+id/BpostAndSaveUserSettings"
         android:layout_gravity="center_horizontal"
         android:onClick="onClickPostAndSaveUserSettings" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="GET MY ROUTE"
+        android:text="Suche Vernastaltungen"
         android:id="@+id/BgetRoute"
         android:layout_gravity="center_horizontal"
         android:onClick="onClickGetRoute" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SharedPref"
+        android:text="Zur Angebotsliste"
         android:id="@+id/BgetSharedPrefs"
         android:layout_gravity="right"
         android:onClick="onClickGetSharedPrefs" />
@@ -346,8 +361,13 @@
         android:id="@+id/tvDisplayAnswer"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:textSize="10dp"
-        android:textColor="#CF446F"/>
+        android:textSize="15dp"
+        android:textColor="#080808"
+        android:typeface="serif"
+
+        android:gravity="center"
+
+        />
 
 
 </LinearLayout>
