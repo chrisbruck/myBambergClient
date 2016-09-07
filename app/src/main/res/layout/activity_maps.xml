@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:background="#ffffff">
 
-            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+<!--            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="5dp"
@@ -34,12 +34,11 @@
                     android:gravity="center_vertical"
                     android:textSize="25dp" />
 
-            </TableRow>
+            </TableRow>-->
 
-            <View
-                android:id="@+id/line_2"
-                android:layout_height="2dip"
-                android:background="#FF909090" />
+   <ScrollView>
+
+   </ScrollView>
 
 
             <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
@@ -54,7 +53,9 @@
                     android:layout_weight="2"
                     android:gravity="center_horizontal"
                     android:text=""
-                    android:textSize="12dp" />
+                    android:typeface="serif"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18dp" />
             </TableRow>
 
             <View
@@ -74,11 +75,49 @@
                     android:layout_weight="2"
                     android:gravity="center_horizontal"
                     android:text=""
+                    android:typeface="serif"
                     android:textSize="12dp" />
             </TableRow>
 
             <View
                 android:id="@+id/line_4"
+                android:layout_height="2dip"
+                android:background="#FF909090" />
+            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp">
+
+                <TextView
+                    android:id="@+id/eventaddress"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:gravity="center_horizontal"
+                    android:text=""
+                    android:textSize="12dp" />
+            </TableRow>
+
+            <View
+                android:id="@+id/line_14"
+                android:layout_height="2dip"
+                android:background="#FF909090" />
+            <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp">
+
+                <TextView
+                    android:id="@+id/eventdescription"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:gravity="center_horizontal"
+                    android:text=""
+                    android:textSize="12dp" />
+            </TableRow>
+            <View
+                android:id="@+id/line_8"
                 android:layout_height="2dip"
                 android:background="#FF909090" />
 
@@ -89,7 +128,7 @@
                 android:paddingTop="5dp">
 
                 <TextView
-                    android:id="@+id/eventaddress"
+                    android:id="@+id/eventtags"
                     android:layout_width="0dp"
                     android:layout_weight="2"
                     android:gravity="center_horizontal"
@@ -134,7 +173,7 @@
                     android:layout_weight="1"
                     android:text="In meine Liste"
 
-                    android:background="#1aff1a"
+                    android:background="#99ff99"
                     android:onClick="onClickToMyList" />
 
                 <Button
@@ -142,9 +181,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:layout_weight="0.5"
+                    android:layout_weight="1"
 
-                    android:background="#ff3300"
+                    android:background="#ff8566"
                     android:text="Verwerfen"
                     android:onClick="onClickReject" />
 

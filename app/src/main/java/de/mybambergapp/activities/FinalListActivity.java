@@ -72,29 +72,16 @@ public class FinalListActivity extends AppCompatActivity {
             ((TextView) row.findViewById(R.id.text_veranstaltung)).setText("" + eventList.get(i).getEventname());
             ((TextView) row.findViewById(R.id.text_zeit)).setText("" + eventList.get(i).getStartdate().toString());
 
-          //  ImageView picture= (ImageView)row.findViewById(R.id.ImageView);
+           ImageView picture= (ImageView)row.findViewById(R.id.ImageView);
 
-           // loadImage(eventList.get(i).getPictureURL(),picture);
-
-
-            if(i%2==0 ){
-
-
-            int grey = R.color.grey;
-            row.setBackgroundColor(getResources().getColor(grey));
-            }
-
+            loadImage(eventList.get(i).getPictureURL(),picture);
 
             row.setId(eventList.get(i).getId().intValue());
 
-         //   TableRow row1 = (TableRow) View.inflate(this, R.layout.table_row_line, null);
-
             tableLayout.addView(row);
-          //  tableLayout.addView(row1);
+
         }
     }
-
-
 
     private void loadImage(String url,ImageView view){
         Picasso.with(this)
@@ -104,27 +91,34 @@ public class FinalListActivity extends AppCompatActivity {
 
     private void setFinalEventListUpdate() {
 
-
         RepositoryImpl repository = new RepositoryImpl();
         List<Event> eventList = (repository.getFinalRouteDTO(this).getEventList());
         for (int i = 0; i < eventList.size(); i++) {
-            TableRow row = (TableRow) View.inflate(this, R.layout.table_row_update, null);
+            TableRow row = (TableRow) View.inflate(this, R.layout.table_row, null);
             ((TextView) row.findViewById(R.id.text_veranstaltung)).setText("" + eventList.get(i).getEventname());
             ((TextView) row.findViewById(R.id.text_zeit)).setText("" + eventList.get(i).getStartdate().toString());
 
+            ImageView picture= (ImageView)row.findViewById(R.id.ImageView);
+            loadImage(eventList.get(i).getPictureURL(),picture);
+            int myColor;
             if(eventList.get(i).isValid()){
-                ((TextView) row.findViewById(R.id.text_valid)).setText("gültig");
+             myColor = R.color.green;
+                ((TextView) row.findViewById(R.id.text_valid)).setText("GÜLTIG ! ");
+                ((TextView) row.findViewById(R.id.text_valid)).setBackgroundColor(getResources().getColor(myColor));
 
-            }else{
+
+           }else{
+                myColor= R.color.red;
                 ((TextView) row.findViewById(R.id.text_valid)).setText(" NOT !");
+                ((TextView) row.findViewById(R.id.text_valid)).setBackgroundColor(getResources().getColor(myColor));
 
             }
 
-
+           // row.setBackgroundColor(getResources().getColor(myColor));
             row.setId(eventList.get(i).getId().intValue());
-            TableRow row1 = (TableRow) View.inflate(this, R.layout.table_row_line, null);
+           //TableRow row1 = (TableRow) View.inflate(this, R.layout.table_row_line, null);
             tableLayout.addView(row);
-            tableLayout.addView(row1);
+           // tableLayout.addView(row1);
         }
     }
 
@@ -181,6 +175,7 @@ public class FinalListActivity extends AppCompatActivity {
         RequestManager requestManager = new RequestManager();
         RepositoryImpl repository = new RepositoryImpl();
         RouteDTO myrouteDTO = repository.getFinalRouteDTO(this);
+        myrouteDTO.setAndroidId(Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
         try {
 
 
@@ -197,7 +192,7 @@ public class FinalListActivity extends AppCompatActivity {
         RepositoryImpl repository = new RepositoryImpl();
         RouteDTO myrouteDTO = repository.getFinalRouteDTO(this);
 
-            requestManager.updateRoute(this, myrouteDTO.getAndroidId());
+            requestManager.updateRoute(this, Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
 
         for(int i =0;  i < myrouteDTO.getEventList().size(); i++){
 

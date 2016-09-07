@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:orientation="vertical"
@@ -8,10 +10,100 @@
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true">
+
+
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Meine persönliche Liste"
+                    android:id="@+id/introIntro"
+                    android:typeface="serif"
+
+                    android:textColor="#298929"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+
+                    android:textSize="25dp"
+                    android:layout_gravity="center"
+                    android:singleLine="true" />
+
+<!--                <View
+                    android:id="@+id/line_5"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dip"
+                    android:background="#FF909090" />-->
+                <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="1dp"
+                    android:paddingBottom="1dp">
+
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Letzten Eintrag löschen"
+                        android:id="@+id/BdeleteLastEvent"
+                        android:layout_weight="1"
+                        android:layout_gravity="start"
+                        android:background="#ccccff"
+                        android:onClick="onClickDeleteEvent"
+                      />
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Zur Auswahl zurück"
+                        android:layout_gravity="end"
+                        android:layout_weight="1"
+                        android:background="#ffe6ff"
+                        android:onClick="onClickToResultList"
+                        android:id="@+id/BtoResultList"
+                    />
+
+
+                </TableRow>
+
+
+        <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+            android:paddingTop="1dp"
+            android:paddingBottom="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="LISTE UPDATEN"
+                android:layout_weight="1"
+
+                android:background="#ccffff"
+                android:onClick="onClickUpdateRouteValidity"
+                android:id="@+id/BupdateList" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:text="LISTE SPEICHERN"
+                android:layout_centerHorizontal="true"
+                android:layout_weight="1"
+                android:background="#d9ffb3"
+                android:onClick="onClickPostAndSaveFinalRoute"
+                android:id="@+id/BsaveList" />
+        </TableRow>
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="0dp">
+            android:layout_marginTop="0dp"
+            android:fillViewport="false">
+
+
+
 
             <TableLayout
                 android:layout_width="wrap_content"
@@ -20,79 +112,21 @@
                 android:shrinkColumns="*"
                 android:id="@+id/table"
 
+
+
+
                 >
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Meine persönliche Liste"
-                    android:id="@+id/introIntro"
-                    android:typeface="monospace"
-
-                    android:textColor="#298929"
-                    android:gravity="center_vertical"
-                    android:textSize="25dp"
-                    android:layout_gravity="center"
-                    android:singleLine="true" />
-
-                <View
-                    android:id="@+id/line_5"
-                    android:layout_height="2dip"
-                    android:background="#FF909090" />
-                <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingTop="1dp"
-                    android:paddingBottom="1dp">
-
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Letzten Eintrag löschen"
-                        android:id="@+id/BdeleteLastEvent"
-                        android:onClick="onClickDeleteEvent"
-                        android:layout_centerHorizontal="true" />
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Zur Auswahl zurück"
-                        android:layout_gravity="right"
-                        android:onClick="onClickToResultList"
-                        android:id="@+id/BtoResultList" />
-
-
-                </TableRow>
-
-                <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:paddingTop="1dp"
-                    android:paddingBottom="1dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="UPDATE MY LIST"
-                        android:layout_centerHorizontal="true"
-                        android:onClick="onClickUpdateRouteValidity"
-                        android:id="@+id/BupdateList" />
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="SAVE  MY LIST"
-                        android:layout_centerHorizontal="true"
-                        android:onClick="onClickPostAndSaveFinalRoute"
-                        android:id="@+id/BsaveList" />
-                </TableRow>
-
 
 
             </TableLayout>
+
         </ScrollView>
 
 
     </LinearLayout>
-</RelativeLayout>
+
+
+
+
+
+</LinearLayout>

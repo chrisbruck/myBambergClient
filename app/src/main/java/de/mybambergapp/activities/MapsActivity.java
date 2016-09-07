@@ -43,6 +43,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String startDate = null;
     String lastaddress = null;
     String id = null;
+    String tags= null;
     // List<LatLng> path= null;
 
 
@@ -57,6 +58,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         startDate = i.getStringExtra("startdate");
         lastaddress = i.getStringExtra("lastaddress");
         id = i.getStringExtra("id");
+        tags= i.getStringExtra("tags");
 
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.   ++++  1   +++++
@@ -74,6 +76,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         textViewAddress.setText(location);
         TextView textViewDate = (TextView) findViewById(R.id.eventstartdate);
         textViewDate.setText(startDate);
+
+        TextView textViewTags = (TextView) findViewById(R.id.eventtags);
+        textViewTags.setText(tags);
+
+        TextView textViewDescription = (TextView) findViewById(R.id.eventdescription);
+        textViewDescription.setText(eventdescription);
+
         TextView textViewPathDetails = (TextView) findViewById(R.id.pathdetails);
         textViewPathDetails.setText(RequestManager.distance);
     }
@@ -145,7 +154,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void onClickToMyList(View v) {
         Intent i = new Intent(this, FinalListActivity.class);
-        lastaddress= location;
+       // lastaddress= location;
         i.putExtra("id", id);
         startActivity(i);
 

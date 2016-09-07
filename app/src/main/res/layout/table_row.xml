@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:paddingTop="5dp"
     android:paddingBottom="5dp"
     android:paddingLeft="5dp"
@@ -37,12 +37,37 @@
         />
 
     <ImageView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ImageView"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true">
     </ImageView>
+    <TextView
+
+        android:text=""
+        android:id="@+id/text_valid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textSize="16dp"
+
+        />
+
+
+    <View
+        android:layout_width="match_parent"
+
+        android:paddingTop="1dp"
+        android:paddingBottom="1dp"
+        android:onClick=""
+        android:id="@+id/line"
+        android:layout_height="2dip"
+
+        android:background="#050505"
+        >
+
+    </View>
 
 
 </LinearLayout>

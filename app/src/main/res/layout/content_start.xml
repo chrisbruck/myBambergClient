@@ -27,11 +27,14 @@
             android:text="Willkommen bei der Freizeitapp für Bamberg!"
             android:id="@+id/introIntro"
             android:typeface="serif"
+            android:textSize="25dp"
 
             android:textColor="@color/colorAccent"
-            android:gravity="center_vertical"
-            android:textSize="25dp"
-            android:layout_gravity="center_horizontal" />
+
+
+            android:gravity="center"
+            android:includeFontPadding="false"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -55,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:text="Zum Formular"
                 android:id="@+id/Btosearchactivity"
+                android:background="#ffb3d9"
 
                 android:onClick="changingActivity"
                 android:layout_centerHorizontal="true" />
@@ -79,6 +83,7 @@
             android:layout_height="wrap_content"
             android:text="Zu meiner Liste"
             android:id="@+id/BtoFinalList"
+            android:background="#d9ffb3"
             android:onClick="onClickToFinalList"
             android:layout_centerHorizontal="true"
             />

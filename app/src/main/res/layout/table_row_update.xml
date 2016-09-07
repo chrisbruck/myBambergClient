@@ -26,16 +26,7 @@
 
         />
 
-    <TextView
 
-        android:text="VALID"
-        android:id="@+id/text_valid"
-        android:layout_width="0dp"
-        android:layout_weight="3"
-        android:gravity="center_horizontal"
-        android:textSize="18dp"
-
-        />
 
 
 

@@ -26,6 +26,8 @@ import de.mybambergapp.R;
 import de.mybambergapp.dto.Event;
 import de.mybambergapp.dto.RouteDTO;
 import de.mybambergapp.entities.Location;
+import de.mybambergapp.entities.Tag;
+import de.mybambergapp.manager.Repository;
 import de.mybambergapp.manager.RepositoryImpl;
 
 /**
@@ -68,9 +70,9 @@ public class ResultListActivity extends AppCompatActivity {
            loadImage(eventList.get(i).getPictureURL(),picture);
 
             row.setId(eventList.get(i).getId().intValue());
-            TableRow row1 = (TableRow) View.inflate(this, R.layout.table_row_line, null);
+           // TableRow row1 = (TableRow) View.inflate(this, R.layout.table_row_line, null);
             tableLayout.addView(row);
-            tableLayout.addView(row1);
+           // tableLayout.addView(row1);
         }
     }
 
@@ -97,9 +99,22 @@ public class ResultListActivity extends AppCompatActivity {
     }
 
 
+
+    private String concatString(List<Tag> tagList){
+        String toReturn= null;
+        for (Tag tag:tagList
+             ) {
+        toReturn=    toReturn+","+tag;
+        }
+
+
+        return toReturn;
+
+    }
+
     public void startMapView(View v) {
         int id = v.getId();
-        String lastaddress = "Bamberg Luitpoldstraße 21";
+        String lastaddress = getLastAddress();
         String taglist = " gratis, familienfreundlich, supergeil";
         for (int i = 0; i < events.size(); i++) {
             Event e = events.get(i);
@@ -107,10 +122,17 @@ public class ResultListActivity extends AppCompatActivity {
                 Location l = e.getLocation();
 
                 String eventname = e.getEventname();
-                String description = e.getDescription();
+               // String description = e.getDescription();
+                String description = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.";
                 String startdate = e.getStartdate().toString();
+              List<Tag> tagList=  e.getTaglist();
 
+            //   String tags = concatString(tagList);
+                String tags = " gratis, geil, draussen, einmalig ";
                 String address = l.getLocationaddress();
+
+
+
                 // String address =  events.get(id).getLocation().getLocationaddress();
                 // Log.d("raw-intent-fun", "id ist: "+id+ " !"+ "Adresse ist :"+ events.get(id).getLocation().getLocationaddress());
 
@@ -122,6 +144,9 @@ public class ResultListActivity extends AppCompatActivity {
                 j.putExtra("eventname", eventname);
                 j.putExtra("description", description);
                 j.putExtra("startdate", startdate);
+
+                j.putExtra("tags",tags);
+
                 j.putExtra("lastaddress", lastaddress);
                 // j.putExtra("taglist", taglist);
 
@@ -130,9 +155,30 @@ public class ResultListActivity extends AppCompatActivity {
             }
         }
 
-
-        // System.out.println(  toDisplay.getEventname().toString());
     }
 
-}
+
+
+
+    private String getLastAddress(){
+        String answer = " Bamberg Trimbergstr 12";
+        RepositoryImpl myrepo = new RepositoryImpl();
+        RouteDTO myroute = new RouteDTO();
+         RouteDTO myRoute =myrepo.getFinalRouteDTO(this);
+      int last=  myRoute.getEventList().size();
+
+        if(last!=0){
+           answer=  myRoute.getEventList().get(last-1).getLocation().getLocationaddress();
+
+        }
+      else {
+
+        }
+        return  answer;
+
+    }
+
+    }
+
+
 

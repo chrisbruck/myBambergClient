@@ -339,6 +339,7 @@
         android:text="Speichere Einstellungen"
         android:id="@+id/BpostAndSaveUserSettings"
         android:layout_gravity="center_horizontal"
+        android:background="#b3ffff"
         android:onClick="onClickPostAndSaveUserSettings" />
 
     <Button
@@ -346,6 +347,7 @@
         android:layout_height="wrap_content"
         android:text="Suche Vernastaltungen"
         android:id="@+id/BgetRoute"
+        android:background="#ffb3d9"
         android:layout_gravity="center_horizontal"
         android:onClick="onClickGetRoute" />
 
@@ -355,6 +357,7 @@
         android:text="Zur Angebotsliste"
         android:id="@+id/BgetSharedPrefs"
         android:layout_gravity="right"
+        android:background="#d9ffb3"
         android:onClick="onClickGetSharedPrefs" />
 
     <TextView
