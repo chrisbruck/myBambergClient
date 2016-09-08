@@ -161,15 +161,13 @@ public class ResultListActivity extends AppCompatActivity {
 
 
     private String getLastAddress(){
-        String answer = " Bamberg Trimbergstr 12";
+        String answer = " Bamberg Ludwigstraße 2";
         RepositoryImpl myrepo = new RepositoryImpl();
         RouteDTO myroute = new RouteDTO();
          RouteDTO myRoute =myrepo.getFinalRouteDTO(this);
       int last=  myRoute.getEventList().size();
-
         if(last!=0){
            answer=  myRoute.getEventList().get(last-1).getLocation().getLocationaddress();
-
         }
       else {
 
