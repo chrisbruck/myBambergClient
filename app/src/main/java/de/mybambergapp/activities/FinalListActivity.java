@@ -1,7 +1,6 @@
 package de.mybambergapp.activities;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -21,9 +19,7 @@ import java.util.List;
 import de.mybambergapp.R;
 import de.mybambergapp.dto.Event;
 import de.mybambergapp.dto.RouteDTO;
-import de.mybambergapp.entities.Location;
 import de.mybambergapp.exceptions.MyWrongJsonException;
-import de.mybambergapp.manager.Repository;
 import de.mybambergapp.manager.RepositoryImpl;
 import de.mybambergapp.manager.RequestManager;
 
@@ -33,7 +29,7 @@ import de.mybambergapp.manager.RequestManager;
 public class FinalListActivity extends AppCompatActivity {
     private TableLayout tableLayout;
     List<Event> events;
-    List<Event> myEvents;
+   // List<Event> myEvents;
     private int resultlist;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +40,22 @@ public class FinalListActivity extends AppCompatActivity {
         String id = i.getStringExtra("id");
         if (i.getStringExtra("id") != null) {
             int idEvent = Integer.valueOf(id);
-            setEventToFinalList(idEvent);
-            setFinalEventList();
-        }else{
-            setFinalEventList();
+            try {
+                setEventToFinalList(idEvent);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        try {
+            addEventToView();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+
+
 
 
     private void fillPref() {
@@ -63,7 +69,7 @@ public class FinalListActivity extends AppCompatActivity {
     }
 
 
-    private void setFinalEventList() {
+    private void addEventToView() throws IOException {
         //  TableLayout table = (TableLayout)findViewById(R.id.the_table);
         RepositoryImpl repository = new RepositoryImpl();
         List<Event> eventList = (repository.getFinalRouteDTO(this).getEventList());
@@ -89,7 +95,7 @@ public class FinalListActivity extends AppCompatActivity {
                 .into(view);
     }
 
-    private void setFinalEventListUpdate() {
+    private void setFinalEventListUpdate() throws IOException {
 
         RepositoryImpl repository = new RepositoryImpl();
         List<Event> eventList = (repository.getFinalRouteDTO(this).getEventList());
@@ -123,47 +129,54 @@ public class FinalListActivity extends AppCompatActivity {
     }
 
 
-    private void setEventToFinalList(int j) {
+    private void setEventToFinalList(int eventIdToFinalList) throws IOException {
         RepositoryImpl repository = new RepositoryImpl();
         RouteDTO routeDTO = repository.getRouteDTO(this);
-        RouteDTO myrouteDTO = new RouteDTO();
-           myrouteDTO = repository.getFinalRouteDTO(this);
+
+        RouteDTO   myrouteDTO = repository.getFinalRouteDTO(this);
         if(myrouteDTO== null){
             fillPref();
         }
             events = routeDTO.getEventList();
-            myEvents = myrouteDTO.getEventList();
+            List<Event> eventList = routeDTO.getEventList();
             // richtiges event aus der list suchen
-            for (int i = 0; i < events.size(); i++) {
-                Event e = events.get(i);
-                if (e.getId() == j) {
+
+             for(Event event:eventList)   {
+                 if (event.getId() == eventIdToFinalList) {
                     // event gefunden---> in die myroute reintun
-                    myEvents.add(e);
-                    myrouteDTO.setEventList(myEvents);
+                    //eventList.add(event);
+                     List<Event> myRouteEventList = myrouteDTO.getEventList();
+                     if(myRouteEventList == null){
+                         myRouteEventList = new ArrayList<Event>();
+                         myrouteDTO.setEventList(myRouteEventList);
+                     }
+                     myRouteEventList.add(event);
+
+
                     myrouteDTO.setAndroidId(Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
                     repository.saveFinalRouteDTO(myrouteDTO, this);
                 }
             }
     }
 
-    private Long deleteLastEvent(){
+    private Long deleteLastEvent() throws IOException {
         RepositoryImpl repository = new RepositoryImpl();
       RouteDTO  myrouteDTO = repository.getFinalRouteDTO(this);
       int size =  myrouteDTO.getEventList().size();
-          myEvents= myrouteDTO.getEventList();
-          Long idEvent=  myEvents.get(size-1).getId();
-          myEvents.remove(size-1);
-          myrouteDTO.setEventList(myEvents);
+          List<Event> eventList= myrouteDTO.getEventList();
+          Long idEvent=  eventList.get(size-1).getId();
+          eventList.remove(size-1);
+          myrouteDTO.setEventList(eventList);
           repository.saveFinalRouteDTO(myrouteDTO,this);
           return idEvent;
     }
 
 
-    public void onClickDeleteEvent(View v){
+    public void onClickDeleteEvent(View v) throws IOException {
       Long id =  deleteLastEvent();
        // myEvents= null;
         tableLayout.removeView(findViewById(id.intValue()));
-        //setFinalEventList();
+        //addEventToView();
     }
     public void onClickToResultList (View v){
         Intent i = new Intent(this, ResultListActivity.class);
@@ -171,7 +184,7 @@ public class FinalListActivity extends AppCompatActivity {
 
     }
 
-    public void onClickPostAndSaveFinalRoute(View v) {
+    public void onClickPostAndSaveFinalRoute(View v) throws IOException {
         RequestManager requestManager = new RequestManager();
         RepositoryImpl repository = new RepositoryImpl();
         RouteDTO myrouteDTO = repository.getFinalRouteDTO(this);
@@ -187,7 +200,7 @@ public class FinalListActivity extends AppCompatActivity {
     }
 
 
-    public void onClickUpdateRouteValidity(View v){
+    public void onClickUpdateRouteValidity(View v) throws IOException {
         RequestManager requestManager = new RequestManager();
         RepositoryImpl repository = new RepositoryImpl();
         RouteDTO myrouteDTO = repository.getFinalRouteDTO(this);

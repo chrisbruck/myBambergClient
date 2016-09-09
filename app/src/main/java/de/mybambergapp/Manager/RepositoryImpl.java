@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,8 @@ import de.mybambergapp.dto.UserDTO;
  */
 public class RepositoryImpl implements Repository {
 
+
+    public static final String FINAL_ROUTE = "finalRoute";
 
     @Override
     public void saveRouteDTO(RouteDTO routeDTO, Context context) {
@@ -42,19 +45,22 @@ public class RepositoryImpl implements Repository {
 
     @Override
     public RouteDTO getRouteDTO(Context context) {
-        RouteDTO routeDTO = new RouteDTO();
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+
+
         String events = sharedPreferences.getString("actualRoute", null);
 
         try {
             RouteDTO routeDTO1 = getRouteDTO(events);
 
-            routeDTO = routeDTO1;
-            return routeDTO;
+
+            return routeDTO1;
         } catch (java.io.IOException e) {
             e.getMessage();
         }
-        return routeDTO;
+        return null;
     }
 
     public void saveFinalRouteDTO(RouteDTO routeDTO,Context context){
@@ -62,7 +68,7 @@ public class RepositoryImpl implements Repository {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         try {
             String events = getString(routeDTO);
-            editor.putString("finalRoute", events);
+            editor.putString(FINAL_ROUTE, events);
             editor.apply();
             editor.commit();
         } catch (JsonProcessingException e) {
@@ -70,21 +76,25 @@ public class RepositoryImpl implements Repository {
         }
 
     }
-    public RouteDTO getFinalRouteDTO(Context context) {
-        RouteDTO routeDTO = new RouteDTO();
+
+    // hier entweder null oder ein gefülltes route dto. darf nix reinschreiben. nur liefern
+    public RouteDTO getFinalRouteDTO(Context context) throws IOException {
+        RouteDTO routeDTO = null;
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String events = sharedPreferences.getString("finalRoute", null);
 
-        try {
-            RouteDTO routeDTO1 = getRouteDTO(events);
 
-            routeDTO = routeDTO1;
-            return routeDTO;
-        } catch (java.io.IOException e) {
-            e.getMessage();
+        String events = sharedPreferences.getString(FINAL_ROUTE, null);
+
+        if(events==null)
+            return null;
+
+        return getRouteDTO(events);
+
         }
-        return routeDTO;
-    }
+
+
+
+
 
 
     @Override
@@ -104,7 +114,7 @@ public class RepositoryImpl implements Repository {
     }
 
     private static RouteDTO getRouteDTO(String route) throws java.io.IOException {
-        RouteDTO routeDTO = new RouteDTO();
+        RouteDTO routeDTO = null;
         ObjectMapper mapper = new ObjectMapper();
         routeDTO = mapper.readValue(route, RouteDTO.class);
 

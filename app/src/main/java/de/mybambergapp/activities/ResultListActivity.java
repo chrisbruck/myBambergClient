@@ -36,8 +36,7 @@ import de.mybambergapp.manager.RepositoryImpl;
 public class ResultListActivity extends AppCompatActivity {
 
     private TableLayout tableLayout;
-    List<Event> events;
-    List<Event> myEvents;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,12 +47,11 @@ public class ResultListActivity extends AppCompatActivity {
         RouteDTO routeDTO = new RouteDTO();
         RepositoryImpl repository = new RepositoryImpl();
         routeDTO = repository.getRouteDTO(this);
-        events = routeDTO.getEventList();
+        //events = routeDTO.getEventList();
         setEventList(routeDTO);
 
 
     }
-
 
 
     private void setEventList(RouteDTO routeDTO) {
@@ -65,18 +63,18 @@ public class ResultListActivity extends AppCompatActivity {
             ((TextView) row.findViewById(R.id.text_veranstaltung)).setText("" + eventList.get(i).getEventname());
             ((TextView) row.findViewById(R.id.text_zeit)).setText("" + eventList.get(i).getStartdate().toString());
 
-             ImageView picture= (ImageView)row.findViewById(R.id.ImageView);
+            ImageView picture = (ImageView) row.findViewById(R.id.ImageView);
 
-           loadImage(eventList.get(i).getPictureURL(),picture);
+            loadImage(eventList.get(i).getPictureURL(), picture);
 
             row.setId(eventList.get(i).getId().intValue());
-           // TableRow row1 = (TableRow) View.inflate(this, R.layout.table_row_line, null);
+            // TableRow row1 = (TableRow) View.inflate(this, R.layout.table_row_line, null);
             tableLayout.addView(row);
-           // tableLayout.addView(row1);
+            // tableLayout.addView(row1);
         }
     }
 
-    private void loadImage(String url,ImageView view){
+    private void loadImage(String url, ImageView view) {
         Picasso.with(this)
                 .load(url)
                 .into(view);
@@ -100,7 +98,7 @@ public class ResultListActivity extends AppCompatActivity {
 
 
 
-    private String concatString(List<Tag> tagList){
+/*    private String concatString(List<Tag> tagList){
         String toReturn= null;
         for (Tag tag:tagList
              ) {
@@ -110,27 +108,29 @@ public class ResultListActivity extends AppCompatActivity {
 
         return toReturn;
 
-    }
+    }*/
 
     public void startMapView(View v) {
         int id = v.getId();
         String lastaddress = getLastAddress();
-        String taglist = " gratis, familienfreundlich, supergeil";
+        //  String taglist = " gratis, familienfreundlich, supergeil";
+        RepositoryImpl repository = new RepositoryImpl();
+        RouteDTO routeDTO = repository.getRouteDTO(this);
+        List<Event> events = routeDTO.getEventList();
         for (int i = 0; i < events.size(); i++) {
             Event e = events.get(i);
             if (e.getId() == id) {
                 Location l = e.getLocation();
 
                 String eventname = e.getEventname();
-               // String description = e.getDescription();
-                String description = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.";
+                String description = e.getDescription();
+                //String description = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.";
                 String startdate = e.getStartdate().toString();
-              List<Tag> tagList=  e.getTaglist();
+                List<Tag> tagList = e.getTaglist();
 
-            //   String tags = concatString(tagList);
+                //  String tags = concatString(tagList);
                 String tags = " gratis, geil, draussen, einmalig ";
                 String address = l.getLocationaddress();
-
 
 
                 // String address =  events.get(id).getLocation().getLocationaddress();
@@ -139,16 +139,16 @@ public class ResultListActivity extends AppCompatActivity {
                 Intent j = new Intent(this, MapsActivity.class);
 
 
-                j.putExtra("id",String.valueOf(id));
+                j.putExtra("id", String.valueOf(id));
                 j.putExtra("address", address);
                 j.putExtra("eventname", eventname);
                 j.putExtra("description", description);
                 j.putExtra("startdate", startdate);
 
-                j.putExtra("tags",tags);
+                j.putExtra("tags", tags);
 
                 j.putExtra("lastaddress", lastaddress);
-                // j.putExtra("taglist", taglist);
+                j.putExtra("taglist", tags);
 
                 startActivity(j);
 
@@ -158,25 +158,32 @@ public class ResultListActivity extends AppCompatActivity {
     }
 
 
+    private String getLastAddress() {
+        String answer = "Bamberg Ludwigstraße 2";
+        /*RepositoryImpl myrepo = new RepositoryImpl();
+        RouteDTO myRoute = new RouteDTO();
 
+        try {
+            myRoute = myrepo.getFinalRouteDTO(this);
 
-    private String getLastAddress(){
-        String answer = " Bamberg Ludwigstraße 2";
-        RepositoryImpl myrepo = new RepositoryImpl();
-        RouteDTO myroute = new RouteDTO();
-         RouteDTO myRoute =myrepo.getFinalRouteDTO(this);
-      int last=  myRoute.getEventList().size();
-        if(last!=0){
-           answer=  myRoute.getEventList().get(last-1).getLocation().getLocationaddress();
+        } catch (
+                IllegalStateException
+                        e) {
+            e.getMessage();
+
         }
-      else {
 
-        }
-        return  answer;
+        int last = myRoute.getEventList().size();
+        if (last != 0) {
+            answer = myRoute.getEventList().get(last - 1).getLocation().getLocationaddress();
+        } else {
+
+        }*/
+        return answer;
 
     }
 
-    }
+}
 
 
 
