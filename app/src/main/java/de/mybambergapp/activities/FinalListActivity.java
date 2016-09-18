@@ -91,7 +91,7 @@ public class FinalListActivity extends AppCompatActivity {
 
     private void loadImage(String url,ImageView view){
         Picasso.with(this)
-                .load(url)
+                .load(ResultListActivity.urlLocal+url)
                 .into(view);
     }
 
@@ -134,6 +134,7 @@ public class FinalListActivity extends AppCompatActivity {
         RouteDTO routeDTO = repository.getRouteDTO(this);
 
         RouteDTO   myrouteDTO = repository.getFinalRouteDTO(this);
+
         if(myrouteDTO== null){
             fillPref();
         }

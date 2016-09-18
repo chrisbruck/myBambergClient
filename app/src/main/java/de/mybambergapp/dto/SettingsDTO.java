@@ -6,7 +6,7 @@ package de.mybambergapp.dto;
 public class SettingsDTO {
 
 
-    public boolean kirche_kloster;
+    /*public boolean kirche_kloster;
     public boolean museum;
     public boolean straßenfest;
     public boolean musikfest;
@@ -178,6 +178,6 @@ public class SettingsDTO {
 
     public void setAndroidID(String androidID) {
         this.androidID = androidID;
-    }
+    }*/
 }
 

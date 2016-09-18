@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import de.mybambergapp.dto.SettingsDTO;
+
 import de.mybambergapp.dto.UserDTO;
 import de.mybambergapp.entities.Category;
 

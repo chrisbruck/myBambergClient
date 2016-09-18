@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 import de.mybambergapp.R;
+import de.mybambergapp.manager.RequestManager;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -44,7 +45,7 @@ public class StartActivity extends AppCompatActivity {
 
    private void loadImgae(){
     Picasso.with(this)
-            .load("http://192.168.2.102:8080/bamberg_4.jpg")
+            .load(ResultListActivity.urlLocal+"bamberg_4.jpg")
             .into(startpicture);
 }
 

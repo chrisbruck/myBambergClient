@@ -1,5 +1,7 @@
 package de.mybambergapp.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -28,6 +30,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import de.mybambergapp.R;
 import de.mybambergapp.manager.RequestManager;
@@ -110,13 +113,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         List<Address> addressList = null;
         if (location != null || !location.equals("")) {
             // Geocoding is the process of transforming a street address or other description of a location into a (latitude, longitude) coordinate & umgekehrt
-            Geocoder geocoder = new Geocoder(this);
+            Geocoder geocoder = new Geocoder(this, Locale.GERMANY);
             try {
                 addressList = geocoder.getFromLocationName(location, 1);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             // den letzten Eintrag rausholen und die Koordinaten rausholen
+           if(addressList.isEmpty()){
+               return latLng;
+           }
             Address address = addressList.get(0);
             latLng = new LatLng(address.getLatitude(), address.getLongitude());
         }
@@ -135,8 +141,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
         LatLng currentLoc = transformStuff(location);
+        if(currentLoc == null) {
+            showErrorWrongAddress(location);
+            //goBack();
+            return;
+        }
+
+
         LatLng lastLoc = transformStuff(lastaddress);
+        if(lastLoc == null) {
+            showErrorWrongAddress(lastaddress);
+            //goBack();
+            return;
+        }
+
+
         TextView tv = (TextView) findViewById(R.id.pathdetails);
         RequestManager.getPath(this, lastLoc, currentLoc, mMap, tv);
         Marker lastPlace = mMap.addMarker(new MarkerOptions().position(lastLoc).title("Letzter Ort").snippet(lastaddress));
@@ -150,6 +171,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Point displaySize = new Point();
         getWindowManager().getDefaultDisplay().getSize(displaySize);
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, displaySize.x, 250, 30));
+    }
+
+    private void goBack(){
+        Intent intent = new Intent(this,ResultListActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * jsut show the toast of wrong adresse
+     * @param address
+     */
+    private void showErrorWrongAddress(String address){
+        new AlertDialog.Builder(this)
+                .setTitle("Fehler")
+                .setMessage("Fehler beim ermitteln der Adresse:" + address)
+                .setCancelable(false)
+                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        goBack();
+                    }
+                }).create().show();
     }
 
     public void onClickToMyList(View v) {

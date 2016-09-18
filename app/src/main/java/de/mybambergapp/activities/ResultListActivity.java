@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
@@ -36,6 +37,8 @@ import de.mybambergapp.manager.RepositoryImpl;
 public class ResultListActivity extends AppCompatActivity {
 
     private TableLayout tableLayout;
+
+    public static String urlLocal = "http://192.168.2.102:8080/";
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,14 +62,11 @@ public class ResultListActivity extends AppCompatActivity {
         List<Event> eventList = selectionSortByStartTime(routeDTO.getEventList());
         for (int i = 0; i < eventList.size(); i++) {
             TableRow row = (TableRow) View.inflate(this, R.layout.table_row, null);
-
             ((TextView) row.findViewById(R.id.text_veranstaltung)).setText("" + eventList.get(i).getEventname());
             ((TextView) row.findViewById(R.id.text_zeit)).setText("" + eventList.get(i).getStartdate().toString());
 
             ImageView picture = (ImageView) row.findViewById(R.id.ImageView);
-
             loadImage(eventList.get(i).getPictureURL(), picture);
-
             row.setId(eventList.get(i).getId().intValue());
             // TableRow row1 = (TableRow) View.inflate(this, R.layout.table_row_line, null);
             tableLayout.addView(row);
@@ -75,6 +75,9 @@ public class ResultListActivity extends AppCompatActivity {
     }
 
     private void loadImage(String url, ImageView view) {
+
+        url = urlLocal + url;
+
         Picasso.with(this)
                 .load(url)
                 .into(view);
@@ -97,22 +100,24 @@ public class ResultListActivity extends AppCompatActivity {
     }
 
 
-
-/*    private String concatString(List<Tag> tagList){
-        String toReturn= null;
-        for (Tag tag:tagList
-             ) {
-        toReturn=    toReturn+","+tag;
+    private String concatString(List<Tag> tagList) {
+        String toReturn = "Eigenschaften :";
+        for (Tag tag : tagList
+                ) {
+            toReturn = toReturn + "" + tag.getTagName() + " | ";
         }
-
-
         return toReturn;
-
-    }*/
+    }
 
     public void startMapView(View v) {
         int id = v.getId();
-        String lastaddress = getLastAddress();
+
+        String lastaddress = null;
+        try {
+            lastaddress = getLastAddress();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         //  String taglist = " gratis, familienfreundlich, supergeil";
         RepositoryImpl repository = new RepositoryImpl();
         RouteDTO routeDTO = repository.getRouteDTO(this);
@@ -128,8 +133,8 @@ public class ResultListActivity extends AppCompatActivity {
                 String startdate = e.getStartdate().toString();
                 List<Tag> tagList = e.getTaglist();
 
-                //  String tags = concatString(tagList);
-                String tags = " gratis, geil, draussen, einmalig ";
+                String tags = concatString(tagList);
+                // String tags = " gratis, geil, draussen, einmalig ";
                 String address = l.getLocationaddress();
 
 
@@ -151,39 +156,34 @@ public class ResultListActivity extends AppCompatActivity {
                 j.putExtra("taglist", tags);
 
                 startActivity(j);
-
+                return;
             }
         }
 
     }
 
 
-    private String getLastAddress() {
+    private String getLastAddress() throws java.io.IOException {
         String answer = "Bamberg Ludwigstraße 2";
-        /*RepositoryImpl myrepo = new RepositoryImpl();
-        RouteDTO myRoute = new RouteDTO();
+        RepositoryImpl myrepo = new RepositoryImpl();
 
-        try {
-            myRoute = myrepo.getFinalRouteDTO(this);
 
-        } catch (
-                IllegalStateException
-                        e) {
-            e.getMessage();
 
-        }
+            RouteDTO myRoute = myrepo.getFinalRouteDTO(this);
+            if(myRoute == null || myRoute.getEventList().isEmpty()){
+                return answer;
+            }
 
-        int last = myRoute.getEventList().size();
-        if (last != 0) {
-            answer = myRoute.getEventList().get(last - 1).getLocation().getLocationaddress();
-        } else {
-
-        }*/
+        answer = myRoute.getEventList().get(myRoute.getEventList().size() - 1).getLocation().getLocationaddress();
         return answer;
+
 
     }
 
+
 }
+
+
 
 
 

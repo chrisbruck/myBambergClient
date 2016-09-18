@@ -6,9 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * Created by christian on 10.06.16.
  */
 public class Tag {
-    @JsonIgnore
+    //@JsonIgnore
     private Long ID;
-    @JsonIgnore
+    //@JsonIgnore
     private String tagName;
 
 

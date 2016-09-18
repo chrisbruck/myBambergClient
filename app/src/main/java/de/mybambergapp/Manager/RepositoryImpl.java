@@ -79,7 +79,7 @@ public class RepositoryImpl implements Repository {
 
     // hier entweder null oder ein gefülltes route dto. darf nix reinschreiben. nur liefern
     public RouteDTO getFinalRouteDTO(Context context) throws IOException {
-        RouteDTO routeDTO = null;
+       // RouteDTO routeDTO = null;
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
 
@@ -87,6 +87,7 @@ public class RepositoryImpl implements Repository {
 
         if(events==null)
             return null;
+
 
         return getRouteDTO(events);
 
