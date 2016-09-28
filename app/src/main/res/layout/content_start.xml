@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Willkommen bei der Freizeitapp für Bamberg!"
+            android:text="Willkommen in Bamberg!"
             android:id="@+id/introIntro"
             android:typeface="serif"
             android:textSize="25dp"
@@ -40,7 +40,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Eine App die dir persönliche Empfehlungen für deine Freizeit in Bamberg gibt. Fuelle das Formular aus und du kannst gleich loslegen!"
+            android:text="Eine App, die dir persönliche Empfehlungen für deine Freizeit in Bamberg gibt. Fülle das Formular aus und du kannst gleich loslegen!
+
+"
             android:id="@+id/introText"
             android:typeface="serif"
             android:layout_gravity="center_horizontal" />

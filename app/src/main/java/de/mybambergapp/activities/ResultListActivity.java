@@ -38,7 +38,9 @@ public class ResultListActivity extends AppCompatActivity {
 
     private TableLayout tableLayout;
 
-    public static String urlLocal = "http://192.168.2.102:8080/";
+    public static String urlLocal = "http://ec2-52-29-202-121.eu-central-1.compute.amazonaws.com:8080/";
+
+    //public static String urlLocal = "http://192.168.2.102:8080/";
 
 
     protected void onCreate(Bundle savedInstanceState) {

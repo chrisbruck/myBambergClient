@@ -36,7 +36,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Wähle aus diesen Veranstaltungen deine persönlichen Favoriten aus und erstelle deine eigene Route. Durchs Klicken auf eine Veranstaltung bekommst du zusätzliche Detailinfos und kannst dich dann entscheiden ob du die Veranstaltung in die eigene Liste aufnimmst. "
+                        android:text="Durch‘s Klicken auf eine Veranstaltung bekommst du zusätzliche Detailinfos und kannst dich dann entscheiden, ob du die Veranstaltung in deine persönliche Liste aufnimmst."
                         android:id="@+id/introIntro"
                         android:typeface="serif"
 

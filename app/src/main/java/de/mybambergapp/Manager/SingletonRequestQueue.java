@@ -26,7 +26,7 @@ public class SingletonRequestQueue {
 
 
     //Mit synchronized kann man einen bestimmten Codebereich schützen oder auch eine ganze Methode.Hier wird die gesamte Methode exklusiv vergeben
-    //wenn es keine Klasse von SRQ wird eine erzeugt ansonsten die existierende zurueckgegeben
+    //wenn es keine Klasse von SRQ gibt wird eine erzeugt ansonsten die existierende zurueckgegeben
     public static synchronized SingletonRequestQueue getInstance(Context context) {
         if (mInstance == null) {
             mInstance = new SingletonRequestQueue(context);

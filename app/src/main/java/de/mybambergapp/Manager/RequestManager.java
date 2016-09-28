@@ -62,7 +62,8 @@ public class RequestManager {
 
    // private  static final String BASE_URL = "http://10.1.6.223:8080";
     private static final String BASE_URL = "http://192.168.2.102:8080";
-    //private static final String BASE_URL = "http://192.168.43.12:8080";
+  //  private static final String BASE_URL= "http://ec2-52-29-202-121.eu-central-1.compute.amazonaws.com:8080";
+   // private static final String BASE_URL = "http://192.168.43.12:8080";
     private static final String USER_URL = BASE_URL + "/v1/user";
     private static final String ROUTE_URL = BASE_URL + "/v1/route?androidId=";
     private static final String FINALROUTE_URL= BASE_URL+"/v1/finalroute";
