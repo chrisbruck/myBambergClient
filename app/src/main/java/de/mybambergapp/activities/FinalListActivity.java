@@ -29,8 +29,6 @@ import de.mybambergapp.manager.RequestManager;
 public class FinalListActivity extends AppCompatActivity {
     private TableLayout tableLayout;
     List<Event> events;
-   // List<Event> myEvents;
-    private int resultlist;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,14 +61,13 @@ public class FinalListActivity extends AppCompatActivity {
         RouteDTO routeDTO = new RouteDTO();
         routeDTO.setEventList(eventList);
         routeDTO.setAndroidId(Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
-       // routeDTO.setAndroidId(Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
+
         RepositoryImpl repository = new RepositoryImpl();
         repository.saveFinalRouteDTO(routeDTO, this);
     }
 
 
     private void addEventToView() throws IOException {
-        //  TableLayout table = (TableLayout)findViewById(R.id.the_table);
         RepositoryImpl repository = new RepositoryImpl();
         List<Event> eventList = (repository.getFinalRouteDTO(this).getEventList());
         for (int i = 0; i < eventList.size(); i++) {
@@ -115,7 +112,7 @@ public class FinalListActivity extends AppCompatActivity {
 
            }else{
                 myColor= R.color.red;
-                ((TextView) row.findViewById(R.id.text_valid)).setText(" NOT !");
+                ((TextView) row.findViewById(R.id.text_valid)).setText(" NICHT GÜLTIG !");
                 ((TextView) row.findViewById(R.id.text_valid)).setBackgroundColor(getResources().getColor(myColor));
 
             }
