@@ -1,6 +1,6 @@
 ## Prjectdescription
 
-This project is a client android software part of my master thesis  at the University of Bamberg.
+This project is a client of the myBamberg project. It is an android software.
 
 ## Android-App
 
